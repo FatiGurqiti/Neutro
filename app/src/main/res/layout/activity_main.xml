@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/logo" />
+
+    <ImageView
+        android:id="@+id/blackfilter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="2dp"
+        android:src="@drawable/blackfilter"
+        android:visibility="invisible"
+        android:translationZ="12dp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/addcontactCard"
+        android:layout_width="match_parent"
+        android:visibility="invisible"
+        android:layout_height="280dp"
+        android:translationZ="16dp"
+        android:elevation="16dp"
+        android:background="@color/white"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:cardCornerRadius="18dp"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Add Contact"
+            android:textSize="22sp"
+            android:layout_marginTop="15dp"
+            android:textColor="#000000"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Enter Öde Number"
+            android:textSize="18sp"
+            android:layout_marginTop="85dp"
+            android:textColor="#80000000"
+            />
+
+        <EditText
+            android:id="@+id/AddOdeNumber"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="130dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/inputbg"
+            android:ems="10"
+            android:hint="Öde number"
+            android:inputType="text"
+            android:paddingLeft="20dp"
+            android:textColor="@color/white"
+            android:textColorHint="#60FFFFFF" />
+
+
+        <Button
+            android:id="@+id/addContactBtn"
+            android:layout_width="380dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="-10dp"
+            android:backgroundTint="#E40031"
+            android:text="Add"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_gravity="bottom"
+            />
+
+        <ProgressBar
+            android:id="@+id/progressBarinMainActivity"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="150dp"
+            android:layout_marginLeft="125dp"
+            android:visibility="invisible"
+            />
+
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/profilebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="28dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/profile"
+        tools:layout_editor_absoluteY="61dp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginRight="30dp"
+        android:elevation="10dp"
+        android:translationZ="10dp"
+        app:cardBackgroundColor="#407BFF"
+        app:cardCornerRadius="18dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="210dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Your Total Debt"
+            android:textColor="@color/white"
+            android:textSize="22dp" />
+
+        <TextView
+            android:id="@+id/debtText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="45"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="45dp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/backgroundcard"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="170dp"
+        android:layout_marginRight="40dp"
+        android:elevation="1dp"
+        android:src="@drawable/blue"
+        android:translationZ="1dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="210dp" />
+
+    <ImageButton
+        android:id="@+id/addDebtBtn"
+        android:layout_width="81dp"
+        android:layout_height="79dp"
+        android:layout_below="@+id/backgroundcard"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="-7dp"
+        android:layout_marginBottom="309dp"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:elevation="1dp"
+        android:outlineAmbientShadowColor="@color/black"
+        android:outlineSpotShadowColor="@color/black"
+        android:translationZ="1dp"
+        app:srcCompat="@drawable/plus" />
+
+    <ImageButton
+        android:id="@+id/contactBtn"
+        android:layout_width="77dp"
+        android:layout_height="81dp"
+        android:layout_below="@+id/backgroundcard"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="-9dp"
+        android:layout_marginEnd="74dp"
+        android:layout_marginBottom="308dp"
+        android:layout_toEndOf="@+id/addDebtBtn"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:elevation="1dp"
+        android:outlineAmbientShadowColor="@color/black"
+        android:outlineSpotShadowColor="@color/black"
+        android:translationZ="1dp"
+        app:srcCompat="@drawable/contact" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addDebtBtn"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="440dp"
+        android:text="Add Debt"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addDebtBtn"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="440dp"
+        android:layout_marginEnd="68dp"
+        android:text="Add Contact"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addDebtBtn"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="530dp"
+        android:paddingLeft="18dp"
+        android:textColor="@color/black"
+        android:text="Your latest actions"
+        android:textSize="20dp" />
+
+
+
+</RelativeLayout>
