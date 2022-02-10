@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FBFBFB"
     tools:context=".LogIn">
 
     <ImageView
@@ -42,6 +43,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:text="Login"
+            android:fontFamily="@font/plusjakartatextregular"
             android:textColor="#4b51ff"
             android:textSize="28sp" />
 
@@ -53,6 +55,7 @@
             android:layout_marginRight="130dp"
             android:clickable="true"
             android:text="Sign Up"
+            android:fontFamily="@font/plusjakartatextregular"
             android:textAlignment="textEnd"
             android:textSize="28sp" />
 
@@ -66,6 +69,7 @@
             android:layout_marginRight="30dp"
             android:background="@drawable/inputbg"
             android:ems="10"
+            android:fontFamily="@font/plusjakartatextregular"
             android:hint="E-mail"
             android:inputType="textEmailAddress"
             android:paddingLeft="20dp"
@@ -83,6 +87,7 @@
             android:background="@drawable/inputbg"
             android:ems="10"
             android:hint="Pin"
+            android:fontFamily="@font/plusjakartatextregular"
             android:inputType="numberPassword"
             android:paddingLeft="20dp"
             android:textColor="@color/white"
@@ -116,8 +121,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="145dp"
         android:layout_marginBottom="23dp"
-        android:textSize="16sp"
-        android:text="fdev" />
+        android:fontFamily="@font/plusjakartatextregular"
+        android:text="fdev"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/textView3"
@@ -127,6 +133,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="40dp"
+        android:fontFamily="@font/plusjakartatextregular"
         android:layout_marginTop="20dp"
         android:text="Welcome!"
         android:textColor="@color/white"
@@ -141,6 +148,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="100dp"
         android:lineSpacingExtra="10dp"
+        android:fontFamily="@font/plusjakartatextregular"
         android:text="Would you concider signing in? \nNo pressure of course"
         android:textColor="@color/white"
         android:textSize="20sp" />
