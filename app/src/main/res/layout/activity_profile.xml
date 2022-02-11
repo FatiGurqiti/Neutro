@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,4 +7,94 @@
     android:background="#FBFBFB"
     tools:context=".Profile">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="1000dp"
+        android:layout_height="400dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="-100dp"
+        android:layout_marginTop="-100dp"
+        android:layout_marginRight="-100dp"
+        android:rotation="-20"
+        app:srcCompat="@drawable/profilebg" />
+
+    <ImageView
+        android:id="@+id/logoinProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="222dp"
+        android:layout_marginEnd="31dp"
+        app:srcCompat="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:textAlignment="center"
+        android:layout_marginTop="71dp"
+        android:fontFamily="@font/plusjakartatexbold"
+        android:text="Fati"
+        android:textSize="30sp"
+        android:textColor="@color/white"
+        />
+
+    <TextView
+        android:id="@+id/userMail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="150dp"
+        android:fontFamily="@font/plusjakartatexbold"
+        android:text="fatigurciti@gmail.com"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textColor="@color/white"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="450dp"
+        android:fontFamily="@font/plusjakartatextregular"
+        android:text="Öde number:"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textColor="#70000000"/>
+
+    <TextView
+        android:id="@+id/userOdeNo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="500dp"
+        android:fontFamily="@font/plusjakartatexbold"
+        android:text="f5534341"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="30sp" />
+
+
+    <ImageButton
+        android:id="@+id/copyBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="298dp"
+        android:layout_marginLeft="-113dp"
+        android:layout_marginTop="509dp"
+        android:layout_toRightOf="@id/username"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:src="@drawable/copy" />
+
+</RelativeLayout>

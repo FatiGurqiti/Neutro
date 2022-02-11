@@ -4,10 +4,9 @@ import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.ImageButton
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 
 class LogIn : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +16,7 @@ class LogIn : AppCompatActivity() {
         val progressBar = findViewById<ProgressBar>(R.id.progressBarInLogIn)
         val SignUpbtn = findViewById<TextView>(R.id.SignUpTxt)
         val LogIn = findViewById<ImageButton>(R.id.logoinBtn)
+
 
 
         SignUpbtn.setOnClickListener{

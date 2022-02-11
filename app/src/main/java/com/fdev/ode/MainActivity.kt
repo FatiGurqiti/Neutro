@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.*
 import androidx.cardview.widget.CardView
+import com.google.android.material.tabs.TabItem
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         val CancelContact = findViewById<ImageButton>(R.id.cancelContact)
         val AddContactBtn = findViewById<Button>(R.id.addContactBtn)
 
+        val AddDebtButton = findViewById<Button>(R.id.addDebtBtnInCard)
         val debtbtn = findViewById<ImageButton>(R.id.addDebtBtn)
         val debtCard = findViewById<CardView>(R.id.addDebtCard)
         val CanceldebtCard = findViewById<ImageButton>(R.id.cancelDebtCard)
@@ -35,7 +37,31 @@ class MainActivity : AppCompatActivity() {
         val odenumber = findViewById<EditText>(R.id.AddOdeNumber)
 
 
-        CancelContactList.setOnClickListener(){
+
+        AddDebtButton.setOnClickListener() {
+            var contact = Contacttext.text.toString()
+            var ammount = amountText.text.toString()
+            var label = labelText.text.toString()
+
+            if (TextUtils.isEmpty(contact) || TextUtils.isEmpty(ammount) || TextUtils.isEmpty(label)) {
+                //Input is null
+                Toast.makeText(this, "Something is missing", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Debt added succesfully", Toast.LENGTH_SHORT)
+                    .show()
+                progressBar.visibility = View.VISIBLE
+                blackfilter.visibility = View.INVISIBLE
+                debtCard.visibility = View.INVISIBLE
+                Contacttext.setText("")
+                amountText.setText("")
+                labelText.setText("")
+                ContactBtn.isEnabled = true;
+                debtbtn.isEnabled = true;
+                progressBar.visibility = View.INVISIBLE
+            }
+        }
+
+        CancelContactList.setOnClickListener() {
             progressBar.visibility = View.VISIBLE
             Secondblackfilter.visibility = View.INVISIBLE
             ContactlistCard.visibility = View.INVISIBLE
@@ -44,14 +70,15 @@ class MainActivity : AppCompatActivity() {
             progressBar.visibility = View.INVISIBLE
         }
 
-        debtbtn.setOnClickListener(){
+        debtbtn.setOnClickListener() {
             progressBar.visibility = View.VISIBLE
             blackfilter.visibility = View.VISIBLE
             debtCard.visibility = View.VISIBLE
+            ContactBtn.isEnabled = false;
             progressBar.visibility = View.INVISIBLE
         }
 
-        dropDown.setOnClickListener(){
+        dropDown.setOnClickListener() {
             Contacttext.setText("Tihulu")
             Secondblackfilter.visibility = View.VISIBLE
             ContactlistCard.visibility = View.VISIBLE
@@ -60,12 +87,13 @@ class MainActivity : AppCompatActivity() {
             labelText.isEnabled = false
         }
 
-        CanceldebtCard.setOnClickListener(){
+        CanceldebtCard.setOnClickListener() {
             progressBar.visibility = View.VISIBLE
             blackfilter.visibility = View.INVISIBLE
             Contacttext.setText("")
             amountText.setText("")
             labelText.setText("")
+            ContactBtn.isEnabled = true;
             debtCard.visibility = View.INVISIBLE
             progressBar.visibility = View.INVISIBLE
         }
@@ -74,6 +102,7 @@ class MainActivity : AppCompatActivity() {
             progressBar.visibility = View.VISIBLE
             blackfilter.visibility = View.VISIBLE
             contactCard.visibility = View.VISIBLE
+            debtbtn.isEnabled = false;
             progressBar.visibility = View.INVISIBLE
         }
 
@@ -84,23 +113,26 @@ class MainActivity : AppCompatActivity() {
 
             if (TextUtils.isEmpty(odeNO)) {
                 //Input is null
-                Toast.makeText(this,"Something is missing", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Something is missing", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this,"This dude is added to your contact", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "This dude is added to your contact", Toast.LENGTH_SHORT)
+                    .show()
                 progressBar.visibility = View.VISIBLE
                 blackfilter.visibility = View.INVISIBLE
                 contactCard.visibility = View.INVISIBLE
                 odenumber.setText("")
+                debtbtn.isEnabled = true;
                 progressBar.visibility = View.INVISIBLE
             }
 
         }
 
-        CancelContact.setOnClickListener(){
+        CancelContact.setOnClickListener() {
             progressBar.visibility = View.VISIBLE
             blackfilter.visibility = View.INVISIBLE
             contactCard.visibility = View.INVISIBLE
             odenumber.setText("")
+            debtbtn.isEnabled = true;
             progressBar.visibility = View.INVISIBLE
         }
 

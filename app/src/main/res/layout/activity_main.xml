@@ -61,6 +61,8 @@
             />
 
 
+
+
     </androidx.cardview.widget.CardView>
 
     <!-- Add Debt -->
@@ -198,15 +200,19 @@
         >
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/debtsTAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Debts" />
 
+
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/toCollectTAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="To Collect" />
     </com.google.android.material.tabs.TabLayout>
+
 
     <!-- Add Contact -->
     <androidx.cardview.widget.CardView
@@ -319,10 +325,10 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
             android:layout_marginTop="45dp"
             android:fontFamily="@font/plusjakartatextregular"
             android:text="Total Debt"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="22dp" />
 
