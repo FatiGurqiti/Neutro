@@ -2,15 +2,24 @@ package com.fdev.ode
 
 import android.app.ActivityOptions
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.FragmentManager
+import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.fdev.ode.fragments.FragmentAdapter
 import com.google.android.material.tabs.TabItem
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+
 
 class MainActivity : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,7 +45,34 @@ class MainActivity : AppCompatActivity() {
         val progressBar = findViewById<ProgressBar>(R.id.progressBarinMainActivity)
         val odenumber = findViewById<EditText>(R.id.AddOdeNumber)
 
+        val tab = findViewById<TabLayout>(R.id.tab)
+        val viewpager2 = findViewById<ViewPager2>(R.id.viewPager2)
+        val fragmentadapter: FragmentAdapter
 
+        val tabitemdebt = findViewById<TabItem>(R.id.debtsTAB)
+        val tabitemtoCollect = findViewById<TabItem>(R.id.toCollectTAB)
+
+        var fm:FragmentManager = supportFragmentManager
+        fragmentadapter = FragmentAdapter(fm, lifecycle)
+        viewpager2.adapter = fragmentadapter
+
+
+        tab.addOnTabSelectedListener(object : OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+
+                viewpager2.setCurrentItem(tab.position)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+
+
+        viewpager2.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                tab.selectTab(tab.getTabAt(position))
+            }
+        })
 
         AddDebtButton.setOnClickListener() {
             var contact = Contacttext.text.toString()
@@ -142,4 +178,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
     }
+
+    override fun onBackPressed() {
+        //Do nothing when back button is clicked
+    }
 }
+
