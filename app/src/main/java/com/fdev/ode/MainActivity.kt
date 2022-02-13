@@ -226,23 +226,19 @@ class MainActivity : AppCompatActivity() {
 
         var myContact = ArrayList<String?>()
 
-
         val TAG = "AddNewContact"
         val docRef: DocumentReference = db.collection("Contacts").document(
-            user!!.email.toString()
-        )
+            user!!.email.toString() )
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
 
                     //Get previous Contacts
-                    Log.d(
-                        TAG,
-                        "DocumentSnapshot data: ${document.get("contact") as ArrayList<String>}"
-                    )
+                    Log.d( TAG,"DocumentSnapshot data: ${document.get("contact") as ArrayList<String>}" )
                     myContact = document.get("contact") as ArrayList<String?>
                     Log.d(TAG, "myContact: ${myContact}")
 
+                    myContact.add(email)
                     //  Update contact
                     db.collection("Contacts").document(user.email.toString())
                         .update("contact", myContact)
