@@ -1,11 +1,14 @@
 package com.fdev.ode
 
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -15,28 +18,32 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.fdev.ode.fragments.FragmentAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.util.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
     private val user = Firebase.auth.currentUser
-
-
     private val db = Firebase.firestore
+
+
+    private var Contacttext: EditText? = null
+    private var progressBar: ProgressBar? = null
+    private var Secondblackfilter: ImageView? = null
+    private var ContactlistCard: CardView? = null
+    private var amountText: EditText? = null
+    private var labelText: EditText? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val profile = findViewById<ImageButton>(R.id.profilebtn)
         val blackfilter = findViewById<ImageView>(R.id.blackfilter)
-        val Secondblackfilter = findViewById<ImageView>(R.id.secondblackfilter)
         val contactCard = findViewById<CardView>(R.id.addcontactCard)
         val ContactBtn = findViewById<ImageButton>(R.id.contactBtn)
         val CancelContact = findViewById<ImageButton>(R.id.cancelContact)
@@ -46,14 +53,19 @@ class MainActivity : AppCompatActivity() {
         val debtbtn = findViewById<ImageButton>(R.id.addDebtBtn)
         val debtCard = findViewById<CardView>(R.id.addDebtCard)
         val CanceldebtCard = findViewById<ImageButton>(R.id.cancelDebtCard)
-        val ContactlistCard = findViewById<CardView>(R.id.ContactListCard)
         val CancelContactList = findViewById<ImageButton>(R.id.cancelContactList)
-        val amountText = findViewById<EditText>(R.id.AmountText)
-        val labelText = findViewById<EditText>(R.id.LabelText)
+
         val dropDown = findViewById<ImageButton>(R.id.dropDownBtn)
-        val Contacttext = findViewById<EditText>(R.id.contactText);
-        val progressBar = findViewById<ProgressBar>(R.id.progressBarinMainActivity)
         val odenumber = findViewById<EditText>(R.id.AddOdeNumber)
+
+
+        ContactlistCard = findViewById(R.id.ContactListCard)
+        Contacttext = findViewById(R.id.contactText)
+        amountText = findViewById(R.id.AmountText)
+        labelText = findViewById(R.id.LabelText)
+
+        Secondblackfilter = findViewById<ImageView>(R.id.secondblackfilter)
+        progressBar = findViewById<ProgressBar>(R.id.progressBarinMainActivity)
 
         val tab = findViewById<TabLayout>(R.id.tab)
         val viewpager2 = findViewById<ViewPager2>(R.id.viewPager2)
@@ -64,6 +76,9 @@ class MainActivity : AppCompatActivity() {
         fragmentadapter = FragmentAdapter(fm, lifecycle)
         viewpager2.adapter = fragmentadapter
 
+
+
+        loadContacts()
 
         tab.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
@@ -83,9 +98,9 @@ class MainActivity : AppCompatActivity() {
         })
 
         AddDebtButton.setOnClickListener() {
-            var contact = Contacttext.text.toString()
-            var ammount = amountText.text.toString()
-            var label = labelText.text.toString()
+            var contact = Contacttext?.text.toString()
+            var ammount = amountText?.text.toString()
+            var label = labelText?.text.toString()
 
             if (TextUtils.isEmpty(contact) || TextUtils.isEmpty(ammount) || TextUtils.isEmpty(label)) {
                 //Input is null
@@ -93,61 +108,62 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Debt added succesfully", Toast.LENGTH_SHORT)
                     .show()
-                progressBar.visibility = View.VISIBLE
+                progressBar?.visibility = View.VISIBLE
                 blackfilter.visibility = View.INVISIBLE
                 debtCard.visibility = View.INVISIBLE
-                Contacttext.setText("")
-                amountText.setText("")
-                labelText.setText("")
+                Contacttext?.setText("")
+                amountText?.setText("")
+                labelText?.setText("")
                 ContactBtn.isEnabled = true;
                 debtbtn.isEnabled = true;
-                progressBar.visibility = View.INVISIBLE
+                progressBar?.visibility = View.INVISIBLE
             }
         }
 
+
         CancelContactList.setOnClickListener() {
-            progressBar.visibility = View.VISIBLE
-            Secondblackfilter.visibility = View.INVISIBLE
-            ContactlistCard.visibility = View.INVISIBLE
-            amountText.isEnabled = true
-            labelText.isEnabled = true
-            progressBar.visibility = View.INVISIBLE
+            progressBar?.visibility = View.VISIBLE
+            Secondblackfilter?.visibility = View.INVISIBLE
+            ContactlistCard?.visibility = View.INVISIBLE
+            amountText?.isEnabled = true
+            labelText?.isEnabled = true
+            progressBar?.visibility = View.INVISIBLE
         }
+        CancelContactList.setTranslationZ(22F)
 
         debtbtn.setOnClickListener() {
-            progressBar.visibility = View.VISIBLE
+            progressBar?.visibility = View.VISIBLE
             blackfilter.visibility = View.VISIBLE
             debtCard.visibility = View.VISIBLE
             ContactBtn.isEnabled = false;
-            progressBar.visibility = View.INVISIBLE
+            progressBar?.visibility = View.INVISIBLE
         }
 
         dropDown.setOnClickListener() {
-            Contacttext.setText("Tihulu")
-            Secondblackfilter.visibility = View.VISIBLE
-            ContactlistCard.visibility = View.VISIBLE
+            Secondblackfilter?.visibility = View.VISIBLE
+            ContactlistCard?.visibility = View.VISIBLE
 
-            amountText.isEnabled = false
-            labelText.isEnabled = false
+            amountText?.isEnabled = false
+            labelText?.isEnabled = false
         }
 
         CanceldebtCard.setOnClickListener() {
-            progressBar.visibility = View.VISIBLE
+            progressBar?.visibility = View.VISIBLE
             blackfilter.visibility = View.INVISIBLE
-            Contacttext.setText("")
-            amountText.setText("")
-            labelText.setText("")
+            Contacttext?.setText("")
+            amountText?.setText("")
+            labelText?.setText("")
             ContactBtn.isEnabled = true;
             debtCard.visibility = View.INVISIBLE
-            progressBar.visibility = View.INVISIBLE
+            progressBar?.visibility = View.INVISIBLE
         }
 
         ContactBtn.setOnClickListener() {
-            progressBar.visibility = View.VISIBLE
+            progressBar?.visibility = View.VISIBLE
             blackfilter.visibility = View.VISIBLE
             contactCard.visibility = View.VISIBLE
             debtbtn.isEnabled = false;
-            progressBar.visibility = View.INVISIBLE
+            progressBar?.visibility = View.INVISIBLE
         }
 
         AddContactBtn.setOnClickListener()
@@ -160,7 +176,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Something is missing", Toast.LENGTH_SHORT).show()
             } else {
 
-                progressBar.visibility = View.VISIBLE
+                progressBar?.visibility = View.VISIBLE
                 //Add this to your Contact
                 if (odeNO != user?.email.toString()) {
 
@@ -169,7 +185,7 @@ class MainActivity : AppCompatActivity() {
                     contactCard.visibility = View.INVISIBLE
                     odenumber.setText("")
                     debtbtn.isEnabled = true;
-                    progressBar.visibility = View.INVISIBLE
+                    progressBar?.visibility = View.INVISIBLE
                 } else
                     Toast.makeText(
                         this, "I'm sorry. You can't add yourself",
@@ -181,12 +197,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         CancelContact.setOnClickListener() {
-            progressBar.visibility = View.VISIBLE
+            progressBar?.visibility = View.VISIBLE
             blackfilter.visibility = View.INVISIBLE
             contactCard.visibility = View.INVISIBLE
             odenumber.setText("")
             debtbtn.isEnabled = true;
-            progressBar.visibility = View.INVISIBLE
+            progressBar?.visibility = View.INVISIBLE
         }
 
 
@@ -194,6 +210,82 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, Profile::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
+    }
+
+    private fun loadContacts() {
+        val scrollLayout = findViewById<RelativeLayout>(R.id.Scroll_RelativeofContactList)
+
+        //Load Contacts
+        val TAG = "LoadContact"
+        val docRef = db.collection("Contacts").document(user?.email.toString())
+        var myContact = ArrayList<String?>()
+        var ContactNames = ArrayList<String?>()
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+
+                    myContact = document.get("contact") as ArrayList<String?>
+                    ContactNames = document.get("contactName") as ArrayList<String?>
+                    Log.d(TAG, "myContact: ${myContact}")
+
+                    Log.d(TAG, myContact.size.toString())
+
+                    for (i in 0..myContact.size - 1) {
+                        var j = i + 1;
+
+                        val sizeheight = getScreenHeight(this) * 0.5
+                        val sizewidth = getScreenWidth(this)
+
+                        val face = resources.getFont(R.font.plusjakartatextregular)
+                        val boldface = resources.getFont(R.font.plusjakartatexbold)
+
+                        val Contact_Name = TextView(this)
+                        Contact_Name.textSize = 20f
+                        Contact_Name.text = ContactNames.get(i)
+                        Contact_Name.setTypeface(boldface)
+                        Contact_Name.setTranslationZ(20F)
+                        scrollLayout.addView(Contact_Name)
+                        setMargins(
+                            Contact_Name,
+                            (sizewidth * 0.1).toInt(),
+                            ((j * sizeheight) * 0.2).toInt(),
+                            25,
+                            1
+                        )
+
+                        Contact_Name.setOnClickListener()
+                        {
+                            setContactName(ContactNames.get(i)!!)
+
+                        }
+
+                        val Contact_Mail = TextView(this)
+                        Contact_Mail.textSize = 20f
+                        Contact_Mail.text = myContact.get(i)
+                        Contact_Mail.setTypeface(face)
+                        Contact_Mail.setTranslationZ(20F)
+                        scrollLayout.addView(Contact_Mail)
+                        setMargins(
+                            Contact_Mail,
+                            (sizewidth * 0.1).toInt(),
+                            (((j * sizeheight) * 0.2) + 50).toInt(),
+                            25,
+                            1
+                        )
+
+                        Contact_Mail.setOnClickListener(){
+                                setContactName(ContactNames.get(i)!!)
+                        }
+                    }
+
+                } else {
+                    Log.d(TAG, "No such document")
+
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
     }
 
     private fun contactCheck(Email: String) {
@@ -334,6 +426,37 @@ class MainActivity : AppCompatActivity() {
             }
 
 
+    }
+
+
+    fun setContactName(name: String){
+        progressBar?.visibility = View.VISIBLE
+        Secondblackfilter?.visibility = View.INVISIBLE
+        ContactlistCard?.visibility = View.INVISIBLE
+        Contacttext?.setText(name)
+        amountText?.isEnabled = true
+        labelText?.isEnabled = true
+        progressBar?.visibility = View.INVISIBLE
+    }
+
+    fun setMargins(v: View, l: Int, t: Int, r: Int, b: Int) {
+        if (v.getLayoutParams() is ViewGroup.MarginLayoutParams) {
+            val p = v.getLayoutParams() as ViewGroup.MarginLayoutParams
+            p.setMargins(l, t, r, b)
+            v.requestLayout()
+        }
+    }
+
+    fun getScreenHeight(context: Context?): Int {
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        return displayMetrics.heightPixels
+    }
+
+    fun getScreenWidth(context: Context?): Int {
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        return displayMetrics.widthPixels
     }
 
     override fun onBackPressed() {

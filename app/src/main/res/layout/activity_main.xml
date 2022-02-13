@@ -60,8 +60,24 @@
             android:layout_marginTop="15dp"
             />
 
+        <ScrollView
+            android:id="@+id/scrollViewofContactList"
+            android:layout_width="match_parent"
+            android:layout_height="614dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="60dp">
 
 
+            <RelativeLayout
+                android:id="@+id/Scroll_RelativeofContactList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </RelativeLayout>
+        </ScrollView>
 
     </androidx.cardview.widget.CardView>
 
