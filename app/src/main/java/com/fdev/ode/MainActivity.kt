@@ -29,6 +29,7 @@ import java.util.ArrayList
 class MainActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private val user = Firebase.auth.currentUser
 
 
     private val db = Firebase.firestore
@@ -164,13 +165,20 @@ class MainActivity : AppCompatActivity() {
 
                 progressBar.visibility = View.VISIBLE
                 //Add this to your Contact
-                // contactCheck(odeNO)
-                contactAdd(odeNO)
-                blackfilter.visibility = View.INVISIBLE
-                contactCard.visibility = View.INVISIBLE
-                odenumber.setText("")
-                debtbtn.isEnabled = true;
-                progressBar.visibility = View.INVISIBLE
+                if (odeNO != user?.email.toString()) {
+
+                    contactCheck(odeNO)
+                    blackfilter.visibility = View.INVISIBLE
+                    contactCard.visibility = View.INVISIBLE
+                    odenumber.setText("")
+                    debtbtn.isEnabled = true;
+                    progressBar.visibility = View.INVISIBLE
+                } else
+                    Toast.makeText(
+                        this, "I'm sorry. You can't add yourself",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
             }
 
         }
@@ -197,10 +205,11 @@ class MainActivity : AppCompatActivity() {
         val docRef = db.collection("Users").document(Email)
         docRef.get()
             .addOnSuccessListener { document ->
-                if (document != null) {
+                if (document.data != null) {
                     Log.d(TAG, "DocumentSnapshot data: ${document.data}")
                     //This user exists
                     contactAdd(Email)
+                    Toast.makeText(this, "Contact added successfully", Toast.LENGTH_SHORT).show()
 
                 } else {
                     Log.d(TAG, "No such document")
@@ -214,24 +223,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun contactAdd(email: String) {
-        val user = Firebase.auth.currentUser
+
         var myContact = ArrayList<String?>()
 
 
-        //Get previous Contacts
         val TAG = "AddNewContact"
         val docRef: DocumentReference = db.collection("Contacts").document(
-            user!!.email.toString())
-
+            user!!.email.toString()
+        )
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
 
-                    Log.d(TAG, "DocumentSnapshot data: ${document.get("contact") as ArrayList<String>}")
+                    //Get previous Contacts
+                    Log.d(
+                        TAG,
+                        "DocumentSnapshot data: ${document.get("contact") as ArrayList<String>}"
+                    )
                     myContact = document.get("contact") as ArrayList<String?>
                     Log.d(TAG, "myContact: ${myContact}")
 
-                    //  Update data
+                    //  Update contact
                     db.collection("Contacts").document(user.email.toString())
                         .update("contact", myContact)
 
@@ -251,7 +263,6 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.d(TAG, "get failed with ", exception)
             }
-
 
 
     }
