@@ -4,19 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FBFBFB"
     tools:context=".Profile">
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="1000dp"
-        android:layout_height="400dp"
+        android:layout_height="325dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="-100dp"
         android:layout_marginTop="-100dp"
         android:layout_marginRight="-100dp"
-        android:rotation="-20"
         app:srcCompat="@drawable/profilebg" />
 
     <ImageView
@@ -25,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="222dp"
+        android:layout_marginTop="182dp"
         android:layout_marginEnd="31dp"
         app:srcCompat="@drawable/logo" />
 
@@ -35,13 +33,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:textAlignment="center"
-        android:layout_marginTop="71dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/plusjakartatexbold"
         android:text="Fati"
-        android:textSize="30sp"
+        android:textAlignment="center"
         android:textColor="@color/white"
-        />
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/userMail"
@@ -49,53 +46,58 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:fontFamily="@font/plusjakartatexbold"
         android:text="fatigurciti@gmail.com"
         android:textAlignment="center"
-        android:textSize="30sp"
-        android:textColor="@color/white"/>
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="450dp"
-        android:fontFamily="@font/plusjakartatextregular"
-        android:text="Öde number:"
-        android:textAlignment="center"
-        android:textColor="#70000000"
+        android:textColor="@color/white"
         android:textSize="30sp" />
 
-    <TextView
-        android:id="@+id/userOdeNo"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="500dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:fontFamily="@font/plusjakartatexbold"
-        android:text="f5534341"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="30sp" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="-12dp"
+        android:elevation="2dp"
+        android:outlineAmbientShadowColor="@color/black"
+        android:outlineSpotShadowColor="@color/black"
+        app:cardCornerRadius="12dp"
+
+        >
+
+        <ScrollView
+            android:id="@+id/scrollViewofProfile"
+            android:layout_width="match_parent"
+            android:layout_height="614dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="60dp">
 
 
-    <ImageButton
-        android:id="@+id/copyBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="320dp"
-        android:layout_marginTop="463dp"
-        android:layout_toRightOf="@id/username"
-        android:background="@android:color/transparent"
-        android:clickable="true"
-        android:src="@drawable/copy" />
+            <RelativeLayout
+                android:id="@+id/Scroll_Relative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Contacts"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:layout_marginTop="15dp"
+                    />
+
+            </RelativeLayout>
+        </ScrollView>
+
+    </androidx.cardview.widget.CardView>
+
 
 </RelativeLayout>
