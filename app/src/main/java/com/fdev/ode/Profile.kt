@@ -25,13 +25,14 @@ import java.util.ArrayList
 
 class Profile : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
 
-        var username = findViewById<TextView>(R.id.username)
-        var usermail = findViewById<TextView>(R.id.userMail)
+        val username = findViewById<TextView>(R.id.username)
+        val usermail = findViewById<TextView>(R.id.userMail)
         val logo = findViewById<ImageView>(R.id.logoinProfile)
         val scrollLayout = findViewById<RelativeLayout>(R.id.Scroll_Relative)
         val user = Firebase.auth.currentUser
@@ -54,13 +55,13 @@ class Profile : AppCompatActivity() {
                     )
                     myContact = document.get("contact") as ArrayList<String?>
                     Log.d(TAG, "myContact: ${myContact}")
+                    Log.d(TAG,myContact.size.toString())
 
-                    Log.v("hi",myContact.size.toString())
+                    for (i in 0..myContact.size-1) {
+                        var j = i+1;
 
-                    for (i in 0..1) {
-
-                        var sizeheight = getScreenHeight(this) * 0.5
-                        var sizewidth = getScreenWidth(this)
+                        val sizeheight = getScreenHeight(this) * 0.5
+                        val sizewidth = getScreenWidth(this)
 
                         val face = resources.getFont(R.font.plusjakartatextregular)
                         val boldface = resources.getFont(R.font.plusjakartatexbold)
@@ -70,14 +71,14 @@ class Profile : AppCompatActivity() {
                         Contact_Name.text = "Fati"
                         Contact_Name.setTypeface(boldface)
                         scrollLayout.addView(Contact_Name)
-                        setMargins(  Contact_Name,(sizewidth * 0.1).toInt(),  ((sizeheight) * 0.2).toInt(), 25, 1 )
+                        setMargins(  Contact_Name,( sizewidth * 0.1).toInt(),  ((j * sizeheight) * 0.2).toInt(), 25, 1 )
 
                         val Contact_Mail = TextView(this)
                         Contact_Mail.textSize = 20f
-                        Contact_Mail.text = myContact.get(0)
+                        Contact_Mail.text = myContact.get(i)
                         Contact_Mail.setTypeface(face)
                         scrollLayout.addView(Contact_Mail)
-                        setMargins(  Contact_Mail, (sizewidth * 0.1).toInt(),  ((sizeheight) * 0.3).toInt(),25, 1 )
+                        setMargins(  Contact_Mail, ( sizewidth * 0.1).toInt(),  (((j * sizeheight) * 0.2) +50 ).toInt(),25, 1 )
                     }
 
                 } else {
