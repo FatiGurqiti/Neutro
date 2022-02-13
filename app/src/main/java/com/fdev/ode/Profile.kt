@@ -45,6 +45,7 @@ class Profile : AppCompatActivity() {
         val db = Firebase.firestore
         val docRef = db.collection("Contacts").document(user?.email.toString())
         var myContact = ArrayList<String?>()
+        var ContactNames = ArrayList<String?>()
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
@@ -54,7 +55,9 @@ class Profile : AppCompatActivity() {
                         "DocumentSnapshot data: ${document.get("contact") as ArrayList<String?>}"
                     )
                     myContact = document.get("contact") as ArrayList<String?>
-                    Log.d(TAG, "myContact: ${myContact}")
+                    ContactNames = document.get("contactName") as ArrayList<String?>
+                    Log.d(TAG,"myContact: ${myContact}")
+                    
                     Log.d(TAG,myContact.size.toString())
 
                     for (i in 0..myContact.size-1) {
@@ -68,7 +71,7 @@ class Profile : AppCompatActivity() {
 
                         val Contact_Name = TextView(this)
                         Contact_Name.textSize = 20f
-                        Contact_Name.text = "Fati"
+                        Contact_Name.text = ContactNames.get(i)
                         Contact_Name.setTypeface(boldface)
                         scrollLayout.addView(Contact_Name)
                         setMargins(  Contact_Name,( sizewidth * 0.1).toInt(),  ((j * sizeheight) * 0.2).toInt(), 25, 1 )

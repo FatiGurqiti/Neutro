@@ -13,14 +13,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.fdev.ode.fragments.FragmentAdapter
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.ArrayList
@@ -225,35 +222,111 @@ class MainActivity : AppCompatActivity() {
     private fun contactAdd(email: String) {
 
         var myContact = ArrayList<String?>()
+        var ContactNames = ArrayList<String?>()
 
         val TAG = "AddNewContact"
         val docRef: DocumentReference = db.collection("Contacts").document(
-            user!!.email.toString() )
+            user!!.email.toString()
+        )
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
 
                     //Get previous Contacts
-                    Log.d( TAG,"DocumentSnapshot data: ${document.get("contact") as ArrayList<String>}" )
+                    Log.d(
+                        TAG,
+                        "DocumentSnapshot data: ${document.get("contact") as ArrayList<String>}"
+                    )
                     myContact = document.get("contact") as ArrayList<String?>
                     Log.d(TAG, "myContact: ${myContact}")
-
                     myContact.add(email)
-                    //  Update contact
-                    db.collection("Contacts").document(user.email.toString())
-                        .update("contact", myContact)
+                    updateContact(myContact, email)
+
 
                 } else {
                     Log.d(TAG, "No such document")
 
                     // There is no previus data. So, simply add the current one
                     myContact.add(email)
+                    addFreshData(myContact, email)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+
+
+    }
+
+    private fun updateContact(myContact: ArrayList<String?>, email: String) {
+
+        //  Update contact
+        db.collection("Contacts").document(user?.email.toString())
+            .update("contact", myContact)
+
+        var ContactNames = ArrayList<String?>()
+        val TAG = "updateContact"
+
+        val docRef = db.collection("Contacts").document(user?.email.toString())
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    //Get the old data
+                    Log.d(TAG, "DocumentSnapshot data: ${document.get("username")}")
+                    ContactNames = document.get("contactName") as ArrayList<String?>
+
+                    db.collection("Users")
+                        .document(email)
+                        .get()
+                        .addOnSuccessListener { document ->
+                            if (document.data != null) {
+                                //Get name of the current contanct
+                                Log.d(
+                                    TAG,
+                                    "DocumentSnapshot data: ${document.getString("username")}"
+                                )
+                                ContactNames.add(document.getString("username"))
+
+                                //Update the data
+                                db.collection("Contacts").document(user?.email.toString())
+                                    .update("contactName", ContactNames)
+                            }
+                        }
+
+
+                } else {
+                    Log.d(TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+
+    }
+
+
+    private fun addFreshData(myContact: ArrayList<String?>, Email: String) {
+
+        var ContactNames = ArrayList<String?>()
+        val TAG = "AddFreshData"
+        val docRef = db.collection("Users").document(Email)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    //Update username
+                    Log.d(TAG, "DocumentSnapshot data: ${document.get("username")}")
+                    ContactNames.add(document.getString("username"))
+
                     val contacthash = hashMapOf(
                         "contact" to myContact,
-                        "user" to user.email.toString()
+                        "contactName" to ContactNames,
+                        "user" to user?.email.toString()
                     )
-                    db.collection("Contacts").document(user.email.toString())
+                    db.collection("Contacts").document(user?.email.toString())
                         .set(contacthash)
+
+                } else {
+                    Log.d(TAG, "No such document")
                 }
             }
             .addOnFailureListener { exception ->
