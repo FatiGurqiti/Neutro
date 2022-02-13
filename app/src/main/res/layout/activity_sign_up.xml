@@ -54,7 +54,7 @@
             android:textSize="28sp" />
 
         <EditText
-            android:id="@+id/editTextTextUsername"
+            android:id="@+id/editTextTextUsernameinSignup"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
@@ -73,7 +73,7 @@
 
 
         <EditText
-            android:id="@+id/editTextTextEmailAddress"
+            android:id="@+id/editTextTextEmailAddressinSignup"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
@@ -90,7 +90,7 @@
             android:textColorHint="#60FFFFFF" />
 
         <EditText
-            android:id="@+id/editTextNumberPassword"
+            android:id="@+id/editTextNumberPasswordinSignup"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
@@ -100,7 +100,7 @@
             android:background="@drawable/inputbg"
             android:fontFamily="@font/plusjakartatextregular"
             android:ems="10"
-            android:maxLength="4"
+            android:maxLength="6"
             android:hint="Pin"
             android:inputType="numberPassword"
             android:paddingLeft="20dp"

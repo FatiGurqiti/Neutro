@@ -66,8 +66,8 @@
         android:fontFamily="@font/plusjakartatextregular"
         android:text="Öde number:"
         android:textAlignment="center"
-        android:textSize="30sp"
-        android:textColor="#70000000"/>
+        android:textColor="#70000000"
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/userOdeNo"
@@ -76,6 +76,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="500dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
         android:fontFamily="@font/plusjakartatexbold"
         android:text="f5534341"
         android:textAlignment="center"
@@ -89,9 +91,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="298dp"
-        android:layout_marginLeft="-113dp"
-        android:layout_marginTop="509dp"
+        android:layout_marginStart="320dp"
+        android:layout_marginTop="463dp"
         android:layout_toRightOf="@id/username"
         android:background="@android:color/transparent"
         android:clickable="true"

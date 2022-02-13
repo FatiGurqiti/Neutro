@@ -4,11 +4,18 @@ import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class LogIn : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -26,14 +33,50 @@ class LogIn : AppCompatActivity() {
             progressBar.visibility = View.INVISIBLE
         }
 
-        LogIn.setOnClickListener{
+        LogIn.setOnClickListener {
             progressBar.visibility = View.VISIBLE
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+
+            val email = findViewById<EditText>(R.id.editTextTextEmailAddressinLogin)
+            val pin = findViewById<EditText>(R.id.editTextNumberPasswordinLogin)
+
+            val Email = email.text.toString()
+            val Pin = pin.text.toString()
+
+            if ( TextUtils.isEmpty(Email)
+                || TextUtils.isEmpty(Pin)
+            ) {
+                //Inputs are empty
+                Toast.makeText(this, "Mind if you fill the inputs?", Toast.LENGTH_SHORT).show()
+            } else {
+                var TAG = "Login"
+
+                auth = Firebase.auth
+
+                auth.signInWithEmailAndPassword(Email, Pin)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success")
+
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                            val user = auth.currentUser
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.exception)
+                            Toast.makeText(
+                                baseContext, "Authentication failed.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                        }
+                    }
+
+
+            }
+
+
             progressBar.visibility = View.INVISIBLE
         }
-
-
-
     }
 }

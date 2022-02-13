@@ -11,6 +11,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.AnyRes
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class Profile : AppCompatActivity() {
@@ -23,10 +26,21 @@ class Profile : AppCompatActivity() {
 
         ono="gotttcha"
 
-        val username = findViewById<TextView>(R.id.username)
-        val usermail = findViewById<TextView>(R.id.userMail)
+        var username = findViewById<TextView>(R.id.username)
+        var usermail = findViewById<TextView>(R.id.userMail)
+        var odeno = findViewById<TextView>(R.id.userOdeNo)
         val logo = findViewById<ImageView>(R.id.logoinProfile)
         val copybtn = findViewById<ImageButton>(R.id.copyBtn)
+
+        val user = Firebase.auth.currentUser
+
+
+        if (user != null) {
+            usermail.text = user.email
+        }
+        if (user != null) {
+            odeno.text=user.uid
+        }
 
 
         logo.setOnClickListener() {

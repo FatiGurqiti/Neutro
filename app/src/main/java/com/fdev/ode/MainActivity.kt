@@ -4,6 +4,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -12,14 +13,25 @@ import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.fdev.ode.fragments.FragmentAdapter
-import com.google.android.material.tabs.TabItem
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import java.util.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var auth: FirebaseAuth
 
+
+private val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,8 +61,6 @@ class MainActivity : AppCompatActivity() {
         val viewpager2 = findViewById<ViewPager2>(R.id.viewPager2)
         val fragmentadapter: FragmentAdapter
 
-        val tabitemdebt = findViewById<TabItem>(R.id.debtsTAB)
-        val tabitemtoCollect = findViewById<TabItem>(R.id.toCollectTAB)
 
         var fm:FragmentManager = supportFragmentManager
         fragmentadapter = FragmentAdapter(fm, lifecycle)
@@ -151,9 +161,11 @@ class MainActivity : AppCompatActivity() {
                 //Input is null
                 Toast.makeText(this, "Something is missing", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "This dude is added to your contact", Toast.LENGTH_SHORT)
-                    .show()
+
                 progressBar.visibility = View.VISIBLE
+                //Add this to your Contact
+               // contactCheck(odeNO)
+                contactAdd(odeNO)
                 blackfilter.visibility = View.INVISIBLE
                 contactCard.visibility = View.INVISIBLE
                 odenumber.setText("")
@@ -179,8 +191,79 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun contactCheck(Email:String) {
+
+        val TAG = "AddContact"
+        val docRef = db.collection("Users").document(Email)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                    //This user exists
+                    contactAdd(Email)
+
+                } else {
+                    Log.d(TAG, "No such document")
+                    Toast.makeText(this, "No Such user is found", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+                Toast.makeText(this, exception.toString(), Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun contactAdd(email: String) {
+        val user = Firebase.auth.currentUser
+        var myContact = ArrayList<String>()
+
+        //Get previous Contacts
+        val TAG = "AddNewContact"
+        val docRef: DocumentReference = db.collection("Contacts").document(
+            user!!.email.toString()
+        )
+        docRef.get().addOnCompleteListener(OnCompleteListener { task: Task<DocumentSnapshot?> ->
+            if (task.isSuccessful) {
+                val document = task.result
+                if (document!!.exists()) {
+                    //There are old data in contact so add new data to it
+                    Log.d(TAG, "DocumentSnapshot data: " + document.data)
+                    myContact = document.get("contacts") as ArrayList<String>
+                    myContact.add(email)
+                    val contacthash = hashMapOf(
+                        "contact" to myContact,
+                        "user" to user.email.toString()
+                    )
+
+                    db.collection("Contacts").document(user.email.toString())
+                        .set(contacthash);
+
+                    Log.d(TAG, "size: " + myContact.size)
+                } else {
+                    Log.d(TAG, "No such document")
+                    myContact.add(email)
+                    val contacthash = hashMapOf(
+                        "contact" to myContact,
+                        "user" to user.email.toString()
+                    )
+
+                    db.collection("Contacts").document(user.email.toString())
+                        .set(contacthash);
+
+                }
+            } else {
+                Log.d(TAG, "get failed with ", task.exception)
+            }
+        })
+
+
+    }
+
     override fun onBackPressed() {
         //Do nothing when back button is clicked
     }
+
+
 }
+
 

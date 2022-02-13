@@ -278,8 +278,8 @@
             android:layout_marginRight="30dp"
             android:background="@drawable/inputbg"
             android:ems="10"
-            android:hint="Öde number"
-            android:inputType="text"
+            android:hint="Contact E-mail adress"
+            android:inputType="textEmailAddress"
             android:paddingLeft="20dp"
             android:textColor="@color/white"
             android:textColorHint="#60FFFFFF" />
