@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
 
-private val db = Firebase.firestore
+    private val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -62,7 +62,7 @@ private val db = Firebase.firestore
         val fragmentadapter: FragmentAdapter
 
 
-        var fm:FragmentManager = supportFragmentManager
+        var fm: FragmentManager = supportFragmentManager
         fragmentadapter = FragmentAdapter(fm, lifecycle)
         viewpager2.adapter = fragmentadapter
 
@@ -164,7 +164,7 @@ private val db = Firebase.firestore
 
                 progressBar.visibility = View.VISIBLE
                 //Add this to your Contact
-               // contactCheck(odeNO)
+                // contactCheck(odeNO)
                 contactAdd(odeNO)
                 blackfilter.visibility = View.INVISIBLE
                 contactCard.visibility = View.INVISIBLE
@@ -191,7 +191,7 @@ private val db = Firebase.firestore
         }
     }
 
-    private fun contactCheck(Email:String) {
+    private fun contactCheck(Email: String) {
 
         val TAG = "AddContact"
         val docRef = db.collection("Users").document(Email)
@@ -215,46 +215,43 @@ private val db = Firebase.firestore
 
     private fun contactAdd(email: String) {
         val user = Firebase.auth.currentUser
-        var myContact = ArrayList<String>()
+        var myContact = ArrayList<String?>()
+
 
         //Get previous Contacts
         val TAG = "AddNewContact"
         val docRef: DocumentReference = db.collection("Contacts").document(
-            user!!.email.toString()
-        )
-        docRef.get().addOnCompleteListener(OnCompleteListener { task: Task<DocumentSnapshot?> ->
-            if (task.isSuccessful) {
-                val document = task.result
-                if (document!!.exists()) {
-                    //There are old data in contact so add new data to it
-                    Log.d(TAG, "DocumentSnapshot data: " + document.data)
-                    myContact = document.get("contacts") as ArrayList<String>
-                    myContact.add(email)
-                    val contacthash = hashMapOf(
-                        "contact" to myContact,
-                        "user" to user.email.toString()
-                    )
+            user!!.email.toString())
 
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+
+                    Log.d(TAG, "DocumentSnapshot data: ${document.get("contact") as ArrayList<String>}")
+                    myContact = document.get("contact") as ArrayList<String?>
+                    Log.d(TAG, "myContact: ${myContact}")
+
+                    //  Update data
                     db.collection("Contacts").document(user.email.toString())
-                        .set(contacthash);
+                        .update("contact", myContact)
 
-                    Log.d(TAG, "size: " + myContact.size)
                 } else {
                     Log.d(TAG, "No such document")
+
+                    // There is no previus data. So, simply add the current one
                     myContact.add(email)
                     val contacthash = hashMapOf(
                         "contact" to myContact,
                         "user" to user.email.toString()
                     )
-
                     db.collection("Contacts").document(user.email.toString())
-                        .set(contacthash);
-
+                        .set(contacthash)
                 }
-            } else {
-                Log.d(TAG, "get failed with ", task.exception)
             }
-        })
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+
 
 
     }
