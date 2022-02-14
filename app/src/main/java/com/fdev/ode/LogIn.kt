@@ -22,9 +22,15 @@ class LogIn : AppCompatActivity() {
 
         val progressBar = findViewById<ProgressBar>(R.id.progressBarInLogIn)
         val SignUpbtn = findViewById<TextView>(R.id.SignUpTxt)
+        val forgotpassword = findViewById<TextView>(R.id.forgotPassword)
         val LogIn = findViewById<ImageButton>(R.id.logoinBtn)
 
 
+        forgotpassword.setOnClickListener()
+        {
+            val intent = Intent(this, ForgotPassword::class.java)
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+        }
 
         SignUpbtn.setOnClickListener{
             progressBar.visibility = View.VISIBLE
@@ -44,6 +50,7 @@ class LogIn : AppCompatActivity() {
 
             if ( TextUtils.isEmpty(Email)
                 || TextUtils.isEmpty(Pin)
+                || Email.length < 6
             ) {
                 //Inputs are empty
                 Toast.makeText(this, "Mind if you fill the inputs?", Toast.LENGTH_SHORT).show()

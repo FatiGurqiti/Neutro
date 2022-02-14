@@ -12,6 +12,7 @@
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/drawable/inputbg.xml" value="0.1505" />
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/drawable/profilebg.xml" value="0.173" />
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/drawable/tab_background.xml" value="0.173" />
+        <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/layout/activity_forgot_password.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/layout/activity_main.xml" value="0.176" />
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/layout/activity_profile.xml" value="0.176" />
@@ -20,6 +21,7 @@
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/layout/fragment_debts_.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/layout/fragment_to_collect_.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.124" />
+        <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>

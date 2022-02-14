@@ -1,5 +1,6 @@
 package com.fdev.ode
 
+import android.app.ActivityOptions
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -22,8 +23,9 @@ class Profile : AppCompatActivity() {
 
     private var BlackFilter: ImageView? = null
     private var AreYouSureCard: CardView? = null
-    private var Deletebutton: Button? =null
-    private var DontDeletebutton: Button? =null
+    private var Deletebutton: Button? = null
+    private var DontDeletebutton: Button? = null
+    var scrollLayout: RelativeLayout? = null
     private val db = Firebase.firestore
     private val user = Firebase.auth.currentUser
 
@@ -35,29 +37,38 @@ class Profile : AppCompatActivity() {
         val username = findViewById<TextView>(R.id.username)
         val usermail = findViewById<TextView>(R.id.userMail)
         val logo = findViewById<ImageView>(R.id.logoinProfile)
-        val scrollLayout = findViewById<RelativeLayout>(R.id.Scroll_Relative)
-        BlackFilter    =findViewById(R.id.blackfilterinProfile)
-        AreYouSureCard=findViewById(R.id.deleteContactCard)
-        Deletebutton=findViewById(R.id.deleteContactBtn)
-        DontDeletebutton=findViewById(R.id.notDeleteContactBtn)
+        scrollLayout = findViewById(R.id.Scroll_Relative)
+        BlackFilter = findViewById(R.id.blackfilterinProfile)
+        AreYouSureCard = findViewById(R.id.deleteContactCard)
+        Deletebutton = findViewById(R.id.deleteContactBtn)
+        DontDeletebutton = findViewById(R.id.notDeleteContactBtn)
 
 
-
+        LoadContacts()
 
         if (user != null) {
             usermail.text = user.email
         }
 
         //Set Username
-
         db.collection("Users").document(user?.email.toString()).get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    username.setText( document.getString("username"))
+                    username.setText(document.getString("username"))
                 }
             }
 
+        //Copy mail adress
+        logo.setOnClickListener() {
+            Toast.makeText(this, "Cleveeer", Toast.LENGTH_SHORT).show()
+            val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = ClipData.newPlainText("text", user?.email.toString())
+            clipboardManager.setPrimaryClip(clipData)
+        }
 
+    }
+
+    private fun LoadContacts() {
         //Load Contacts
         val TAG = "ViewContact"
         val docRef = db.collection("Contacts").document(user?.email.toString())
@@ -89,23 +100,42 @@ class Profile : AppCompatActivity() {
                         Contact_Name.textSize = 20f
                         Contact_Name.text = ContactNames.get(i)
                         Contact_Name.setTypeface(boldface)
-                        scrollLayout.addView(Contact_Name)
-                        setMargins( Contact_Name,  (sizewidth * 0.1).toInt(), ((j * sizeheight) * 0.2).toInt(), 25, 1)
+                        scrollLayout?.addView(Contact_Name)
+                        setMargins(
+                            Contact_Name,
+                            (sizewidth * 0.1).toInt(),
+                            ((j * sizeheight) * 0.2).toInt(),
+                            25,
+                            1
+                        )
 
                         val Contact_Mail = TextView(this)
                         Contact_Mail.textSize = 20f
                         Contact_Mail.text = myContact.get(i)
                         Contact_Mail.setTypeface(face)
-                        scrollLayout.addView(Contact_Mail)
-                        setMargins( Contact_Mail, (sizewidth * 0.1).toInt(), (((j * sizeheight) * 0.2)+(( sizeheight) * 0.08)).toInt(), 25, 1)
+                        scrollLayout?.addView(Contact_Mail)
+                        setMargins(
+                            Contact_Mail,
+                            (sizewidth * 0.1).toInt(),
+                            (((j * sizeheight) * 0.2) + ((sizeheight) * 0.08)).toInt(),
+                            25,
+                            1
+                        )
 
                         val Delete = ImageButton(this)
                         Delete.setImageResource(R.drawable.delete);
                         Delete.setBackgroundColor(Color.TRANSPARENT)
-                        scrollLayout.addView(Delete)
-                        setMargins( Delete, (sizewidth * 0.8).toInt(), (((j * sizeheight) * 0.2)).toInt(), 0, 0)
+                        scrollLayout?.addView(Delete)
+                        setMargins(
+                            Delete,
+                            (sizewidth * 0.8).toInt(),
+                            (((j * sizeheight) * 0.2)).toInt(),
+                            0,
+                            0
+                        )
 
 
+                        // Confromation Buttons(Yes,No) must be inside of Delete(CardView) in order to get the correct index
                         Delete.setOnClickListener()
                         {
                             BlackFilter?.visibility = View.VISIBLE
@@ -116,19 +146,12 @@ class Profile : AppCompatActivity() {
                             {
                                 BlackFilter?.visibility = View.INVISIBLE
                                 AreYouSureCard?.visibility = View.INVISIBLE
-
                             }
-
                             //Delete Contact
-                            Deletebutton?.setOnClickListener(){
-                                deleteContact(myContact,ContactNames,i)
+                            Deletebutton?.setOnClickListener() {
+                                deleteContact(myContact, ContactNames, i)
                             }
                         }
-
-
-
-
-
                     }
 
                 } else {
@@ -139,19 +162,13 @@ class Profile : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.d(TAG, "get failed with ", exception)
             }
-
-
-
-        logo.setOnClickListener() {
-            Toast.makeText(this, "Cleveeer", Toast.LENGTH_SHORT).show()
-            val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clipData = ClipData.newPlainText("text", user?.email.toString())
-            clipboardManager.setPrimaryClip(clipData)
-        }
-
     }
 
-    private fun deleteContact(myContact: ArrayList<String?>, ContactNames: ArrayList<String?>,i: Int) {
+    private fun deleteContact(
+        myContact: ArrayList<String?>,
+        ContactNames: ArrayList<String?>,
+        i: Int
+    ) {
 
         myContact.removeAt(i) //delete mail adress
         ContactNames.removeAt(i) // delete name
@@ -164,11 +181,8 @@ class Profile : AppCompatActivity() {
         db.collection("Contacts").document(user?.email.toString())
             .update("contactName", ContactNames)
 
-        //Refresh page
-        finish();
-        overridePendingTransition(0, 0)
-        startActivity(getIntent())
-        overridePendingTransition(0, 0)
+        finish()
+        startActivity(getIntent(), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
 
     }
 

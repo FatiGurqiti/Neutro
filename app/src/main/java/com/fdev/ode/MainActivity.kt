@@ -185,10 +185,8 @@ class MainActivity : AppCompatActivity() {
                     progressBar?.visibility = View.INVISIBLE
 
                     //Refresh page
-                    finish();
-                    overridePendingTransition(0, 0)
-                    startActivity(getIntent())
-                    overridePendingTransition(0, 0)
+                    finish()
+                    startActivity(getIntent(), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
                 } else
                     Toast.makeText(
                         this, "I'm sorry. You can't add yourself",
@@ -245,6 +243,12 @@ class MainActivity : AppCompatActivity() {
                         val Contact_Name = TextView(this)
                         Contact_Name.textSize = 20f
                         Contact_Name.text = ContactNames.get(i)
+                        Contact_Name.setLayoutParams(
+                            RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.MATCH_PARENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT
+                            )
+                        )
                         Contact_Name.setTypeface(boldface)
                         Contact_Name.setTranslationZ(20F)
                         scrollLayout.addView(Contact_Name)
@@ -252,13 +256,13 @@ class MainActivity : AppCompatActivity() {
                             Contact_Name,
                             (sizewidth * 0.1).toInt(),
                             ((j * sizeheight) * 0.2).toInt(),
-                            25,
-                            1
+                            0,
+                            0
                         )
 
                         Contact_Name.setOnClickListener()
                         {
-                            setContactName(ContactNames.get(i)!!)
+                            setContactName(myContact.get(i)!!)
 
                         }
 
@@ -267,17 +271,23 @@ class MainActivity : AppCompatActivity() {
                         Contact_Mail.text = myContact.get(i)
                         Contact_Mail.setTypeface(face)
                         Contact_Mail.setTranslationZ(20F)
+                        Contact_Mail.setLayoutParams(
+                            RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.MATCH_PARENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT
+                            )
+                        )
                         scrollLayout.addView(Contact_Mail)
                         setMargins(
                             Contact_Mail,
                             (sizewidth * 0.1).toInt(),
-                            (((j * sizeheight) * 0.2) + 50).toInt(),
-                            25,
-                            1
+                            (((j * sizeheight) * 0.2)+(( sizeheight) * 0.08)).toInt(),
+                            0,
+                            0
                         )
 
                         Contact_Mail.setOnClickListener(){
-                                setContactName(ContactNames.get(i)!!)
+                                setContactName(myContact.get(i)!!)
                         }
                     }
 
@@ -336,7 +346,6 @@ class MainActivity : AppCompatActivity() {
                     myContact.add(email)
                     updateContact(myContact, email)
 
-
                 } else {
                     Log.d(TAG, "No such document")
 
@@ -348,14 +357,9 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.d(TAG, "get failed with ", exception)
             }
-
-
     }
 
     private fun updateContact(myContact: ArrayList<String?>, email: String) {
-
-
-
         //  Update contact
         preventDublicatedData(myContact)
         db.collection("Contacts").document(user?.email.toString())
@@ -388,6 +392,9 @@ class MainActivity : AppCompatActivity() {
                                 //Update the data
                                 db.collection("Contacts").document(user?.email.toString())
                                     .update("contactName", ContactNames)
+
+                                finish()
+                                startActivity(getIntent(), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
                             }
                         }
 

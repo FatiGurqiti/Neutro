@@ -96,6 +96,18 @@
             android:textColor="@color/white"
             android:textColorHint="#60FFFFFF" />
 
+
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password?"
+            android:layout_gravity="bottom"
+            android:textSize="18sp"
+            android:layout_marginBottom="35dp"
+            android:layout_marginLeft="40dp"
+            />
+
         <ImageButton
             android:id="@+id/logoinBtn"
             android:layout_width="wrap_content"
@@ -150,10 +162,10 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="100dp"
-        android:lineSpacingExtra="10dp"
+        android:layout_marginTop="120dp"
         android:fontFamily="@font/plusjakartatextregular"
-        android:text="Would you concider signing in? \nNo pressure of course"
+        android:lineSpacingExtra="10dp"
+        android:text="Would you concider signing in?"
         android:textColor="@color/white"
         android:textSize="20sp" />
 </RelativeLayout>
