@@ -142,7 +142,6 @@ class MainActivity : AppCompatActivity() {
         dropDown.setOnClickListener() {
             Secondblackfilter?.visibility = View.VISIBLE
             ContactlistCard?.visibility = View.VISIBLE
-
             amountText?.isEnabled = false
             labelText?.isEnabled = false
         }

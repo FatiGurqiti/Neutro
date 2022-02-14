@@ -64,13 +64,87 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="70dp"
         android:layout_marginTop="100dp"
         android:fontFamily="@font/plusjakartatexbold"
-        android:text="fatigurciti@gmail.com"
         android:textAlignment="textStart"
-        android:layout_marginLeft="70dp"
         android:textColor="@color/white"
         android:textSize="30sp" />
+
+    <ImageView
+        android:id="@+id/blackfilterinProfile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="12dp"
+        android:src="@drawable/blackfilter"
+        android:translationZ="15dp"
+        android:visibility="invisible" />
+
+    <!-- Delete Contact -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/deleteContactCard"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:translationZ="25dp"
+        android:visibility="invisible"
+        android:elevation="25dp"
+        android:background="@color/white"
+        android:layout_marginTop="220dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:cardCornerRadius="18dp"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Delete Contact"
+            android:textSize="22sp"
+            android:layout_marginTop="15dp"
+            android:textColor="#80000000"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Are you sure you want yo delete this contact?"
+            android:textSize="24sp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:fontFamily="@font/plusjakartatextregular"
+            android:layout_marginTop="85dp"
+            android:textColor="@color/black"
+            />
+
+        <Button
+            android:id="@+id/notDeleteContactBtn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="-10dp"
+            android:layout_marginLeft="190dp"
+            android:background="@android:color/transparent"
+            android:text="Nope"
+            android:fontFamily="@font/plusjakartatextregular"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_gravity="bottom"
+            />
+        <Button
+            android:id="@+id/deleteContactBtn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="-10dp"
+            android:layout_marginRight="180dp"
+            android:backgroundTint="#E40031"
+            android:text="Yes"
+            android:fontFamily="@font/plusjakartatextregular"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_gravity="bottom"
+            />
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
