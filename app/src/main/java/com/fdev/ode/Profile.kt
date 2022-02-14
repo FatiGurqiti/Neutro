@@ -97,7 +97,7 @@ class Profile : AppCompatActivity() {
                         Contact_Mail.text = myContact.get(i)
                         Contact_Mail.setTypeface(face)
                         scrollLayout.addView(Contact_Mail)
-                        setMargins( Contact_Mail, (sizewidth * 0.1).toInt(), (((j * sizeheight) * 0.2) + 100).toInt(), 25, 1)
+                        setMargins( Contact_Mail, (sizewidth * 0.1).toInt(), (((j * sizeheight) * 0.2)+(( sizeheight) * 0.08)).toInt(), 25, 1)
 
                         val Delete = ImageButton(this)
                         Delete.setImageResource(R.drawable.delete);

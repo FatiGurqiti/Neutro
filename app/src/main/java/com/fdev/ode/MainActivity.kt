@@ -183,6 +183,12 @@ class MainActivity : AppCompatActivity() {
                     odenumber.setText("")
                     debtbtn.isEnabled = true;
                     progressBar?.visibility = View.INVISIBLE
+
+                    //Refresh page
+                    finish();
+                    overridePendingTransition(0, 0)
+                    startActivity(getIntent())
+                    overridePendingTransition(0, 0)
                 } else
                     Toast.makeText(
                         this, "I'm sorry. You can't add yourself",
@@ -327,7 +333,6 @@ class MainActivity : AppCompatActivity() {
                         "DocumentSnapshot data: ${document.get("contact") as ArrayList<String>}"
                     )
                     myContact = document.get("contact") as ArrayList<String?>
-                    Log.d(TAG, "myContact: ${myContact}")
                     myContact.add(email)
                     updateContact(myContact, email)
 
@@ -349,7 +354,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateContact(myContact: ArrayList<String?>, email: String) {
 
+
+
         //  Update contact
+        preventDublicatedData(myContact)
         db.collection("Contacts").document(user?.email.toString())
             .update("contact", myContact)
 
@@ -375,6 +383,7 @@ class MainActivity : AppCompatActivity() {
                                     "DocumentSnapshot data: ${document.getString("username")}"
                                 )
                                 ContactNames.add(document.getString("username"))
+                                preventDublicatedData(ContactNames)
 
                                 //Update the data
                                 db.collection("Contacts").document(user?.email.toString())
@@ -393,6 +402,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun preventDublicatedData(List: ArrayList<String?>): ArrayList<String?> {
+        for (i in 0..List.size) {
+            for (j in i + 1..List.size) {
+                if (j < List.size) {
+                    if (List.get(i) == List.get(j))
+                        List.removeAt(j)
+                }
+            }
+        }
+        return List
+    }
 
     private fun addFreshData(myContact: ArrayList<String?>, Email: String) {
 
