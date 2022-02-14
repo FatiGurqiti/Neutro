@@ -76,8 +76,6 @@ class MainActivity : AppCompatActivity() {
         fragmentadapter = FragmentAdapter(fm, lifecycle)
         viewpager2.adapter = fragmentadapter
 
-
-
         loadContacts()
 
         tab.addOnTabSelectedListener(object : OnTabSelectedListener {

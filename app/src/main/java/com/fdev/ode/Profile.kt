@@ -78,8 +78,7 @@ class Profile : AppCompatActivity() {
                     Log.d(TAG, myContact.size.toString())
 
                     for (i in 0..myContact.size - 1) {
-                        var j = i + 1;
-
+                        var j = i + 1
                         val sizeheight = getScreenHeight(this) * 0.5
                         val sizewidth = getScreenWidth(this)
 
@@ -111,17 +110,24 @@ class Profile : AppCompatActivity() {
                         {
                             BlackFilter?.visibility = View.VISIBLE
                             AreYouSureCard?.visibility = View.VISIBLE
+
+                            //Don't Delete
+                            DontDeletebutton?.setOnClickListener()
+                            {
+                                BlackFilter?.visibility = View.INVISIBLE
+                                AreYouSureCard?.visibility = View.INVISIBLE
+
+                            }
+
+                            //Delete Contact
+                            Deletebutton?.setOnClickListener(){
+                                deleteContact(myContact,ContactNames,i)
+                            }
                         }
 
-                        DontDeletebutton?.setOnClickListener()
-                        {
-                            BlackFilter?.visibility = View.INVISIBLE
-                            AreYouSureCard?.visibility = View.INVISIBLE
-                        }
 
-                        Deletebutton?.setOnClickListener(){
-                            deleteContact(myContact,myContact.get(i).toString(),ContactNames,ContactNames.get(i).toString())
-                        }
+
+
 
                     }
 
@@ -145,10 +151,10 @@ class Profile : AppCompatActivity() {
 
     }
 
-    private fun deleteContact(myContact: ArrayList<String?>,contactMailToDelete: String, contactNames: ArrayList<String?>,contactNameToDelete: String) {
+    private fun deleteContact(myContact: ArrayList<String?>, ContactNames: ArrayList<String?>,i: Int) {
 
-        myContact.remove(contactMailToDelete) //delete mail adress
-        contactNames.remove(contactNameToDelete) // delete name
+        myContact.removeAt(i) //delete mail adress
+        ContactNames.removeAt(i) // delete name
 
 
         //Update the data with new ArrayList
@@ -156,7 +162,7 @@ class Profile : AppCompatActivity() {
             .update("contact", myContact)
 
         db.collection("Contacts").document(user?.email.toString())
-            .update("contactName", contactNames)
+            .update("contactName", ContactNames)
 
         //Refresh page
         finish();
