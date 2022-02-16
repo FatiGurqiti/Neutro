@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FBFBFB"
+    android:background="#fcfcfc"
     tools:context=".MainActivity">
 
 
@@ -204,17 +204,16 @@
         android:id="@+id/tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="245dp"
+        android:background="@drawable/tab_background"
         android:elevation="2dp"
         android:translationZ="2dp"
-        android:background="@drawable/tab_background"
-        android:layout_marginTop="295dp"
-        app:tabSelectedTextColor="@color/black"
+        app:tabGravity="fill"
         app:tabIndicatorColor="@color/white"
         app:tabIndicatorGravity="stretch"
-        app:tabGravity="fill"
         app:tabMode="fixed"
-        app:tabTextColor="@color/white"
-        >
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextColor="@color/white">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/debtsTAB"
@@ -341,7 +340,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="300dp"
         android:layout_marginTop="-12dp"
         app:cardBackgroundColor="#407BFF"
         app:cardCornerRadius="18dp">
@@ -350,7 +349,7 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="40dp"
             android:fontFamily="@font/plusjakartatextregular"
             android:text="Total Debt"
             android:textAlignment="center"
@@ -361,7 +360,7 @@
             android:id="@+id/debtText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="70dp"
             android:fontFamily="@font/plusjakartatextregular"
             android:text="45"
             android:textAlignment="center"
@@ -376,7 +375,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="64dp"
-            android:layout_marginTop="160dp"
+            android:layout_marginTop="140dp"
             android:background="@android:color/transparent"
             android:clickable="true"
             android:elevation="1dp"
@@ -391,7 +390,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="64dp"
-            android:layout_marginTop="230dp"
+            android:layout_marginTop="210dp"
             android:fontFamily="@font/plusjakartatextregular"
             android:text="Add Debt"
             android:textColor="@color/white"
@@ -404,7 +403,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_gravity="end"
-            android:layout_marginTop="160dp"
+            android:layout_marginTop="140dp"
             android:layout_marginEnd="64dp"
             android:background="@android:color/transparent"
             android:clickable="true"
@@ -419,7 +418,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_gravity="end"
-            android:layout_marginTop="230dp"
+            android:layout_marginTop="210dp"
             android:layout_marginEnd="45dp"
             android:fontFamily="@font/plusjakartatextregular"
             android:text="Add Contact"

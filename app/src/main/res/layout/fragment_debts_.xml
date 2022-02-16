@@ -3,13 +3,89 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fcfcfc"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.Debts_Fragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="Debts fragment"
-        android:gravity="center"
-        />
+
+    <ScrollView
+        android:id="@+id/scrollViewofContactList"
+        android:layout_width="match_parent"
+        android:layout_height="614dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="60dp">
+
+
+        <RelativeLayout
+            android:id="@+id/Scroll_RelativeofContactList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                app:cardCornerRadius="18dp"
+                android:outlineAmbientShadowColor="@color/black"
+                android:outlineSpotShadowColor="@color/black"
+                android:elevation="10dp"
+                android:translationZ="10dp"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="37dp"
+                    android:src="@drawable/down"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/plusjakartatexbold"
+                    android:text="Fati Gurqiti"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dude, you really gotta pay this gas money"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/plusjakartatexbold"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:layout_marginTop="45dp"
+                    />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="37dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="30dp"
+                    android:fontFamily="@font/plusjakartatexbold"
+                    android:text="45"
+                    android:textAlignment="textEnd"
+                    android:textColor="#ff0000"
+                    android:textSize="30sp" />
+
+
+
+
+
+
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+    </ScrollView>
+
 </androidx.core.widget.NestedScrollView>

@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.fdev.ode.fragments.FragmentAdapter
+import com.fdev.ode.util.DebtController
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.firebase.auth.ktx.auth
@@ -109,6 +110,11 @@ class MainActivity : AppCompatActivity() {
                 progressBar?.visibility = View.VISIBLE
                 blackfilter.visibility = View.INVISIBLE
                 debtCard.visibility = View.INVISIBLE
+
+                var debtController = DebtController()
+                debtController.AddDebt(ammount.toLong(),contact,"debt") //add debt to contact
+                debtController.AddDebt(ammount.toLong(),user?.email.toString(),"to-collect") // add to collect to current user
+
                 Contacttext?.setText("")
                 amountText?.setText("")
                 labelText?.setText("")

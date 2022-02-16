@@ -47,7 +47,7 @@ class SignUp : AppCompatActivity() {
                 Toast.makeText(this, "Mind if you fill the inputs?", Toast.LENGTH_SHORT).show()
             } else {
                 //Inputs are filled
-                    if(Email.length<6)
+                    if(Pin.length<6)
                     {
                         Toast.makeText(this, "Pin should be at least 6 chacters", Toast.LENGTH_SHORT).show()
                     }
@@ -85,7 +85,6 @@ class SignUp : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
-                    val user = auth.currentUser
                     canclick=true
                 } else {
                     // If sign in fails, display a message to the user.
