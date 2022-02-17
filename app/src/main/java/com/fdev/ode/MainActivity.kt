@@ -86,6 +86,7 @@ class MainActivity : AppCompatActivity() {
         loadContacts()
 
 
+        //On Fragment change
         tab.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewpager2.setCurrentItem(tab.position)
@@ -118,10 +119,10 @@ class MainActivity : AppCompatActivity() {
 
         AddDebtButton.setOnClickListener() {
             var contact = Contacttext?.text.toString()
-            var ammount = amountText?.text.toString()
+            var amount = amountText?.text.toString()
             var label = labelText?.text.toString()
 
-            if (TextUtils.isEmpty(contact) || TextUtils.isEmpty(ammount) || TextUtils.isEmpty(label)) {
+            if (TextUtils.isEmpty(contact) || TextUtils.isEmpty(amount) || TextUtils.isEmpty(label)) {
                 //Input is null
                 Toast.makeText(this, "Something is missing", Toast.LENGTH_SHORT).show()
             } else {
@@ -132,12 +133,14 @@ class MainActivity : AppCompatActivity() {
                 debtCard.visibility = View.INVISIBLE
 
 
-                debtController.AddDebt(ammount.toLong(), contact, "debt") //add debt to contact
-                debtController.AddDebt(
-                    ammount.toLong(),
-                    user?.email.toString(),
-                    "to-collect"
-                ) // add to collect to current user
+                //Update Total Debt
+                debtController.AddTotalDebt(amount.toLong(), contact, "debt") //add debt to contact
+                debtController.AddTotalDebt(amount.toLong(), user?.email.toString(), "to-collect" ) // add to collect to current user
+
+                //Update Debt Table
+                debtController.AddDebtAndReceivement(contact,label,amount.toLong(),"Debts") //Add debt
+                debtController.AddDebtAndReceivement(contact,label,amount.toLong(),"Recivements") //Add recivement
+
 
                 Contacttext?.setText("")
                 amountText?.setText("")

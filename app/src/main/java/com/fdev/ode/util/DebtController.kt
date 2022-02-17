@@ -9,9 +9,10 @@ class DebtController {
 
     private val db = Firebase.firestore
 
-    fun AddDebt(amount: Long,to: String,update: String){
+    //Adds Total debt
+    fun AddTotalDebt(amount: Long,to: String,update: String){
         var newDebt:Long //Works both for debt and to-collect depending on the update String
-        val TAG = "AddNewDebt"
+        val TAG = "AddTotalDebt"
         val docRef = db.collection("Users").document(to)
         docRef.get()
             .addOnSuccessListener { document ->
@@ -35,24 +36,80 @@ class DebtController {
             }
     }
 
-    fun GetDebtOrToCollect(type: String): String {
-        val TAG = "GetDebtOrToCollect"
-        val user = Firebase.auth.currentUser
-        var value = "0"
-        val docRef = db.collection("Users").document(user!!.email.toString())
+    fun AddDebtAndReceivement(to: String, label: String,amount: Long,type: String) {
+        //variable "type" stands for either debt or Receivement
+        //This allows to do two works in one function
+
+        var toArray = ArrayList<String?>()
+        var labelArray = ArrayList<String?>()
+        var amountArray = ArrayList<Long?>()
+
+        val ToWhom:String
+        val user: String
+        if(type == "Recivements")
+        {
+             user = Firebase.auth.currentUser?.email.toString()
+             ToWhom = to
+        }
+        else
+        {
+            ToWhom = Firebase.auth.currentUser?.email.toString()
+            user = to
+        }
+
+
+        val TAG = "AddDebt"
+        val docRef = db.collection(type).document(user)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    //Get Old data
-                    Log.d(TAG, "DocumentSnapshot data: ${document.get(type)}")
-                    value = document.getLong(type).toString()
+                    //get Old data
+                    toArray = document.get("to") as ArrayList<String?>
+                    labelArray  = document.get("label") as ArrayList<String?>
+                    amountArray = document.get("amount") as ArrayList<Long?>
+
+                    //add data to it
+                    toArray.add(ToWhom)
+                    labelArray.add(label)
+                    amountArray.add(amount)
+
+                    //update the data
+                    db.collection(type)
+                        .document(user)
+                        .update("to",toArray)
+
+                    db.collection(type)
+                        .document(user)
+                        .update("label",labelArray)
+
+                    db.collection(type)
+                        .document(user)
+                        .update("amount",amountArray)
+
+                }
+                else
+                {
+                    Log.d(TAG, "No Such document")
+
+                    toArray.add(ToWhom)
+                    labelArray.add(label)
+                    amountArray.add(amount)
+
+                    var debthash = hashMapOf(
+                        "user" to user,
+                        "to" to toArray,
+                        "amount" to amountArray,
+                        "label" to labelArray
+                    )
+
+                    db.collection(type)
+                        .document(user)
+                        .set(debthash)
                 }
             }
             .addOnFailureListener { exception ->
                 Log.d(TAG, "get failed with ", exception)
-                value = "0"
             }
-        return value
     }
 
 
