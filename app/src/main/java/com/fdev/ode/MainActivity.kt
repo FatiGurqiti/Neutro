@@ -30,9 +30,9 @@ class MainActivity : AppCompatActivity() {
     private val user = Firebase.auth.currentUser
     private val db = Firebase.firestore
     private val debtController = DebtController()
-    private var DebtOrRecive = true // true stands for Debt
 
-    private var Contacttext: EditText? = null
+    private var Contactname: EditText? = null
+    private var Contactmail: EditText? = null
     private var progressBar: ProgressBar? = null
     private var Secondblackfilter: ImageView? = null
     private var ContactlistCard: CardView? = null
@@ -65,7 +65,8 @@ class MainActivity : AppCompatActivity() {
 
 
         ContactlistCard = findViewById(R.id.ContactListCard)
-        Contacttext = findViewById(R.id.contactText)
+        Contactname = findViewById(R.id.contactName)
+        Contactmail = findViewById(R.id.contactMail)
         amountText = findViewById(R.id.AmountText)
         labelText = findViewById(R.id.LabelText)
         TotalText = findViewById(R.id.totalText)
@@ -82,7 +83,9 @@ class MainActivity : AppCompatActivity() {
         fragmentadapter = FragmentAdapter(fm, lifecycle)
         viewpager2.adapter = fragmentadapter
 
-        GetDebtOrToCollect("debt") //load debt amount by default
+
+        GetDebtOrRecivement("debt") //load debt amount by default
+        loadDebsOrRecivements("Debts")
         loadContacts()
 
 
@@ -96,12 +99,12 @@ class MainActivity : AppCompatActivity() {
                 if(tab.position == 0)
                 {
                     Log.d("Fragment", "this is debt")
-                    GetDebtOrToCollect("debt")
+                    GetDebtOrRecivement("debt")
                 }
                 else
                 {
                     Log.d("Fragment","this is to collect")
-                    GetDebtOrToCollect("to-collect")
+                    GetDebtOrRecivement("to-collect")
                 }
             }
 
@@ -118,7 +121,8 @@ class MainActivity : AppCompatActivity() {
         })
 
         AddDebtButton.setOnClickListener() {
-            var contact = Contacttext?.text.toString()
+            var contact = Contactname?.text.toString()
+            var contactmail = Contactmail?.text.toString()
             var amount = amountText?.text.toString()
             var label = labelText?.text.toString()
 
@@ -133,16 +137,27 @@ class MainActivity : AppCompatActivity() {
                 debtCard.visibility = View.INVISIBLE
 
 
+                Log.d("name",contact)
+                Log.d("mail",contactmail)
+
                 //Update Total Debt
                 debtController.AddTotalDebt(amount.toLong(), contact, "debt") //add debt to contact
                 debtController.AddTotalDebt(amount.toLong(), user?.email.toString(), "to-collect" ) // add to collect to current user
 
                 //Update Debt Table
-                debtController.AddDebtAndReceivement(contact,label,amount.toLong(),"Debts") //Add debt
-                debtController.AddDebtAndReceivement(contact,label,amount.toLong(),"Recivements") //Add recivement
+                debtController.AddDebtAndReceivement(contactmail,contact,label,amount.toLong(),"Recivements") //Add recivement
 
+                //Get Username of contact
+                db.collection("Users").document(user?.email.toString()).get()
+                    .addOnSuccessListener { document ->
+                        if (document.data != null) {
+                            var name = document.getString("username").toString()
+                            debtController.AddDebtAndReceivement(contactmail,name,label,amount.toLong(),"Debts") //Add debt.
+                        }
+                    }
 
-                Contacttext?.setText("")
+                Contactname?.setText("")
+                Contactmail?.setText("")
                 amountText?.setText("")
                 labelText?.setText("")
                 ContactBtn.isEnabled = true;
@@ -180,7 +195,8 @@ class MainActivity : AppCompatActivity() {
         CanceldebtCard.setOnClickListener() {
             progressBar?.visibility = View.VISIBLE
             blackfilter.visibility = View.INVISIBLE
-            Contacttext?.setText("")
+            Contactname?.setText("")
+            Contactmail?.setText("")
             amountText?.setText("")
             labelText?.setText("")
             ContactBtn.isEnabled = true;
@@ -249,7 +265,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun GetDebtOrToCollect(type: String) {
+    private fun loadDebsOrRecivements(type: String) {
+
+
+    }
+
+    fun GetDebtOrRecivement(type: String) {
 
         if (type == "debt") TotalText?.setText("Total Debt")
         else TotalText?.setText("Total Recivable")
@@ -323,7 +344,7 @@ class MainActivity : AppCompatActivity() {
 
                         Contact_Name.setOnClickListener()
                         {
-                            setContactName(myContact.get(i)!!)
+                            setContactNameAndMail(ContactNames.get(i)!!,myContact.get(i)!!)
 
                         }
 
@@ -348,7 +369,7 @@ class MainActivity : AppCompatActivity() {
                         )
 
                         Contact_Mail.setOnClickListener() {
-                            setContactName(myContact.get(i)!!)
+                            setContactNameAndMail(ContactNames.get(i)!!,myContact.get(i)!!)
                         }
                     }
 
@@ -525,11 +546,12 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun setContactName(name: String) {
+    fun setContactNameAndMail(name: String,mail: String) {
         progressBar?.visibility = View.VISIBLE
         Secondblackfilter?.visibility = View.INVISIBLE
         ContactlistCard?.visibility = View.INVISIBLE
-        Contacttext?.setText(name)
+        Contactname?.setText(name)
+        Contactmail?.setText(mail)
         amountText?.isEnabled = true
         labelText?.isEnabled = true
         progressBar?.visibility = View.INVISIBLE

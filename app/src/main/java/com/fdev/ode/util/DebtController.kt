@@ -36,11 +36,12 @@ class DebtController {
             }
     }
 
-    fun AddDebtAndReceivement(to: String, label: String,amount: Long,type: String) {
+    fun AddDebtAndReceivement(to: String,name: String, label: String,amount: Long,type: String) {
         //variable "type" stands for either debt or Receivement
         //This allows to do two works in one function
 
         var toArray = ArrayList<String?>()
+        var nameArray = ArrayList<String?>()
         var labelArray = ArrayList<String?>()
         var amountArray = ArrayList<Long?>()
 
@@ -65,11 +66,13 @@ class DebtController {
                 if (document.data != null) {
                     //get Old data
                     toArray = document.get("to") as ArrayList<String?>
+                    nameArray = document.get("name") as ArrayList<String?>
                     labelArray  = document.get("label") as ArrayList<String?>
                     amountArray = document.get("amount") as ArrayList<Long?>
 
                     //add data to it
                     toArray.add(ToWhom)
+                    nameArray.add(name)
                     labelArray.add(label)
                     amountArray.add(amount)
 
@@ -77,6 +80,10 @@ class DebtController {
                     db.collection(type)
                         .document(user)
                         .update("to",toArray)
+
+                    db.collection(type)
+                        .document(user)
+                        .update("name",nameArray)
 
                     db.collection(type)
                         .document(user)
@@ -92,12 +99,14 @@ class DebtController {
                     Log.d(TAG, "No Such document")
 
                     toArray.add(ToWhom)
+                    nameArray.add(name)
                     labelArray.add(label)
                     amountArray.add(amount)
 
                     var debthash = hashMapOf(
                         "user" to user,
                         "to" to toArray,
+                        "name" to nameArray,
                         "amount" to amountArray,
                         "label" to labelArray
                     )
