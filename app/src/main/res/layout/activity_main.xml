@@ -8,7 +8,6 @@
     tools:context=".MainActivity">
 
 
-
     <ImageView
         android:id="@+id/blackfilter"
         android:layout_width="match_parent"
@@ -345,8 +344,9 @@
         app:cardBackgroundColor="#407BFF"
         app:cardCornerRadius="18dp">
 
+
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/totalText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
@@ -356,13 +356,14 @@
             android:textColor="@color/white"
             android:textSize="22dp" />
 
+
         <TextView
             android:id="@+id/debtText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
             android:fontFamily="@font/plusjakartatextregular"
-            android:text="45"
+            android:text="0"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="45dp" />

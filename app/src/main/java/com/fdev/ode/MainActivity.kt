@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity() {
 
     private val user = Firebase.auth.currentUser
     private val db = Firebase.firestore
-
+    private val debtController = DebtController()
+    private var DebtOrRecive = true // true stands for Debt
 
     private var Contacttext: EditText? = null
     private var progressBar: ProgressBar? = null
@@ -37,12 +38,15 @@ class MainActivity : AppCompatActivity() {
     private var ContactlistCard: CardView? = null
     private var amountText: EditText? = null
     private var labelText: EditText? = null
+    private var TotalText: TextView? = null
+    private var TotalAmount: TextView? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        TotalAmount = findViewById(R.id.debtText)
         val profile = findViewById<ImageButton>(R.id.profilebtn)
         val blackfilter = findViewById<ImageView>(R.id.blackfilter)
         val contactCard = findViewById<CardView>(R.id.addcontactCard)
@@ -64,9 +68,10 @@ class MainActivity : AppCompatActivity() {
         Contacttext = findViewById(R.id.contactText)
         amountText = findViewById(R.id.AmountText)
         labelText = findViewById(R.id.LabelText)
+        TotalText = findViewById(R.id.totalText)
 
-        Secondblackfilter = findViewById<ImageView>(R.id.secondblackfilter)
-        progressBar = findViewById<ProgressBar>(R.id.progressBarinMainActivity)
+        Secondblackfilter = findViewById(R.id.secondblackfilter)
+        progressBar = findViewById(R.id.progressBarinMainActivity)
 
         val tab = findViewById<TabLayout>(R.id.tab)
         val viewpager2 = findViewById<ViewPager2>(R.id.viewPager2)
@@ -77,15 +82,30 @@ class MainActivity : AppCompatActivity() {
         fragmentadapter = FragmentAdapter(fm, lifecycle)
         viewpager2.adapter = fragmentadapter
 
+        GetDebtOrToCollect("debt") //load debt amount by default
         loadContacts()
+
 
         tab.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-
                 viewpager2.setCurrentItem(tab.position)
+
+                Log.d("Fragment Position", tab.position.toString())
+
+                if(tab.position == 0)
+                {
+                    Log.d("Fragment", "this is debt")
+                    GetDebtOrToCollect("debt")
+                }
+                else
+                {
+                    Log.d("Fragment","this is to collect")
+                    GetDebtOrToCollect("to-collect")
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
+
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
@@ -111,9 +131,13 @@ class MainActivity : AppCompatActivity() {
                 blackfilter.visibility = View.INVISIBLE
                 debtCard.visibility = View.INVISIBLE
 
-                var debtController = DebtController()
-                debtController.AddDebt(ammount.toLong(),contact,"debt") //add debt to contact
-                debtController.AddDebt(ammount.toLong(),user?.email.toString(),"to-collect") // add to collect to current user
+
+                debtController.AddDebt(ammount.toLong(), contact, "debt") //add debt to contact
+                debtController.AddDebt(
+                    ammount.toLong(),
+                    user?.email.toString(),
+                    "to-collect"
+                ) // add to collect to current user
 
                 Contacttext?.setText("")
                 amountText?.setText("")
@@ -192,7 +216,10 @@ class MainActivity : AppCompatActivity() {
 
                     //Refresh page
                     finish()
-                    startActivity(getIntent(), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+                    startActivity(
+                        getIntent(),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    )
                 } else
                     Toast.makeText(
                         this, "I'm sorry. You can't add yourself",
@@ -218,6 +245,31 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
     }
+
+    fun GetDebtOrToCollect(type: String) {
+
+        if (type == "debt") TotalText?.setText("Total Debt")
+        else TotalText?.setText("Total Recivable")
+
+
+        val TAG = "GetDebtOrToCollect"
+        val user = Firebase.auth.currentUser
+        val docRef = db.collection("Users").document(user!!.email.toString())
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    //Get Old data
+                    Log.d(TAG, "DocumentSnapshot data: ${document.get(type)}")
+                    var value = document.getLong(type).toString()
+                    TotalAmount?.setText(value)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+
+    }
+
 
     private fun loadContacts() {
         val scrollLayout = findViewById<RelativeLayout>(R.id.Scroll_RelativeofContactList)
@@ -247,8 +299,8 @@ class MainActivity : AppCompatActivity() {
                         val boldface = resources.getFont(R.font.plusjakartatexbold)
 
                         val Contact_Name = TextView(this)
-                        Contact_Name.textSize = 20f
-                        Contact_Name.text = ContactNames.get(i)
+                        Contact_Name?.textSize = 20f
+                        Contact_Name?.text = ContactNames.get(i)
                         Contact_Name.setLayoutParams(
                             RelativeLayout.LayoutParams(
                                 RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -287,13 +339,13 @@ class MainActivity : AppCompatActivity() {
                         setMargins(
                             Contact_Mail,
                             (sizewidth * 0.1).toInt(),
-                            (((j * sizeheight) * 0.2)+(( sizeheight) * 0.08)).toInt(),
+                            (((j * sizeheight) * 0.2) + ((sizeheight) * 0.08)).toInt(),
                             0,
                             0
                         )
 
-                        Contact_Mail.setOnClickListener(){
-                                setContactName(myContact.get(i)!!)
+                        Contact_Mail.setOnClickListener() {
+                            setContactName(myContact.get(i)!!)
                         }
                     }
 
@@ -318,6 +370,12 @@ class MainActivity : AppCompatActivity() {
                     //This user exists
                     contactAdd(Email)
                     Toast.makeText(this, "Contact added successfully", Toast.LENGTH_SHORT).show()
+                    //Refresh page
+                    finish()
+                    startActivity(
+                        getIntent(),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    )
 
                 } else {
                     Log.d(TAG, "No such document")
@@ -358,6 +416,8 @@ class MainActivity : AppCompatActivity() {
                     // There is no previus data. So, simply add the current one
                     myContact.add(email)
                     addFreshData(myContact, email)
+
+
                 }
             }
             .addOnFailureListener { exception ->
@@ -400,7 +460,10 @@ class MainActivity : AppCompatActivity() {
                                     .update("contactName", ContactNames)
 
                                 finish()
-                                startActivity(getIntent(), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+                                startActivity(
+                                    getIntent(),
+                                    ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                                )
                             }
                         }
 
@@ -459,7 +522,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun setContactName(name: String){
+    fun setContactName(name: String) {
         progressBar?.visibility = View.VISIBLE
         Secondblackfilter?.visibility = View.INVISIBLE
         ContactlistCard?.visibility = View.INVISIBLE
@@ -495,5 +558,4 @@ class MainActivity : AppCompatActivity() {
 
 
 }
-
 

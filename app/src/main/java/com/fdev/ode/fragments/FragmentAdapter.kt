@@ -1,10 +1,13 @@
 package com.fdev.ode.fragments
 
 import android.content.Context
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.fdev.ode.MainActivity
+import com.fdev.ode.util.DebtController
 
 public class FragmentAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -18,12 +21,19 @@ public class FragmentAdapter(fragmentManager: FragmentManager, lifecycle: Lifecy
     override fun createFragment(position: Int): Fragment {
 
         when (position) {
-            1 -> return ToCollect_Fragment()
+            1 ->
+            {
+                Log.d("Fragment","this is to collect")
+                return ToCollect_Fragment()
+            }
 
-            2 -> return Debts_Fragment()
-
+            2 -> {
+                Log.d("Fragment","this is debt")
+                return Debts_Fragment()
+            }
 
             else -> {
+                Log.d("Fragment","this is debt")
                 return Debts_Fragment()
             }
         }
