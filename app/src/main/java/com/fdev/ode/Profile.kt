@@ -88,75 +88,78 @@ class Profile : AppCompatActivity() {
 
                     Log.d(TAG, myContact.size.toString())
 
-                    for (i in 0..myContact.size - 1) {
+                    if (myContact.size != 0){ //User has contacts
 
-                        var j = i + 1
-                        val sizeheight = getScreenHeight(this) * 0.5
-                        val sizewidth = getScreenWidth(this)
+                        for (i in 0..myContact.size - 1) {
 
-                        val face = resources.getFont(R.font.plusjakartatextregular)
-                        val boldface = resources.getFont(R.font.plusjakartatexbold)
+                            var j = i + 1
+                            val sizeheight = getScreenHeight(this) * 0.5
+                            val sizewidth = getScreenWidth(this)
 
-                        val Contact_Name = TextView(this)
-                        Contact_Name.textSize = 20f
-                        Contact_Name.text = ContactNames.get(i)
-                        Contact_Name.setTypeface(boldface)
-                        scrollLayout?.addView(Contact_Name)
-                        setMargins(
-                            Contact_Name,
-                            (sizewidth * 0.1).toInt(),
-                            ((j * sizeheight) * 0.2).toInt(),
-                            25,
-                            1
-                        )
+                            val face = resources.getFont(R.font.plusjakartatextregular)
+                            val boldface = resources.getFont(R.font.plusjakartatexbold)
 
-                        val Contact_Mail = TextView(this)
-                        Contact_Mail.textSize = 20f
-                        Contact_Mail.text = myContact.get(i)
-                        Contact_Mail.setTypeface(face)
-                        scrollLayout?.addView(Contact_Mail)
-                        setMargins(
-                            Contact_Mail,
-                            (sizewidth * 0.1).toInt(),
-                            (((j * sizeheight) * 0.2) + ((sizeheight) * 0.08)).toInt(),
-                            25,
-                            1
-                        )
+                            val Contact_Name = TextView(this)
+                            Contact_Name.textSize = 20f
+                            Contact_Name.text = ContactNames.get(i)
+                            Contact_Name.setTypeface(boldface)
+                            scrollLayout?.addView(Contact_Name)
+                            setMargins(
+                                Contact_Name,
+                                (sizewidth * 0.1).toInt(),
+                                ((j * sizeheight) * 0.2).toInt(),
+                                25,
+                                1
+                            )
 
-                        val Delete = ImageButton(this)
-                        Delete.setImageResource(R.drawable.delete);
-                        Delete.setBackgroundColor(Color.TRANSPARENT)
-                        scrollLayout?.addView(Delete)
-                        setMargins(
-                            Delete,
-                            (sizewidth * 0.8).toInt(),
-                            (((j * sizeheight) * 0.2)).toInt(),
-                            0,
-                            0
-                        )
+                            val Contact_Mail = TextView(this)
+                            Contact_Mail.textSize = 20f
+                            Contact_Mail.text = myContact.get(i)
+                            Contact_Mail.setTypeface(face)
+                            scrollLayout?.addView(Contact_Mail)
+                            setMargins(
+                                Contact_Mail,
+                                (sizewidth * 0.1).toInt(),
+                                (((j * sizeheight) * 0.2) + ((sizeheight) * 0.08)).toInt(),
+                                25,
+                                1
+                            )
+
+                            val Delete = ImageButton(this)
+                            Delete.setImageResource(R.drawable.delete);
+                            Delete.setBackgroundColor(Color.TRANSPARENT)
+                            scrollLayout?.addView(Delete)
+                            setMargins(
+                                Delete,
+                                (sizewidth * 0.8).toInt(),
+                                (((j * sizeheight) * 0.2)).toInt(),
+                                0,
+                                0
+                            )
 
 
-                        // Confromation Buttons(Yes,No) must be inside of Delete(CardView) in order to get the correct index
-                        Delete.setOnClickListener()
-                        {
-                            BlackFilter?.visibility = View.VISIBLE
-                            AreYouSureCard?.visibility = View.VISIBLE
-
-                            //Don't Delete
-                            DontDeletebutton?.setOnClickListener()
+                            // Confromation Buttons(Yes,No) must be inside of Delete(CardView) in order to get the correct index
+                            Delete.setOnClickListener()
                             {
-                                BlackFilter?.visibility = View.INVISIBLE
-                                AreYouSureCard?.visibility = View.INVISIBLE
+                                BlackFilter?.visibility = View.VISIBLE
+                                AreYouSureCard?.visibility = View.VISIBLE
+
+                                //Don't Delete
+                                DontDeletebutton?.setOnClickListener()
+                                {
+                                    BlackFilter?.visibility = View.INVISIBLE
+                                    AreYouSureCard?.visibility = View.INVISIBLE
+                                }
+                                //Delete Contact
+                                Deletebutton?.setOnClickListener() {
+                                    deleteContact(myContact, ContactNames, i)
+                                }
                             }
-                            //Delete Contact
-                            Deletebutton?.setOnClickListener() {
-                                deleteContact(myContact, ContactNames, i)
-                            }
+
+
                         }
+                }
 
-
-
-                    }
 
                 } else {
                     Log.d(TAG, "No such document")
@@ -175,7 +178,7 @@ class Profile : AppCompatActivity() {
         i: Int
     ) {
 
-        myContact.removeAt(i) //delete mail adress
+        myContact.removeAt(i) //delete mail address
         ContactNames.removeAt(i) // delete name
 
 

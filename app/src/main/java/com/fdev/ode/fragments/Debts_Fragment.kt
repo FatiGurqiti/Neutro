@@ -26,7 +26,6 @@ class Debts_Fragment : Fragment() {
         savedInstanceState: Bundle?
 
     ): View? {
-        val view = inflater!!.inflate(R.layout.fragment_debts_, container, false)
         return inflater.inflate(R.layout.fragment_debts_, container, false)
     }
 
