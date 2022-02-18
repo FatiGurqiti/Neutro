@@ -3,6 +3,7 @@ package com.fdev.ode
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.DisplayMetrics
@@ -85,7 +86,6 @@ class MainActivity : AppCompatActivity() {
 
 
         GetDebtOrRecivement("debt") //load debt amount by default
-        loadDebsOrRecivements("Debts")
         loadContacts()
 
 
@@ -265,10 +265,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadDebsOrRecivements(type: String) {
-
-
-    }
 
     fun GetDebtOrRecivement(type: String) {
 
@@ -576,6 +572,7 @@ class MainActivity : AppCompatActivity() {
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.widthPixels
     }
+
 
     override fun onBackPressed() {
         //Do nothing when back button is clicked
