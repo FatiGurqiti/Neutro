@@ -194,7 +194,7 @@
             android:ems="10"
             android:hint="Label"
             android:maxLines="1"
-            android:maxLength="24"
+            android:maxLength="35"
             android:inputType="text"
             android:paddingLeft="20dp"
             android:textColor="@color/white"
@@ -244,7 +244,7 @@
             android:id="@+id/toCollectTAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="To Collect" />
+            android:text="Receivement" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2

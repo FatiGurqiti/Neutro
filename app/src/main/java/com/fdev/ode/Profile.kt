@@ -25,6 +25,7 @@ class Profile : AppCompatActivity() {
     private var AreYouSureCard: CardView? = null
     private var Deletebutton: Button? = null
     private var DontDeletebutton: Button? = null
+
     var scrollLayout: RelativeLayout? = null
     private val db = Firebase.firestore
     private val user = Firebase.auth.currentUser

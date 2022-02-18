@@ -163,6 +163,8 @@ class MainActivity : AppCompatActivity() {
                 ContactBtn.isEnabled = true;
                 debtbtn.isEnabled = true;
                 progressBar?.visibility = View.INVISIBLE
+                finish()
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
             }
         }
 
@@ -269,7 +271,7 @@ class MainActivity : AppCompatActivity() {
     fun GetDebtOrRecivement(type: String) {
 
         if (type == "debt") TotalText?.setText("Total Debt")
-        else TotalText?.setText("Total Recivable")
+        else TotalText?.setText("Total Receivement")
 
 
         val TAG = "GetDebtOrToCollect"

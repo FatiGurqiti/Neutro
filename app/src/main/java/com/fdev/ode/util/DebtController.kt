@@ -10,8 +10,8 @@ class DebtController {
     private val db = Firebase.firestore
 
     //Adds Total debt
-    fun AddTotalDebt(amount: Long,to: String,update: String){
-        var newDebt:Long //Works both for debt and to-collect depending on the update String
+    fun AddTotalDebt(amount: Long,to: String,update: String) {
+        var newDebt: Long //Works both for debt and to-collect depending on the update String
         val TAG = "AddTotalDebt"
         val docRef = db.collection("Users").document(to)
         docRef.get()
@@ -22,6 +22,32 @@ class DebtController {
                     var currectDebt = document?.getLong(update)
                     if (currectDebt != null) {
                         newDebt = currectDebt + amount
+                    } else newDebt = amount
+
+                    //Upload new Data
+                    db.collection("Users").document(to)
+                        .update(update, newDebt)
+
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+    }
+
+     //Substract Total debt
+    fun SubstractTotalDebt(amount: Long,to: String,update: String){
+        var newDebt:Long //Works both for debt and to-collect depending on the update String
+        val TAG = "AddTotalDebt"
+        val docRef = db.collection("Users").document(to)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    //Get Old data
+                    Log.d(TAG, "DocumentSnapshot data: ${document.get(update)}")
+                    var currectDebt = document?.getLong(update)
+                    if (currectDebt != null) {
+                        newDebt = currectDebt - amount
                     }
                     else newDebt = amount
 
@@ -104,7 +130,6 @@ class DebtController {
                     amountArray.add(amount)
 
                     var debthash = hashMapOf(
-                        "user" to user,
                         "to" to toArray,
                         "name" to nameArray,
                         "amount" to amountArray,

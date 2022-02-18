@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.ToCollect_Fragment">
 
     <ScrollView
@@ -22,5 +23,82 @@
 
         </RelativeLayout>
     </ScrollView>
+
+
+    <ImageView
+        android:id="@+id/blackfilterinRecivements"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="-30dp"
+        android:elevation="2dp"
+        android:src="@drawable/blackfilter"
+        android:translationZ="2dp"
+        android:visibility="invisible" />
+
+    <!-- Delete Debt -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/deleteDebtCardinRecivements"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:translationZ="30dp"
+        android:visibility="invisible"
+        android:elevation="30dp"
+        android:background="@color/white"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        app:cardCornerRadius="18dp"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Delete Debt"
+            android:textSize="16sp"
+            android:layout_marginTop="15dp"
+            android:textColor="#80000000"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Are you sure you want yo delete this debt?"
+            android:textSize="18sp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:fontFamily="@font/plusjakartatextregular"
+            android:layout_marginTop="70dp"
+            android:textColor="@color/black"
+            />
+
+        <Button
+            android:id="@+id/notDeleteDebtBtninRecivements"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="-10dp"
+            android:layout_marginLeft="190dp"
+            android:background="@android:color/transparent"
+            android:text="Nope"
+            android:fontFamily="@font/plusjakartatextregular"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_gravity="bottom"
+            />
+        <Button
+            android:id="@+id/deleteDebtBtninRecivements"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="-10dp"
+            android:layout_marginRight="180dp"
+            android:backgroundTint="#E40031"
+            android:text="Yes"
+            android:fontFamily="@font/plusjakartatextregular"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_gravity="bottom"
+            />
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
