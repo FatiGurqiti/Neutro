@@ -89,6 +89,7 @@ class Profile : AppCompatActivity() {
                     Log.d(TAG, myContact.size.toString())
 
                     for (i in 0..myContact.size - 1) {
+
                         var j = i + 1
                         val sizeheight = getScreenHeight(this) * 0.5
                         val sizewidth = getScreenWidth(this)
@@ -152,6 +153,9 @@ class Profile : AppCompatActivity() {
                                 deleteContact(myContact, ContactNames, i)
                             }
                         }
+
+
+
                     }
 
                 } else {
@@ -162,6 +166,7 @@ class Profile : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.d(TAG, "get failed with ", exception)
             }
+
     }
 
     private fun deleteContact(

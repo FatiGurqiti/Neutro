@@ -141,7 +141,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d("mail",contactmail)
 
                 //Update Total Debt
-                debtController.AddTotalDebt(amount.toLong(), contact, "debt") //add debt to contact
+                debtController.AddTotalDebt(amount.toLong(), contactmail, "debt") //add debt to contact
                 debtController.AddTotalDebt(amount.toLong(), user?.email.toString(), "to-collect" ) // add to collect to current user
 
                 //Update Debt Table
@@ -309,7 +309,10 @@ class MainActivity : AppCompatActivity() {
 
                     Log.d(TAG, myContact.size.toString())
 
-                    for (i in 0..myContact.size - 1) {
+                    if (myContact.size != 0) { //User has contacts
+
+                    for (i in 0..myContact.size -1 ) {
+
                         var j = i + 1;
 
                         val sizeheight = getScreenHeight(this) * 0.5
@@ -340,7 +343,7 @@ class MainActivity : AppCompatActivity() {
 
                         Contact_Name.setOnClickListener()
                         {
-                            setContactNameAndMail(ContactNames.get(i)!!,myContact.get(i)!!)
+                            setContactNameAndMail(ContactNames.get(i)!!, myContact.get(i)!!)
 
                         }
 
@@ -365,9 +368,10 @@ class MainActivity : AppCompatActivity() {
                         )
 
                         Contact_Mail.setOnClickListener() {
-                            setContactNameAndMail(ContactNames.get(i)!!,myContact.get(i)!!)
+                            setContactNameAndMail(ContactNames.get(i)!!, myContact.get(i)!!)
                         }
                     }
+                }
 
                 } else {
                     Log.d(TAG, "No such document")
@@ -410,8 +414,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun contactAdd(email: String) {
 
-        var myContact = ArrayList<String?>()
-        var ContactNames = ArrayList<String?>()
+        var myContact = ArrayList<String?>() //email adress
+        var ContactNames = ArrayList<String?>() //contact's name
 
         val TAG = "AddNewContact"
         val docRef: DocumentReference = db.collection("Contacts").document(
@@ -422,13 +426,27 @@ class MainActivity : AppCompatActivity() {
                 if (document.data != null) {
 
                     //Get previous Contacts
-                    Log.d(
-                        TAG,
-                        "DocumentSnapshot data: ${document.get("contact") as ArrayList<String>}"
-                    )
                     myContact = document.get("contact") as ArrayList<String?>
-                    myContact.add(email)
-                    updateContact(myContact, email)
+                    ContactNames = document.get("contactName") as ArrayList<String?>
+
+                    //Get name of the current contanct
+                    db.collection("Users")
+                        .document(email)
+                        .get()
+                        .addOnSuccessListener { document ->
+                            if (document.data != null) {
+
+                                var username = document.get("username")
+                                ContactNames.add(username.toString())
+
+                                myContact.add(email)
+                                updateContact(myContact, email)
+
+                            }
+                        }
+
+
+
 
                 } else {
                     Log.d(TAG, "No such document")
