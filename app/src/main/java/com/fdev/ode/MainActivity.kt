@@ -139,20 +139,21 @@ class MainActivity : AppCompatActivity() {
 
                 Log.d("name",contact)
                 Log.d("mail",contactmail)
+                var ID = debtController.GenerateID()
 
                 //Update Total Debt
                 debtController.AddTotalDebt(amount.toLong(), contactmail, "debt") //add debt to contact
                 debtController.AddTotalDebt(amount.toLong(), user?.email.toString(), "to-collect" ) // add to collect to current user
 
                 //Update Debt Table
-                debtController.AddDebtAndReceivement(contactmail,contact,label,amount.toLong(),"Recivements") //Add recivement
+                debtController.AddDebtAndReceivement(ID,contactmail,contact,label,amount.toLong(),"Recivements") //Add recivement
 
                 //Get Username of contact
                 db.collection("Users").document(user?.email.toString()).get()
                     .addOnSuccessListener { document ->
                         if (document.data != null) {
                             var name = document.getString("username").toString()
-                            debtController.AddDebtAndReceivement(contactmail,name,label,amount.toLong(),"Debts") //Add debt.
+                            debtController.AddDebtAndReceivement(ID,contactmail,name,label,amount.toLong(),"Debts") //Add debt.
                         }
                     }
 
