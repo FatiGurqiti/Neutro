@@ -210,9 +210,12 @@ class Recivements_Fragment : Fragment() {
                                 BlackFilter?.visibility = View.INVISIBLE
                                 AreYouSureCard?.visibility = View.INVISIBLE
                             }
-                            //Delete Contact
+                            //Delete Debt
                             Deletebutton?.setOnClickListener() {
                                 deleteRecievement(amount, id, label, name, mail,time, i)
+
+
+
                             }
                         }
 
@@ -241,6 +244,11 @@ class Recivements_Fragment : Fragment() {
         i: Int
     ) {
 
+
+        //delete Debt
+        deleteDebt(amount, id, label, name, mail,time, i)   // since i is in loop and firebase is working asynchronous it if mandatory to call the delete function here in order to use the same date
+
+        //delete recivedement
         val user = user!!.email.toString()
 
         var debtController = DebtController()
@@ -262,8 +270,97 @@ class Recivements_Fragment : Fragment() {
         delete("Recivements", user, "time", time)
 
 
-        var intent = Intent(context, MainActivity::class.java)
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
+    }
+
+    private fun deleteDebt(
+        amount: ArrayList<Long?>,
+        id: ArrayList<String?>,
+        label: ArrayList<String?>,
+        name: ArrayList<String?>,
+        mail: ArrayList<String?>,
+        time: ArrayList<String?>,
+        i: Int
+    ) {
+
+
+        val EMAIL = mail.get(i).toString()
+        val ID = id.get(i).toString()
+
+        val TAG = "DeleteDebt"
+
+        Log.d( TAG,"Local Email: ${EMAIL}" )
+        Log.d( TAG,"Local Id: ${ID}" )
+
+        var amount = ArrayList<Long?>()
+        var id = ArrayList<String?>()
+        var label = ArrayList<String?>()
+        var name = ArrayList<String?>()
+        var mail = ArrayList<String?>()
+        var time = ArrayList<String?>()
+
+        //Get the debts
+        val docRef = db.collection("Debts").document(EMAIL)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+
+                    Log.d(
+                        TAG,
+                        "DocumentSnapshot data: ${document.get("id") as ArrayList<String?>}"
+                    )
+                    amount = document?.get("amount") as ArrayList<Long?>
+                    id = document?.get("id") as ArrayList<String?>
+                    label = document?.get("label") as ArrayList<String?>
+                    name = document?.get("name") as ArrayList<String?>
+                    mail = document?.get("to") as ArrayList<String?>
+                    time = document?.get("time") as ArrayList<String?>
+
+                    for (i in 0..id.size -1)
+                    {
+                        //Locate  the debt
+                        if(id.get(i)!!.equals(ID))
+                        {
+                            Log.d( TAG,"We Got it Boss: ${id.get(i)}" )
+                            Log.d( TAG,"Here's the location: $i" )
+
+                            val debtController = DebtController()
+                            debtController.SubstractTotalDebt(amount.get(i)!!.toLong(), EMAIL, "debt")
+
+                            amount.removeAt(i) //delete located amount
+                            id.removeAt(i) // delete located id
+                            label.removeAt(i) // delete located label
+                            name.removeAt(i) // delete located name
+                            mail.removeAt(i) // delete located mail
+                            time.removeAt(i) // delete located time
+
+
+                            Log.d( TAG,"amount After remove: $amount" )
+                            Log.d( TAG,"id After remove: $id" )
+                            Log.d( TAG,"label After remove: $label" )
+                            Log.d( TAG,"name After remove: $name" )
+                            Log.d( TAG,"mail After remove: $mail" )
+                            Log.d( TAG,"time After remove: $time" )
+
+//                            //Delete Debt
+                            delete("Debts", EMAIL, "amount", amount)
+                            delete("Debts", EMAIL, "id", id)
+                            delete("Debts", EMAIL, "label", label)
+                            delete("Debts", EMAIL, "name", name)
+                            delete("Debts", EMAIL, "to", mail)
+                            delete("Debts", EMAIL, "time", time)
+
+
+                            val intent = Intent(context, MainActivity::class.java)
+                            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
+
+                        }
+                    }
+
+
+                }
+            }
+
+
 
     }
 

@@ -21,6 +21,15 @@ class LogIn : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val user = Firebase.auth.currentUser
+
+        if(user!=null)
+        {
+            val intent = Intent(this,MainActivity::class.java)
+            startActivity(intent)
+        }
+
+
         progressBar = findViewById(R.id.progressBarInLogIn)
         val SignUpbtn = findViewById<TextView>(R.id.SignUpTxt)
         val forgotpassword = findViewById<TextView>(R.id.forgotPassword)
