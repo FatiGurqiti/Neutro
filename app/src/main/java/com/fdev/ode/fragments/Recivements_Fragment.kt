@@ -49,6 +49,7 @@ class Recivements_Fragment : Fragment() {
 
 
         var amount = ArrayList<Long?>()
+        var id = ArrayList<String?>()
         var label = ArrayList<String?>()
         var name = ArrayList<String?>()
         var mail = ArrayList<String?>()
@@ -64,6 +65,7 @@ class Recivements_Fragment : Fragment() {
                         "DocumentSnapshot data: ${document.get("amount") as ArrayList<String?>}"
                     )
                     amount = document?.get("amount") as ArrayList<Long?>
+                    id = document?.get("id") as ArrayList<String?>
                     label = document?.get("label") as ArrayList<String?>
                     name = document?.get("name") as ArrayList<String?>
                     mail = document?.get("to") as ArrayList<String?>
@@ -210,7 +212,7 @@ class Recivements_Fragment : Fragment() {
                             }
                             //Delete Contact
                             Deletebutton?.setOnClickListener() {
-                                deleteRecievement(amount, label, name, mail, i)
+                                deleteRecievement(amount, id, label, name, mail,time, i)
                             }
                         }
 
@@ -231,9 +233,11 @@ class Recivements_Fragment : Fragment() {
 
     private fun deleteRecievement(
         amount: ArrayList<Long?>,
+        id: ArrayList<String?>,
         label: ArrayList<String?>,
         name: ArrayList<String?>,
         mail: ArrayList<String?>,
+        time: ArrayList<String?>,
         i: Int
     ) {
 
@@ -243,15 +247,19 @@ class Recivements_Fragment : Fragment() {
         debtController.SubstractTotalDebt(amount.get(i)!!.toLong(), user, "to-collect")
 
         amount.removeAt(i) //delete current amount
+        id.removeAt(i) // delete current id
         label.removeAt(i) // delete current label
         name.removeAt(i) // delete current name
         mail.removeAt(i) // delete current mail
+        time.removeAt(i) // delete current time
 
         //Delete Recievemnets
         delete("Recivements", user, "amount", amount)
+        delete("Recivements", user, "id", id)
         delete("Recivements", user, "label", label)
         delete("Recivements", user, "name", name)
         delete("Recivements", user, "to", mail)
+        delete("Recivements", user, "time", time)
 
 
         var intent = Intent(context, MainActivity::class.java)
