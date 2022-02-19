@@ -19,6 +19,7 @@ import kotlin.random.Random
 class Debts_Fragment : Fragment() {
 
     lateinit var scrollLayout: RelativeLayout
+    var totalDebt:Double = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,8 +45,6 @@ class Debts_Fragment : Fragment() {
         var mail = ArrayList<String?>()
         var time = ArrayList<String?>()
 
-        val color = arrayOf("#de495d","#6d32f8","#0c97fa","#00ffc9")
-
         val docRef = db.collection("Debts").document(user?.email.toString())
         docRef.get()
             .addOnSuccessListener { document ->
@@ -67,6 +66,8 @@ class Debts_Fragment : Fragment() {
 
                     for (i in 0..amount.size - 1) {
                         val j = i + 1
+                        totalDebt += amount[i]!!.toDouble()
+
                         val sizeheight = getScreenHeight()
                         val sizewidth = getScreenWidth() * 0.7
 
@@ -88,14 +89,15 @@ class Debts_Fragment : Fragment() {
                         Card.resources.getDrawable(R.drawable.black_background)
                         Card.cardElevation = 8F
                         Card.maxCardElevation = 12F
-                        scrollLayout.addView(Card)
                         setMargins(
                             Card,
                             (sizewidth * .1).toInt(),
-                            ((i * sizeheight) * 0.15).toInt(),
+                            ((i * sizeheight) * 0.3).toInt(),
                             (sizewidth * .1).toInt(),
-                            100
+                            (sizewidth * .1).toInt(),
                         )
+                        scrollLayout.addView(Card)
+
 
 
                         //Create Name Text

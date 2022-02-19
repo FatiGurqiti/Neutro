@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="#fcfcfc"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     tools:context=".fragments.Debts_Fragment">
 
 
@@ -16,7 +15,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
-        android:paddingTop="30dp">
+        android:paddingTop="30dp"
+        android:paddingBottom="10dp">
 
 
         <RelativeLayout

@@ -83,8 +83,6 @@ class Recivements_Fragment : Fragment() {
                         val face = resources.getFont(R.font.plusjakartatextregular)
                         val boldface = resources.getFont(R.font.plusjakartatexbold)
 
-
-                        val randomColor = Random.nextInt(0, 4)
                         //Create  CardView
                         val Card = context?.let { CardView(it) }
                         Card!!.setLayoutParams(
@@ -103,11 +101,10 @@ class Recivements_Fragment : Fragment() {
                         setMargins(
                             Card,
                             (sizewidth * .1).toInt(),
-                            ((i * sizeheight) * 0.25).toInt(),
+                            ((i * sizeheight) * 0.35).toInt(),
                             (sizewidth * .1).toInt(),
-                            ((i * sizeheight) * 0.25).toInt(),
+                            (sizewidth * .1).toInt(),
                         )
-
 
                         //Create Name Text
                         val Name = TextView(context)

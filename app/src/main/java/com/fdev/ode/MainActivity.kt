@@ -16,6 +16,7 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.fdev.ode.fragments.Debts_Fragment
 import com.fdev.ode.fragments.FragmentAdapter
 import com.fdev.ode.util.DebtController
 import com.google.android.material.tabs.TabLayout
@@ -31,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     private val user = Firebase.auth.currentUser
     private val db = Firebase.firestore
     private val debtController = DebtController()
+
+    private var totalRecivable:Double = 0.0
 
     private var Contactname: EditText? = null
     private var Contactmail: EditText? = null
@@ -85,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         viewpager2.adapter = fragmentadapter
 
 
-        GetDebtOrRecivement("debt") //load debt amount by default
+        GetDebtOrRecivement("Debts") //load debt amount by default
         loadContacts()
 
 
@@ -99,12 +102,12 @@ class MainActivity : AppCompatActivity() {
                 if(tab.position == 0)
                 {
                     Log.d("Fragment", "this is debt")
-                    GetDebtOrRecivement("debt")
+                    GetDebtOrRecivement("Debts")
                 }
                 else
                 {
                     Log.d("Fragment","this is to collect")
-                    GetDebtOrRecivement("to-collect")
+                    GetDebtOrRecivement("Recivements")
                 }
             }
 
@@ -136,14 +139,9 @@ class MainActivity : AppCompatActivity() {
                 blackfilter.visibility = View.INVISIBLE
                 debtCard.visibility = View.INVISIBLE
 
-
                 Log.d("name",contact)
                 Log.d("mail",contactmail)
                 var ID = debtController.GenerateID()
-
-                //Update Total Debt
-                debtController.AddTotalDebt(amount.toDouble(), contactmail, "debt") //add debt to contact
-                debtController.AddTotalDebt(amount.toDouble(), user?.email.toString(), "to-collect" ) // add to collect to current user
 
                 //Update Debt Table
                 debtController.AddDebtAndReceivement(ID,contactmail,contact,label,amount.toDouble(),"Recivements") //Add recivement
@@ -271,20 +269,27 @@ class MainActivity : AppCompatActivity() {
 
     fun GetDebtOrRecivement(type: String) {
 
-        if (type == "debt") TotalText?.setText("Total Debt")
+        if (type == "Debts") TotalText?.setText("Total Debt")
         else TotalText?.setText("Total Receivement")
 
 
         val TAG = "GetDebtOrToCollect"
         val user = Firebase.auth.currentUser
-        val docRef = db.collection("Users").document(user!!.email.toString())
+        val docRef = db.collection(type).document(user!!.email.toString())
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     //Get Old data
-                    Log.d(TAG, "DocumentSnapshot data: ${document.get(type)}")
-                    var value = document.getDouble(type).toString()
-                    TotalAmount?.setText(value)
+                    Log.d(TAG, "DocumentSnapshot data: ${document.get("amount")}")
+                    val valueArray: ArrayList<Double?>
+                    valueArray = document.get("amount") as ArrayList<Double?>
+                    var value =0.0
+                    for(i in 0..valueArray.size -1)
+                    {
+                        value += valueArray[i]!!.toDouble()
+                    }
+                    TotalAmount?.setText(value.toString())
+
                 }
             }
             .addOnFailureListener { exception ->

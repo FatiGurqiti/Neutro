@@ -16,7 +16,7 @@ class DebtController {
     fun AddTotalDebt(amount: Double,to: String,update: String) {
         var newDebt: Double //Works both for debt and to-collect depending on the update String
         val TAG = "AddTotalDebt"
-        val docRef = db.collection("Users").document(to)
+        val docRef = db.collection("Debts").document(to)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {

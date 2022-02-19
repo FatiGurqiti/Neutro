@@ -12,7 +12,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
-        android:paddingTop="30dp">
+        android:paddingTop="30dp"
+        android:paddingBottom="10dp"
+        >
 
 
         <RelativeLayout
