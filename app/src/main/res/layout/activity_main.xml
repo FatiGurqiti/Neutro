@@ -89,7 +89,7 @@
         android:translationZ="16dp"
         android:elevation="16dp"
         android:background="@color/white"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="30dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         app:cardCornerRadius="18dp"
@@ -174,13 +174,12 @@
             android:background="@drawable/inputbg"
             android:ems="10"
             android:hint="Amount"
-            android:maxLines="1"
+            android:inputType="numberDecimal"
             android:maxLength="5"
-            android:inputType="number"
+            android:maxLines="1"
             android:paddingLeft="20dp"
             android:textColor="@color/white"
-            android:textColorHint="#60FFFFFF"
-            />
+            android:textColorHint="#60FFFFFF" />
 
         <EditText
             android:id="@+id/LabelText"

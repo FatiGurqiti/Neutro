@@ -9,6 +9,7 @@ import android.view.*
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.fdev.ode.MainActivity
 import com.fdev.ode.R
 import com.fdev.ode.util.DebtController
@@ -43,7 +44,6 @@ class Recivements_Fragment : Fragment() {
         AreYouSureCard = view.findViewById(R.id.deleteDebtCardinRecivements)
         Deletebutton = view.findViewById(R.id.deleteDebtBtninRecivements)
         DontDeletebutton = view.findViewById(R.id.notDeleteDebtBtninRecivements)
-
 
         val TAG = "LoadRecievements"
 
@@ -252,7 +252,7 @@ class Recivements_Fragment : Fragment() {
         val user = user!!.email.toString()
 
         var debtController = DebtController()
-        debtController.SubstractTotalDebt(amount.get(i)!!.toLong(), user, "to-collect")
+        debtController.SubstractTotalDebt(amount.get(i)!!.toDouble(), user, "to-collect")
 
         amount.removeAt(i) //delete current amount
         id.removeAt(i) // delete current id
@@ -324,7 +324,7 @@ class Recivements_Fragment : Fragment() {
                             Log.d( TAG,"Here's the location: $i" )
 
                             val debtController = DebtController()
-                            debtController.SubstractTotalDebt(amount.get(i)!!.toLong(), EMAIL, "debt")
+                            debtController.SubstractTotalDebt(amount.get(i)!!.toDouble(), EMAIL, "debt")
 
                             amount.removeAt(i) //delete located amount
                             id.removeAt(i) // delete located id

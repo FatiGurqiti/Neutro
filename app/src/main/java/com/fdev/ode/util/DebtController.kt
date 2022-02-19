@@ -13,8 +13,8 @@ class DebtController {
     private val db = Firebase.firestore
 
     //Adds Total debt
-    fun AddTotalDebt(amount: Long,to: String,update: String) {
-        var newDebt: Long //Works both for debt and to-collect depending on the update String
+    fun AddTotalDebt(amount: Double,to: String,update: String) {
+        var newDebt: Double //Works both for debt and to-collect depending on the update String
         val TAG = "AddTotalDebt"
         val docRef = db.collection("Users").document(to)
         docRef.get()
@@ -22,7 +22,7 @@ class DebtController {
                 if (document.data != null) {
                     //Get Old data
                     Log.d(TAG, "DocumentSnapshot data: ${document.get(update)}")
-                    var currectDebt = document?.getLong(update)
+                    var currectDebt = document?.getDouble(update)
                     if (currectDebt != null) {
                         newDebt = currectDebt + amount
                     } else newDebt = amount
@@ -39,8 +39,8 @@ class DebtController {
     }
 
      //Substract Total debt
-    fun SubstractTotalDebt(amount: Long,to: String,update: String){
-        var newDebt:Long //Works both for debt and to-collect depending on the update String
+    fun SubstractTotalDebt(amount: Double,to: String,update: String){
+        var newDebt:Double //Works both for debt and to-collect depending on the update String
         val TAG = "AddTotalDebt"
         val docRef = db.collection("Users").document(to)
         docRef.get()
@@ -48,7 +48,7 @@ class DebtController {
                 if (document.data != null) {
                     //Get Old data
                     Log.d(TAG, "DocumentSnapshot data: ${document.get(update)}")
-                    var currectDebt = document?.getLong(update)
+                    var currectDebt = document?.getDouble(update)
                     if (currectDebt != null) {
                         newDebt = currectDebt - amount
                     }
@@ -65,7 +65,7 @@ class DebtController {
             }
     }
 
-    fun AddDebtAndReceivement(id: String, to: String,name: String, label: String,amount: Long,type: String) {
+    fun AddDebtAndReceivement(id: String, to: String,name: String, label: String,amount: Double,type: String) {
         //variable "type" stands for either debt or Receivement
         //This allows to do two works in one function
 
@@ -74,7 +74,7 @@ class DebtController {
         var nameArray = ArrayList<String?>()
         var labelArray = ArrayList<String?>()
         var timeArray = ArrayList<String?>()
-        var amountArray = ArrayList<Long?>()
+        var amountArray = ArrayList<Double?>()
 
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
@@ -106,7 +106,7 @@ class DebtController {
                     nameArray = document.get("name") as ArrayList<String?>
                     labelArray  = document.get("label") as ArrayList<String?>
                     timeArray = document.get("time") as ArrayList<String?>
-                    amountArray = document.get("amount") as ArrayList<Long?>
+                    amountArray = document.get("amount") as ArrayList<Double?>
 
                     //add data to it
                     IDArray.add(id)

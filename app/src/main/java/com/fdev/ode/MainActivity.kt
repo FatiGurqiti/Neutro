@@ -3,13 +3,13 @@ package com.fdev.ode
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -142,18 +142,18 @@ class MainActivity : AppCompatActivity() {
                 var ID = debtController.GenerateID()
 
                 //Update Total Debt
-                debtController.AddTotalDebt(amount.toLong(), contactmail, "debt") //add debt to contact
-                debtController.AddTotalDebt(amount.toLong(), user?.email.toString(), "to-collect" ) // add to collect to current user
+                debtController.AddTotalDebt(amount.toDouble(), contactmail, "debt") //add debt to contact
+                debtController.AddTotalDebt(amount.toDouble(), user?.email.toString(), "to-collect" ) // add to collect to current user
 
                 //Update Debt Table
-                debtController.AddDebtAndReceivement(ID,contactmail,contact,label,amount.toLong(),"Recivements") //Add recivement
+                debtController.AddDebtAndReceivement(ID,contactmail,contact,label,amount.toDouble(),"Recivements") //Add recivement
 
                 //Get Username of contact
                 db.collection("Users").document(user?.email.toString()).get()
                     .addOnSuccessListener { document ->
                         if (document.data != null) {
                             var name = document.getString("username").toString()
-                            debtController.AddDebtAndReceivement(ID,contactmail,name,label,amount.toLong(),"Debts") //Add debt.
+                            debtController.AddDebtAndReceivement(ID,contactmail,name,label,amount.toDouble(),"Debts") //Add debt.
                         }
                     }
 
@@ -283,7 +283,7 @@ class MainActivity : AppCompatActivity() {
                 if (document.data != null) {
                     //Get Old data
                     Log.d(TAG, "DocumentSnapshot data: ${document.get(type)}")
-                    var value = document.getLong(type).toString()
+                    var value = document.getDouble(type).toString()
                     TotalAmount?.setText(value)
                 }
             }
@@ -593,6 +593,7 @@ class MainActivity : AppCompatActivity() {
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.widthPixels
     }
+
 
 
     override fun onBackPressed() {

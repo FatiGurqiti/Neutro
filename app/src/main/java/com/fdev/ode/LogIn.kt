@@ -16,6 +16,8 @@ class LogIn : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var progressBar: ProgressBar
+    private lateinit var email: EditText
+    private lateinit var pin: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,17 +25,16 @@ class LogIn : AppCompatActivity() {
 
         val user = Firebase.auth.currentUser
 
-        if(user!=null)
-        {
-            val intent = Intent(this,MainActivity::class.java)
-            startActivity(intent)
-        }
-
-
         progressBar = findViewById(R.id.progressBarInLogIn)
         val SignUpbtn = findViewById<TextView>(R.id.SignUpTxt)
         val forgotpassword = findViewById<TextView>(R.id.forgotPassword)
         val LogIn = findViewById<ImageButton>(R.id.logoinBtn)
+        email = findViewById(R.id.Email)
+        pin = findViewById(R.id.password)
+
+        if (user != null) {
+            email.setText(user.email.toString())
+        }
 
         progressBar.bringToFront()
         progressBar.visibility = View.INVISIBLE
@@ -54,8 +55,6 @@ class LogIn : AppCompatActivity() {
         LogIn.setOnClickListener {
             progressBar.visibility = View.VISIBLE
 
-            val email = findViewById<EditText>(R.id.Email)
-            val pin = findViewById<EditText>(R.id.password)
 
             val Email = email.text.toString()
             val Pin = pin.text.toString()
@@ -86,6 +85,7 @@ class LogIn : AppCompatActivity() {
                                 baseContext, "Authentication failed.",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            progressBar.visibility = View.INVISIBLE
 
                         }
                     }
@@ -95,5 +95,10 @@ class LogIn : AppCompatActivity() {
 
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        progressBar.visibility = View.INVISIBLE
     }
 }
