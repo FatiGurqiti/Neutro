@@ -17,7 +17,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlin.random.Random
 
-class ToCollect_Fragment : Fragment() {
+class Recivements_Fragment : Fragment() {
 
     lateinit var scrollLayout: RelativeLayout
 
@@ -33,7 +33,7 @@ class ToCollect_Fragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_to_collect_, container, false)
+        return inflater.inflate(R.layout.fragment_recivement_, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,6 +52,7 @@ class ToCollect_Fragment : Fragment() {
         var label = ArrayList<String?>()
         var name = ArrayList<String?>()
         var mail = ArrayList<String?>()
+        var time = ArrayList<String?>()
 
         val docRef = db.collection("Recivements").document(user?.email.toString())
         docRef.get()
@@ -62,10 +63,11 @@ class ToCollect_Fragment : Fragment() {
                         TAG,
                         "DocumentSnapshot data: ${document.get("amount") as ArrayList<String?>}"
                     )
-                    amount = document.get("amount") as ArrayList<Long?>
-                    label = document.get("label") as ArrayList<String?>
-                    name = document.get("name") as ArrayList<String?>
-                    mail = document.get("to") as ArrayList<String?>
+                    amount = document?.get("amount") as ArrayList<Long?>
+                    label = document?.get("label") as ArrayList<String?>
+                    name = document?.get("name") as ArrayList<String?>
+                    mail = document?.get("to") as ArrayList<String?>
+                    time = document?.get("time") as ArrayList<String?>
 
                     Log.d(TAG, "amount: ${amount}")
 
@@ -101,14 +103,14 @@ class ToCollect_Fragment : Fragment() {
                             (sizewidth * .1).toInt(),
                             ((i * sizeheight) * 0.25).toInt(),
                             (sizewidth * .1).toInt(),
-                            100
+                            ((i * sizeheight) * 0.25).toInt(),
                         )
 
 
                         //Create Name Text
                         val Name = TextView(context)
                         Name.textSize = 25f
-                        Name.text = name.get(i)
+                        Name?.text = name.get(i)
                         Name.setLayoutParams(
                             RelativeLayout.LayoutParams(
                                 RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -127,7 +129,7 @@ class ToCollect_Fragment : Fragment() {
                         //Create Label Text
                         val Label = TextView(context)
                         Label.textSize = 16f
-                        Label.text = label.get(i)
+                        Label?.text = label.get(i)
                         Label.setTextColor(Color.WHITE)
                         Label.setLayoutParams(
                             RelativeLayout.LayoutParams(
@@ -148,13 +150,37 @@ class ToCollect_Fragment : Fragment() {
                         Card.addView(Label)
 
                         //Create Amount Text
-                        var Amount = TextView(context)
-                        Amount.text = amount.get(i).toString()
+                        val Amount = TextView(context)
+                        Amount?.text = amount.get(i).toString()
                         Amount.textSize = 50f
                         Amount.setTextColor(Color.WHITE)
                         Amount.setGravity(Gravity.END)
                         Card.addView(Amount)
                         setMargins(Amount,0,(sizeheight * .05).toInt(),(sizewidth * .03).toInt(),0)
+
+
+                        //Create Time Text
+                        val Time = TextView(context)
+                        Time.textSize = 14f
+                        Time?.text = time.get(i)
+                        Time.setTextColor(Color.WHITE)
+                        Time.setLayoutParams(
+                            RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.MATCH_PARENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                            )
+                        )
+                        Time.setGravity(Gravity.START)
+                        Time.setTypeface(face)
+                        Time.setTranslationZ(18F)
+                        setMargins(
+                            Time,
+                            (sizewidth * .07).toInt(),
+                            (sizeheight * .165).toInt(),
+                            0,
+                            0
+                        )
+                        Card.addView(Time)
 
                         val Delete = ImageButton(context)
                         Delete.setImageResource(R.drawable.white_trash);

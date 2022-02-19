@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.fdev.ode.MainActivity
-import com.fdev.ode.util.DebtController
 
 public class FragmentAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -24,7 +22,7 @@ public class FragmentAdapter(fragmentManager: FragmentManager, lifecycle: Lifecy
             1 ->
             {
                 Log.d("Fragment","this is to collect")
-                return ToCollect_Fragment()
+                return Recivements_Fragment()
             }
 
             2 -> {

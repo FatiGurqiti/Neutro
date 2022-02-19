@@ -32,7 +32,6 @@ class ForgotPassword : AppCompatActivity() {
             reset.isEnabled = false
             afterText.visibility = View.VISIBLE
             pb.visibility = View.INVISIBLE
-            var mAuth: FirebaseAuth
             val password = resetpassword.text.toString()
             FirebaseAuth.getInstance().sendPasswordResetEmail(password)
                 .addOnCompleteListener { task ->

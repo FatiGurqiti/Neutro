@@ -15,6 +15,19 @@
         app:srcCompat="@drawable/bluebg"
         tools:layout_editor_absoluteX="122dp" />
 
+    <ProgressBar
+        android:id="@+id/progressBarInLogIn"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="150dp"
+        android:layout_marginBottom="150dp"
+        android:layout_marginLeft="150dp"
+        android:layout_marginRight="150dp"
+        android:elevation="12dp"
+        android:translationZ="12dp"
+        />
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="350dp"
@@ -27,17 +40,6 @@
         android:translationZ="10dp"
         app:cardCornerRadius="25dp">
 
-        <ProgressBar
-            android:id="@+id/progressBarInLogIn"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="150dp"
-            android:layout_marginLeft="125dp"
-            android:elevation="12dp"
-            android:translationZ="12dp"
-            android:visibility="invisible"
-            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -62,7 +64,7 @@
             android:textSize="28sp" />
 
         <EditText
-            android:id="@+id/editTextTextEmailAddressinLogin"
+            android:id="@+id/Email"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
@@ -79,7 +81,7 @@
             android:textColorHint="#60FFFFFF" />
 
         <EditText
-            android:id="@+id/editTextNumberPasswordinLogin"
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
@@ -118,11 +120,11 @@
             android:background="@android:color/transparent"
             android:backgroundTint="@color/black"
             android:clickable="true"
-            android:elevation="10dp"
+            android:elevation="30dp"
             android:fadingEdge="vertical"
             android:outlineAmbientShadowColor="@color/black"
             android:outlineSpotShadowColor="@color/black"
-            android:translationZ="10dp"
+            android:translationZ="30dp"
             app:srcCompat="@drawable/gobtn" />
 
 

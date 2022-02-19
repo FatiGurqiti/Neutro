@@ -42,6 +42,7 @@ class Debts_Fragment : Fragment() {
         var label = ArrayList<String?>()
         var name = ArrayList<String?>()
         var mail = ArrayList<String?>()
+        var time = ArrayList<String?>()
 
         val color = arrayOf("#de495d","#6d32f8","#0c97fa","#00ffc9")
 
@@ -58,6 +59,7 @@ class Debts_Fragment : Fragment() {
                     label = document.get("label") as ArrayList<String?>
                     name = document.get("name") as ArrayList<String?>
                     mail = document.get("to") as ArrayList<String?>
+                    time = document.get("time") as ArrayList<String?>
 
                     Log.d(TAG, "amount: ${amount}")
 
@@ -72,7 +74,6 @@ class Debts_Fragment : Fragment() {
                         val boldface = resources.getFont(R.font.plusjakartatexbold)
 
 
-                        val randomColor = Random.nextInt(0, 4)
                         //Create  CardView
                         val Card = context?.let { CardView(it) }
                         Card!!.setLayoutParams(
@@ -83,7 +84,7 @@ class Debts_Fragment : Fragment() {
                         )
                         Card.radius = 18F
                         Card.setContentPadding(25, 25, 25, 25)
-                        Card.setCardBackgroundColor(Color.parseColor(color[randomColor])) //Set Background color randomly
+                        Card.setCardBackgroundColor(Color.parseColor("#32cd32"))
                         Card.resources.getDrawable(R.drawable.black_background)
                         Card.cardElevation = 8F
                         Card.maxCardElevation = 12F
@@ -98,27 +99,27 @@ class Debts_Fragment : Fragment() {
 
 
                         //Create Name Text
-                        val Contact_ = TextView(context)
-                        Contact_?.textSize = 20f
-                        Contact_?.text = name.get(i)
-                        Contact_.setLayoutParams(
+                        val Name = TextView(context)
+                        Name?.textSize = 25f
+                        Name?.text = name.get(i)
+                        Name.setLayoutParams(
                             RelativeLayout.LayoutParams(
                                 RelativeLayout.LayoutParams.MATCH_PARENT,
                                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                             )
                         )
 
-                        Contact_.setGravity(Gravity.CENTER);
-                        Contact_.setTypeface(boldface)
-                        Contact_.setTranslationZ(20F)
-                        Contact_.setTextColor(Color.WHITE)
-                        Card.addView(Contact_)
+                        Name.setGravity(Gravity.CENTER);
+                        Name.setTypeface(boldface)
+                        Name.setTranslationZ(20F)
+                        Name.setTextColor(Color.WHITE)
+                        Card.addView(Name)
 
 
                         //Create Amount Text
                         var Amount = TextView(context)
                         Amount.text = amount.get(i).toString()
-                        Amount.textSize = 55f
+                        Amount.textSize = 35f
                         Amount.setTextColor(Color.WHITE)
                         Amount.setGravity(Gravity.START)
                         Amount.setLayoutParams(
@@ -127,7 +128,7 @@ class Debts_Fragment : Fragment() {
                                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                             )
                         )
-                        setMargins(Amount, 1, ((Card.height) *.2).toInt(), (sizewidth * .8).toInt(), 1)
+                        setMargins(Amount, (sizewidth * .05).toInt(), (j * sizeheight *.07).toInt(), (sizewidth * .7).toInt(), 1)
                         Card.addView(Amount)
 
 
@@ -142,13 +143,35 @@ class Debts_Fragment : Fragment() {
                                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                             )
                         )
-
                         Label.setGravity(Gravity.START);
                         Label.setTypeface(face)
                         Label.setTranslationZ(18F)
-                        Label.setPadding((sizewidth * .3).toInt(),0,0,0)
-                        setMargins(Label,(sizewidth *.1).toInt(),(sizeheight * .04).toInt(),1,1)
+                        setMargins(Label,(sizewidth *.52).toInt(),(sizeheight * .07).toInt(),1,1)
                         Card.addView(Label)
+
+                        //Create Time Text
+                        val Time = TextView(context)
+                        Time.textSize = 14f
+                        Time?.text = time.get(i)
+                        Time.setTextColor(Color.WHITE)
+                        Time.setLayoutParams(
+                            RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.MATCH_PARENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                            )
+                        )
+
+                        Time.setGravity(Gravity.CENTER)
+                        Time.setTypeface(face)
+                        Time.setTranslationZ(18F)
+                        setMargins(
+                            Time,
+                            (sizewidth * .07).toInt(),
+                            (sizeheight * .165).toInt(),
+                            0,
+                            0
+                        )
+                        Card.addView(Time)
 
 
                     }

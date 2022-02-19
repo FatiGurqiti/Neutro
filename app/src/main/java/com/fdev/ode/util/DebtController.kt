@@ -4,6 +4,8 @@ import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class DebtController {
 
@@ -69,10 +71,16 @@ class DebtController {
         var toArray = ArrayList<String?>()
         var nameArray = ArrayList<String?>()
         var labelArray = ArrayList<String?>()
+        var timeArray = ArrayList<String?>()
         var amountArray = ArrayList<Long?>()
+
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val formatted = current.format(formatter)
 
         val ToWhom:String
         val user: String
+        val time = formatted.toString()
         if(type == "Recivements")
         {
              user = Firebase.auth.currentUser?.email.toString()
@@ -94,12 +102,14 @@ class DebtController {
                     toArray = document.get("to") as ArrayList<String?>
                     nameArray = document.get("name") as ArrayList<String?>
                     labelArray  = document.get("label") as ArrayList<String?>
+                    timeArray = document.get("time") as ArrayList<String?>
                     amountArray = document.get("amount") as ArrayList<Long?>
 
                     //add data to it
                     toArray.add(ToWhom)
                     nameArray.add(name)
                     labelArray.add(label)
+                    timeArray.add(time)
                     amountArray.add(amount)
 
                     //update the data
@@ -117,6 +127,10 @@ class DebtController {
 
                     db.collection(type)
                         .document(user)
+                        .update("time",timeArray)
+
+                    db.collection(type)
+                        .document(user)
                         .update("amount",amountArray)
 
                 }
@@ -127,13 +141,15 @@ class DebtController {
                     toArray.add(ToWhom)
                     nameArray.add(name)
                     labelArray.add(label)
+                    timeArray.add(time)
                     amountArray.add(amount)
 
                     var debthash = hashMapOf(
                         "to" to toArray,
                         "name" to nameArray,
                         "amount" to amountArray,
-                        "label" to labelArray
+                        "label" to labelArray,
+                        "time" to timeArray
                     )
 
                     db.collection(type)
