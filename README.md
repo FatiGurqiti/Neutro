@@ -49,9 +49,7 @@ To add new data to the cloud, program creates an Arraylist for the data and chec
 
 If the user doesn't have previous data simpy, add current data to an Array List and create a collection. 
 ```
-  else
-                {
-                    Log.d(TAG, "No Such document")
+
 
                     IDArray.add(id)
                     toArray.add(ToWhom)
@@ -72,9 +70,8 @@ If the user doesn't have previous data simpy, add current data to an Array List 
                     db.collection(type)
                         .document(user)
                         .set(debthash)
-                }
                 
-                ```
+```
 
 To have a better understanding, you can check codes on *DebtController* under util folder
 
