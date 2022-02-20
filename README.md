@@ -7,7 +7,7 @@
 - Kotlin
 - XML
 - Firebase
-- Android Studio
+- Android
 
 ![Image of Thumbnail](https://github.com/FatiGurqiti/Neutro/blob/master/images/Neutro.png)
 
