@@ -13,7 +13,7 @@
 
 ## Documentation
 
-The app uses [Firebase](https://firebase.google.com/), in order to be able to do the tasks simply, replace existing _google-services.json_.
+The app uses [Firebase](https://firebase.google.com/), in order to be able to do the tasks. Simply, replace existing _google-services.json_.
 
 
 ### Usage the app
