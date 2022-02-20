@@ -120,12 +120,12 @@ class Debts_Fragment : Fragment() {
 
                         //Create Amount Text
                         val Amount = TextView(context)
-                        Amount.text = amount.get(i).toString()
+                        Amount?.text = amount.get(i).toString()
                         Amount.textSize = 35f
                         Amount.setTextColor(Color.WHITE)
                         Amount.setGravity(Gravity.START)
-                        setMargins(Amount,0,(j *sizeheight * .3).toInt(),(j * sizewidth * .03).toInt(),0)
                         Card.addView(Amount)
+                        setMargins(Amount,0,(sizeheight * .07).toInt(),(sizewidth * .03).toInt(),0)
 
 
                         //Create Label Text
