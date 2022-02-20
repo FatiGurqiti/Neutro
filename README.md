@@ -62,15 +62,9 @@ To add new data to the cloud, program creates an Arraylist for the data and chec
 If the user doesn't have previous data simpy, add current data to an Array List and create a collection. 
 ```
                     IDArray.add(id) //Add data to ArrayList
-                    //And do the same for all data
 
                     var debthash = hashMapOf( //Create hashmap
-                        "id" to IDArray,
-                        "to" to toArray,
-                        "name" to nameArray,
-                        "amount" to amountArray,
-                        "label" to labelArray,
-                        "time" to timeArray
+                        "id" to IDArray
                     )
 
                     //Create document
@@ -80,6 +74,7 @@ If the user doesn't have previous data simpy, add current data to an Array List 
               
 ```
 
+This task is generally same for, adding or deleting debt,recievent and contact. <br>
 To have a better understanding, you can check codes on **DebtController** under util folder
 
 
