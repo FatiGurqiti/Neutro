@@ -74,11 +74,5 @@ If the user doesn't have previous data simpy, add current data to an Array List 
               
 ```
 
-This task is generally same for, adding or deleting debt,recievent and contact. <br>
-To have a better understanding, you can check codes on **DebtController** under util folder
-
-
-
-
-
-
+This task is generally same for; adding or deleting debt, recievent and contact. <br>
+To have a better understanding, you can check codes on **DebtController** under the **util** folder
