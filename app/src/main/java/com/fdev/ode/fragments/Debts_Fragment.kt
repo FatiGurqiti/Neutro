@@ -119,18 +119,12 @@ class Debts_Fragment : Fragment() {
 
 
                         //Create Amount Text
-                        var Amount = TextView(context)
+                        val Amount = TextView(context)
                         Amount.text = amount.get(i).toString()
                         Amount.textSize = 35f
                         Amount.setTextColor(Color.WHITE)
                         Amount.setGravity(Gravity.START)
-                        Amount.setLayoutParams(
-                            RelativeLayout.LayoutParams(
-                                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                            )
-                        )
-                        setMargins(Amount, (sizewidth * .05).toInt(), (j * sizeheight *.07).toInt(), (sizewidth * .7).toInt(), 1)
+                        setMargins(Amount,0,(j *sizeheight * .3).toInt(),(j * sizewidth * .03).toInt(),0)
                         Card.addView(Amount)
 
 

@@ -248,9 +248,6 @@ class Recivements_Fragment : Fragment() {
         //delete recivedement
         val user = user!!.email.toString()
 
-        var debtController = DebtController()
-        debtController.SubstractTotalDebt(amount.get(i)!!.toDouble(), user, "to-collect")
-
         amount.removeAt(i) //delete current amount
         id.removeAt(i) // delete current id
         label.removeAt(i) // delete current label
@@ -319,9 +316,6 @@ class Recivements_Fragment : Fragment() {
                         {
                             Log.d( TAG,"We Got it Boss: ${id.get(i)}" )
                             Log.d( TAG,"Here's the location: $i" )
-
-                            val debtController = DebtController()
-                            debtController.SubstractTotalDebt(amount.get(i)!!.toDouble(), EMAIL, "debt")
 
                             amount.removeAt(i) //delete located amount
                             id.removeAt(i) // delete located id

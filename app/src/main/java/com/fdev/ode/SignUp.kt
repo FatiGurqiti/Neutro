@@ -124,9 +124,7 @@ class SignUp : AppCompatActivity() {
         val user = hashMapOf(
             "username" to Username,
             "email" to Email,
-            "pin" to Pin,
-            "debt" to 0,
-            "to-collect" to 0
+            "pin" to Pin
         )
 
         db.collection("Users").document(Email).set(user)

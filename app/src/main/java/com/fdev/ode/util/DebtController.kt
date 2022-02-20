@@ -12,58 +12,6 @@ class DebtController {
 
     private val db = Firebase.firestore
 
-    //Adds Total debt
-    fun AddTotalDebt(amount: Double,to: String,update: String) {
-        var newDebt: Double //Works both for debt and to-collect depending on the update String
-        val TAG = "AddTotalDebt"
-        val docRef = db.collection("Debts").document(to)
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document.data != null) {
-                    //Get Old data
-                    Log.d(TAG, "DocumentSnapshot data: ${document.get(update)}")
-                    var currectDebt = document?.getDouble(update)
-                    if (currectDebt != null) {
-                        newDebt = currectDebt + amount
-                    } else newDebt = amount
-
-                    //Upload new Data
-                    db.collection("Users").document(to)
-                        .update(update, newDebt)
-
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
-    }
-
-     //Substract Total debt
-    fun SubstractTotalDebt(amount: Double,to: String,update: String){
-        var newDebt:Double //Works both for debt and to-collect depending on the update String
-        val TAG = "AddTotalDebt"
-        val docRef = db.collection("Users").document(to)
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document.data != null) {
-                    //Get Old data
-                    Log.d(TAG, "DocumentSnapshot data: ${document.get(update)}")
-                    var currectDebt = document?.getDouble(update)
-                    if (currectDebt != null) {
-                        newDebt = currectDebt - amount
-                    }
-                    else newDebt = amount
-
-                    //Upload new Data
-                    db.collection("Users").document(to)
-                        .update(update, newDebt)
-
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
-    }
 
     fun AddDebtAndReceivement(id: String, to: String,name: String, label: String,amount: Double,type: String) {
         //variable "type" stands for either debt or Receivement

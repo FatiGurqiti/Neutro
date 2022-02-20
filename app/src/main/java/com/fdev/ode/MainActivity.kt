@@ -124,10 +124,10 @@ class MainActivity : AppCompatActivity() {
         })
 
         AddDebtButton.setOnClickListener() {
-            var contact = Contactname?.text.toString()
-            var contactmail = Contactmail?.text.toString()
-            var amount = amountText?.text.toString()
-            var label = labelText?.text.toString()
+            val contact = Contactname?.text.toString()
+            val contactmail = Contactmail?.text.toString()
+            val amount = amountText?.text.toString()
+            val label = labelText?.text.toString()
 
             if (TextUtils.isEmpty(contact) || TextUtils.isEmpty(amount) || TextUtils.isEmpty(label)) {
                 //Input is null
@@ -555,8 +555,7 @@ class MainActivity : AppCompatActivity() {
 
                     val contacthash = hashMapOf(
                         "contact" to myContact,
-                        "contactName" to ContactNames,
-                        "user" to user?.email.toString()
+                        "contactName" to ContactNames
                     )
                     db.collection("Contacts").document(to)
                         .set(contacthash)
