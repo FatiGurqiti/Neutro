@@ -2,7 +2,7 @@
 
 **Neutro** is an Android application built with Kotlin that serves as person to person debt tracker.
 
-##Technologies
+## Technologies
 
 -Kotlin
 -XML
