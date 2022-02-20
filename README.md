@@ -44,13 +44,53 @@ These datas are beign kept on Firestore as *ArrayLists*
 
 To add new data to the cloud, program creates an Arraylist for the data and checks if the user has previous data by runing a query. If the user has previous data; get them all to new Array Lists and add current data on top of the Array List and update the Array List on Firebase with new Array List. 
 
+```
+    IDArray = document.get("id") as ArrayList<String?>
+                    toArray = document.get("to") as ArrayList<String?>
+                    nameArray = document.get("name") as ArrayList<String?>
+                    labelArray  = document.get("label") as ArrayList<String?>
+                    timeArray = document.get("time") as ArrayList<String?>
+                    amountArray = document.get("amount") as ArrayList<Double?>
+
+                    //add data to it
+                    IDArray.add(id)
+                    toArray.add(ToWhom)
+                    nameArray.add(name)
+                    labelArray.add(label)
+                    timeArray.add(time)
+                    amountArray.add(amount)
+
+                    //update the data
+
+                    db.collection(type)
+                        .document(user)
+                        .update("id",IDArray)
+
+                    db.collection(type)
+                        .document(user)
+                        .update("to",toArray)
+
+                    db.collection(type)
+                        .document(user)
+                        .update("name",nameArray)
+
+                    db.collection(type)
+                        .document(user)
+                        .update("label",labelArray)
+
+                    db.collection(type)
+                        .document(user)
+                        .update("time",timeArray)
+
+                    db.collection(type)
+                        .document(user)
+                        .update("amount",amountArray)
+```
 
 <br>
 
 If the user doesn't have previous data simpy, add current data to an Array List and create a collection. 
 ```
-
-
                     IDArray.add(id)
                     toArray.add(ToWhom)
                     nameArray.add(name)
@@ -70,10 +110,10 @@ If the user doesn't have previous data simpy, add current data to an Array List 
                     db.collection(type)
                         .document(user)
                         .set(debthash)
-                
+              
 ```
 
-To have a better understanding, you can check codes on *DebtController* under util folder
+To have a better understanding, you can check codes on **DebtController** under util folder
 
 
 
