@@ -16,7 +16,7 @@
 The app uses [Firebase](https://firebase.google.com/), in order to be able to do the tasks. Simply, replace existing _google-services.json_.
 
 
-### Usage the app
+## Usage of app
 
 When opening the app, simply create your account or log in if you already have one. Account tasks are the same as [Lay](https://github.com/FatiGurqiti/Lay). You may check it out for more detail.
 
@@ -34,9 +34,11 @@ Once the task is completed, the app will refresh the page to be able to show the
 <br>
 
 These datas are beign kept on Firestore as *ArrayLists*
+<br>
 ![Image of Firebase](https://github.com/FatiGurqiti/Neutro/blob/master/images/Firebase.png)  
+<br>
 
-### Explanation of hard tasks
+## Explanation of hard tasks
 
 ![Image of Explanation](https://github.com/FatiGurqiti/Neutro/blob/master/images/Explenation.png)
 
