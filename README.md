@@ -18,8 +18,13 @@ The app uses [Firebase](https://firebase.google.com/), in order to be able to do
 
 ### Usage the app
 
-When opening the app, simply create your account or log in if you already have one. Account tasks are the same as [Lay](https://github.com/FatiGurqiti/Lay) for more detail you may check it.
+When opening the app, simply create your account or log in if you already have one. Account tasks are the same as [Lay](https://github.com/FatiGurqiti/Lay). You may check it out for more detail.
 
 As mentioned in the title, Neutro helps you to keep track of debt. To do that you have to have contacts. Click on _Add Contact_ and enter e-mail adress of a _Neutro_ user. The app will not allow you enter any other e-mail than one that is registered to _Neutro_. 
-
 You may view or delete your contacts on _Profile_ activity, which you can access by clicking _profile_ Image Button on the top right corner of Main Activity.
+
+![Image of Contacts] (https://github.com/FatiGurqiti/Neutro/blob/master/images/Add%20Debt.png)
+
+It is mandatory to add debt only to user's existing contacts so that the user cannot add debt to non-existing object. To do so, click on _Add Debt_ button on Main Activity and select a _Contact_. Enter _Amount_ and _Label_ and finish the task by clicking "ADD" button.
+
+
