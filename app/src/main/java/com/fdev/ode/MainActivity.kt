@@ -216,7 +216,8 @@ class MainActivity : AppCompatActivity() {
         AddContactBtn.setOnClickListener()
         {
 
-            var odeNO = odenumber.text.toString()
+            val odeNO = odenumber.text.toString()
+            val userMail =user?.email.toString()
 
             if (TextUtils.isEmpty(odeNO)) {
                 //Input is null
@@ -225,9 +226,11 @@ class MainActivity : AppCompatActivity() {
 
                 progressBar?.visibility = View.VISIBLE
                 //Add this to your Contact
-                if (odeNO != user?.email.toString()) {
+                if (odeNO != userMail) {
+
 
                     contactCheck(odeNO)
+
                     blackfilter.visibility = View.INVISIBLE
                     contactCard.visibility = View.INVISIBLE
                     odenumber.setText("")
@@ -394,13 +397,19 @@ class MainActivity : AppCompatActivity() {
     private fun contactCheck(Email: String) {
 
         val TAG = "AddContact"
+        val userMail = user!!.email.toString()
         val docRef = db.collection("Users").document(Email)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     Log.d(TAG, "DocumentSnapshot data: ${document.data}")
                     //This user exists
-                    contactAdd(Email)
+
+
+                    contactAdd(Email,userMail)  // add contact to this user
+                    contactAdd(userMail,Email) // add this to contact
+
+
                     Toast.makeText(this, "Contact added successfully", Toast.LENGTH_SHORT).show()
                     //Refresh page
                     finish()
@@ -420,15 +429,13 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    private fun contactAdd(email: String) {
+    private fun contactAdd(email: String, to: String) {
 
-        var myContact = ArrayList<String?>() //email adress
+        var myContact = ArrayList<String?>() //email address
         var ContactNames = ArrayList<String?>() //contact's name
 
         val TAG = "AddNewContact"
-        val docRef: DocumentReference = db.collection("Contacts").document(
-            user!!.email.toString()
-        )
+        val docRef: DocumentReference = db.collection("Contacts").document(to)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
@@ -439,21 +446,19 @@ class MainActivity : AppCompatActivity() {
 
                     //Get name of the current contanct
                     db.collection("Users")
-                        .document(email)
+                        .document(to)
                         .get()
                         .addOnSuccessListener { document ->
                             if (document.data != null) {
 
-                                var username = document.get("username")
+                                val username = document.get("username")
                                 ContactNames.add(username.toString())
 
                                 myContact.add(email)
-                                updateContact(myContact, email)
+                                updateContact(myContact, email,to)
 
                             }
                         }
-
-
 
 
                 } else {
@@ -461,7 +466,7 @@ class MainActivity : AppCompatActivity() {
 
                     // There is no previus data. So, simply add the current one
                     myContact.add(email)
-                    addFreshData(myContact, email)
+                    addFreshData(myContact, email,to)
 
 
                 }
@@ -471,16 +476,16 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    private fun updateContact(myContact: ArrayList<String?>, email: String) {
+    private fun updateContact(myContact: ArrayList<String?>, email: String,to: String) {
         //  Update contact
         preventDublicatedData(myContact)
-        db.collection("Contacts").document(user?.email.toString())
+        db.collection("Contacts").document(to)
             .update("contact", myContact)
 
         var ContactNames = ArrayList<String?>()
         val TAG = "updateContact"
 
-        val docRef = db.collection("Contacts").document(user?.email.toString())
+        val docRef = db.collection("Contacts").document(to)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
@@ -502,7 +507,7 @@ class MainActivity : AppCompatActivity() {
                                 preventDublicatedData(ContactNames)
 
                                 //Update the data
-                                db.collection("Contacts").document(user?.email.toString())
+                                db.collection("Contacts").document(to)
                                     .update("contactName", ContactNames)
 
                                 finish()
@@ -536,9 +541,9 @@ class MainActivity : AppCompatActivity() {
         return List
     }
 
-    private fun addFreshData(myContact: ArrayList<String?>, Email: String) {
+    private fun addFreshData(myContact: ArrayList<String?>, Email: String, to: String) {
 
-        var ContactNames = ArrayList<String?>()
+        val ContactNames = ArrayList<String?>()
         val TAG = "AddFreshData"
         val docRef = db.collection("Users").document(Email)
         docRef.get()
@@ -553,7 +558,7 @@ class MainActivity : AppCompatActivity() {
                         "contactName" to ContactNames,
                         "user" to user?.email.toString()
                     )
-                    db.collection("Contacts").document(user?.email.toString())
+                    db.collection("Contacts").document(to)
                         .set(contacthash)
 
                 } else {
