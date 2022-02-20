@@ -40,7 +40,7 @@ These datas are beign kept on Firestore as *ArrayLists*
 
 To have a better understanding, you can check codes on *DebtController* under util folder
 
-![Image of Explanation](https://github.com/FatiGurqiti/Neutro/blob/master/images/Neutro.png)
+![Image of Explanation](https://github.com/FatiGurqiti/Neutro/blob/master/images/Explenation.png)
 
 
 
