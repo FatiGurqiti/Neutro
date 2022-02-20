@@ -38,6 +38,10 @@ These datas are beign kept on Firestore as *ArrayLists*
 
 ### Explanation of hard tasks
 
+To have a better understanding, you can check codes on *DebtController* under util folder
+
+![Image of Explanation](https://github.com/FatiGurqiti/Neutro/blob/master/images/Neutro.png)
+
 
 
 
