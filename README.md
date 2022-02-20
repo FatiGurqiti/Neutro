@@ -4,10 +4,10 @@
 
 ## Technologies
 
--Kotlin
--XML
--Firebase
--Android Studio
+- Kotlin
+- XML
+- Firebase
+- Android Studio
 
 ![Image of Thumbnail](https://github.com/FatiGurqiti/Neutro/blob/master/images/Neutro.png)
 
