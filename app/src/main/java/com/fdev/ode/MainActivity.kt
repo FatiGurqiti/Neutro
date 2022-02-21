@@ -323,8 +323,9 @@ class MainActivity : AppCompatActivity() {
                     if (myContact.size != 0) { //User has contacts
 
                     for (i in 0..myContact.size -1 ) {
+                        if(myContact.get(i) != null && ContactNames.get(i) != null ){
 
-                        var j = i + 1;
+                        val j = i + 1;
 
                         val sizeheight = getScreenHeight(this) * 0.5
                         val sizewidth = getScreenWidth(this)
@@ -334,7 +335,7 @@ class MainActivity : AppCompatActivity() {
 
                         val Contact_Name = TextView(this)
                         Contact_Name?.textSize = 20f
-                        Contact_Name?.text = ContactNames.get(i)
+                        Contact_Name?.text = ContactNames.get(i).toString()
                         Contact_Name.setLayoutParams(
                             RelativeLayout.LayoutParams(
                                 RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -354,13 +355,13 @@ class MainActivity : AppCompatActivity() {
 
                         Contact_Name.setOnClickListener()
                         {
-                            setContactNameAndMail(ContactNames.get(i)!!, myContact.get(i)!!)
+                            setContactNameAndMail(ContactNames.get(i).toString(), myContact.get(i).toString())
 
                         }
 
                         val Contact_Mail = TextView(this)
                         Contact_Mail.textSize = 20f
-                        Contact_Mail.text = myContact.get(i)
+                        Contact_Mail.text = myContact.get(i).toString()
                         Contact_Mail.setTypeface(face)
                         Contact_Mail.setTranslationZ(20F)
                         Contact_Mail.setLayoutParams(
@@ -381,6 +382,7 @@ class MainActivity : AppCompatActivity() {
                         Contact_Mail.setOnClickListener() {
                             setContactNameAndMail(ContactNames.get(i)!!, myContact.get(i)!!)
                         }
+                    }
                     }
                 }
 
@@ -413,10 +415,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "Contact added successfully", Toast.LENGTH_SHORT).show()
                     //Refresh page
                     finish()
-                    startActivity(
-                        getIntent(),
-                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
-                    )
+                    startActivity(getIntent(),ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
 
                 } else {
                     Log.d(TAG, "No such document")
@@ -602,6 +601,7 @@ class MainActivity : AppCompatActivity() {
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.widthPixels
     }
+
 
 
 

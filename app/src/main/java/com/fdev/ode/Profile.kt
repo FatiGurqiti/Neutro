@@ -102,7 +102,7 @@ class Profile : AppCompatActivity() {
 
                             val Contact_Name = TextView(this)
                             Contact_Name.textSize = 20f
-                            Contact_Name.text = ContactNames.get(i)
+                            Contact_Name.text = nullprotect(ContactNames.get(i).toString())
                             Contact_Name.setTypeface(boldface)
                             scrollLayout?.addView(Contact_Name)
                             setMargins(
@@ -115,7 +115,7 @@ class Profile : AppCompatActivity() {
 
                             val Contact_Mail = TextView(this)
                             Contact_Mail.textSize = 20f
-                            Contact_Mail.text = myContact.get(i)
+                            Contact_Mail.text = nullprotect(myContact.get(i).toString())
                             Contact_Mail.setTypeface(face)
                             scrollLayout?.addView(Contact_Mail)
                             setMargins(
@@ -214,6 +214,11 @@ class Profile : AppCompatActivity() {
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.widthPixels
+    }
+    fun nullprotect(value: String) :String
+    {
+        if(value == null) return ""
+        else return value
     }
 
 }

@@ -76,6 +76,10 @@ class Recivements_Fragment : Fragment() {
                     Log.d(TAG, amount.size.toString())
 
                     for (i in 0..amount.size - 1) {
+
+
+                        if (name.get(i) != null && label.get(i) != null && amount.get(i) != null && time.get(i) != null) {
+
                         var j = i + 1
                         val sizeheight = getScreenHeight()
                         val sizewidth = getScreenWidth() * 0.7
@@ -109,7 +113,7 @@ class Recivements_Fragment : Fragment() {
                         //Create Name Text
                         val Name = TextView(context)
                         Name.textSize = 25f
-                        Name?.text = name.get(i)
+                        Name?.text = name.get(i).toString()
                         Name.setLayoutParams(
                             RelativeLayout.LayoutParams(
                                 RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -121,14 +125,20 @@ class Recivements_Fragment : Fragment() {
                         Name.setTypeface(boldface)
                         Name.setTranslationZ(35F)
                         Name.setTextColor(Color.WHITE)
-                        setMargins( Name,(sizewidth * .07).toInt(),(sizeheight *.01).toInt(),0,0)
+                        setMargins(
+                            Name,
+                            (sizewidth * .07).toInt(),
+                            (sizeheight * .01).toInt(),
+                            0,
+                            0
+                        )
                         Card.addView(Name)
 
 
                         //Create Label Text
                         val Label = TextView(context)
                         Label.textSize = 16f
-                        Label?.text = label.get(i)
+                        Label?.text = label.get(i).toString()
                         Label.setTextColor(Color.WHITE)
                         Label.setLayoutParams(
                             RelativeLayout.LayoutParams(
@@ -155,13 +165,19 @@ class Recivements_Fragment : Fragment() {
                         Amount.setTextColor(Color.WHITE)
                         Amount.setGravity(Gravity.END)
                         Card.addView(Amount)
-                        setMargins(Amount,0,(sizeheight * .05).toInt(),(sizewidth * .03).toInt(),0)
+                        setMargins(
+                            Amount,
+                            0,
+                            (sizeheight * .05).toInt(),
+                            (sizewidth * .03).toInt(),
+                            0
+                        )
 
 
                         //Create Time Text
                         val Time = TextView(context)
                         Time.textSize = 14f
-                        Time?.text = time.get(i)
+                        Time?.text = time.get(i).toString()
                         Time.setTextColor(Color.WHITE)
                         Time.setLayoutParams(
                             RelativeLayout.LayoutParams(
@@ -209,13 +225,13 @@ class Recivements_Fragment : Fragment() {
                             }
                             //Delete Debt
                             Deletebutton?.setOnClickListener() {
-                                deleteRecievement(amount, id, label, name, mail,time, i)
-
+                                deleteRecievement(amount, id, label, name, mail, time, i)
 
 
                             }
                         }
 
+                    }
 
                     }
 

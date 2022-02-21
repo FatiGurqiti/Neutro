@@ -65,6 +65,10 @@ class Debts_Fragment : Fragment() {
                     Log.d(TAG, amount.size.toString())
 
                     for (i in 0..amount.size - 1) {
+
+                        if (name.get(i) != null && label.get(i) != null && amount.get(i) != null && time.get(i) != null)
+                        {
+
                         val j = i + 1
                         totalDebt += amount[i]!!.toDouble()
 
@@ -99,11 +103,10 @@ class Debts_Fragment : Fragment() {
                         scrollLayout.addView(Card)
 
 
-
                         //Create Name Text
                         val Name = TextView(context)
                         Name?.textSize = 25f
-                        Name?.text = name.get(i)
+                        Name?.text = name.get(i).toString()
                         Name.setLayoutParams(
                             RelativeLayout.LayoutParams(
                                 RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -125,7 +128,13 @@ class Debts_Fragment : Fragment() {
                         Amount.setTextColor(Color.WHITE)
                         Amount.setGravity(Gravity.START)
                         Card.addView(Amount)
-                        setMargins(Amount,0,(sizeheight * .07).toInt(),(sizewidth * .03).toInt(),0)
+                        setMargins(
+                            Amount,
+                            0,
+                            (sizeheight * .07).toInt(),
+                            (sizewidth * .03).toInt(),
+                            0
+                        )
 
 
                         //Create Label Text
@@ -142,13 +151,19 @@ class Debts_Fragment : Fragment() {
                         Label.setGravity(Gravity.START);
                         Label.setTypeface(face)
                         Label.setTranslationZ(18F)
-                        setMargins(Label,(sizewidth *.52).toInt(),(sizeheight * .07).toInt(),1,1)
+                        setMargins(
+                            Label,
+                            (sizewidth * .52).toInt(),
+                            (sizeheight * .07).toInt(),
+                            1,
+                            1
+                        )
                         Card.addView(Label)
 
                         //Create Time Text
                         val Time = TextView(context)
                         Time.textSize = 14f
-                        Time?.text = time.get(i)
+                        Time?.text = time.get(i).toString()
                         Time.setTextColor(Color.WHITE)
                         Time.setLayoutParams(
                             RelativeLayout.LayoutParams(
@@ -168,7 +183,7 @@ class Debts_Fragment : Fragment() {
                             0
                         )
                         Card.addView(Time)
-
+                    }
 
                     }
 
@@ -204,6 +219,7 @@ class Debts_Fragment : Fragment() {
             p.setMargins(l, t, r, b)
             v.requestLayout()
         }
+
     }
 
 }
