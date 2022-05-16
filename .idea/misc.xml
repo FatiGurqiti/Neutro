@@ -25,10 +25,13 @@
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/layout/fragment_to_collect_.xml" value="0.1" />
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.124" />
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.27291666666666664" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.6984405517578125" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.3098958333333333" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

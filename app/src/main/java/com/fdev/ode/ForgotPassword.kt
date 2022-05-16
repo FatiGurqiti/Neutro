@@ -1,14 +1,15 @@
 package com.fdev.ode
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlin.concurrent.thread
 
 
 class ForgotPassword : AppCompatActivity() {
@@ -16,32 +17,48 @@ class ForgotPassword : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
 
+        val resetButton = findViewById<Button>(R.id.reset)
+        val resetPassword = findViewById<EditText>(R.id.emailreset)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        val forgotPassword = findViewById<TextView>(R.id.forgotPasswordText)
 
-        val afterText = findViewById<View>(R.id.aftertext) as TextView
-        val reset = findViewById<View>(R.id.reset) as Button
-        val resetpassword = findViewById<View>(R.id.emailreset) as EditText
-        val pb = findViewById<View>(R.id.progressBar) as ProgressBar
+        resetButton.setOnClickListener {
+            progressBar.visibility = View.VISIBLE
+
+            if (!resetPassword.text.isNullOrEmpty()) {
+                FirebaseAuth.getInstance().sendPasswordResetEmail(resetPassword.text.toString())
+                    .addOnCompleteListener { task ->
+
+                        if (task.isSuccessful) {
+
+                            resetButton.visibility = View.GONE
+                            resetPassword.visibility = View.GONE
+                            forgotPassword.text = "Please check your mailbox"
 
 
-        pb.visibility = View.INVISIBLE
-        afterText.visibility = View.INVISIBLE
+                            val toast = Toast.makeText(
+                                applicationContext,
+                                "An email is sent to your mailbox",
+                                Toast.LENGTH_SHORT
+                            )
+                            toast.show()
 
-        reset.setOnClickListener {
-            pb.visibility = View.VISIBLE
-            resetpassword.visibility = View.INVISIBLE
-            reset.isEnabled = false
-            afterText.visibility = View.VISIBLE
-            pb.visibility = View.INVISIBLE
-            val password = resetpassword.text.toString()
-            FirebaseAuth.getInstance().sendPasswordResetEmail(password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d("EmailStatus", "Email sent.")
-                    } else {
-                        Log.d("EmailStatus", "Email isn't sent")
-                        afterText.text = "No such user"
+                            Thread.sleep(2000L)
+                            startActivity(Intent(applicationContext, LogIn::class.java))
+
+
+                        } else {
+                            val toast = Toast.makeText(
+                                applicationContext,
+                                "No such user",
+                                Toast.LENGTH_SHORT
+                            )
+                            toast.show()
+                        }
                     }
-                }
+            }
+
+            progressBar.visibility = View.INVISIBLE
         }
     }
 }

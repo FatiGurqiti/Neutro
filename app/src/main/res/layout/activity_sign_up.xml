@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,12 +8,58 @@
     tools:context=".SignUp">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/blueBackground"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bluebg"
         tools:layout_editor_absoluteX="122dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBarinSignUp"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:elevation="12dp"
+        android:translationZ="12dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/signUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/plusjakartatextregular"
+        android:text="Signing up?"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/plusjakartatextregular"
+        android:lineSpacingExtra="10dp"
+        android:text="Dude, thank you! \nI won't decipoint you!"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUp" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -21,114 +67,131 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="200dp"
         android:layout_marginRight="30dp"
-        android:background="@color/white"
         android:elevation="10dp"
         android:outlineAmbientShadowColor="@color/black"
         android:outlineSpotShadowColor="@color/black"
         android:translationZ="10dp"
-        app:cardCornerRadius="25dp">
+        app:cardCornerRadius="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/loginTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:clickable="true"
-            android:elevation="11dp"
-            android:fontFamily="@font/plusjakartatextregular"
-            android:text="Login"
-            android:textSize="28sp"
-            android:translationZ="11dp" />
-
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="130dp"
-            android:clickable="true"
-            android:fontFamily="@font/plusjakartatextregular"
-            android:text="Sign Up"
-            android:textAlignment="textEnd"
-            android:textColor="#4b51ff"
-            android:textSize="28sp" />
+            android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/editTextTextUsernameinSignup"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/inputbg"
-            android:fontFamily="@font/plusjakartatextregular"
-            android:ems="10"
-            android:maxLength="16"
-            android:hint="Username"
-            android:inputType="textEmailAddress"
-            android:paddingLeft="20dp"
-            android:textColor="@color/white"
-            android:textColorHint="#60FFFFFF" />
+            <TextView
+                android:id="@+id/loginTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:elevation="11dp"
+                android:fontFamily="@font/plusjakartatextregular"
+                android:text="Login"
+                android:textSize="28sp"
+                android:translationZ="11dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="130dp"
+                android:clickable="true"
+                android:fontFamily="@font/plusjakartatextregular"
+                android:text="Sign Up"
+                android:textAlignment="textEnd"
+                android:textColor="#4b51ff"
+                android:textSize="28sp"
+                app:layout_constraintStart_toEndOf="@+id/loginTxt"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editTextTextUsernameinSignup"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/inputbg"
+                android:ems="10"
+                android:fontFamily="@font/plusjakartatextregular"
+                android:hint="Username"
+                android:inputType="textEmailAddress"
+                android:maxLength="16"
+                android:paddingLeft="20dp"
+                android:textColor="@color/white"
+                android:textColorHint="#60FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/loginTxt" />
 
 
-        <EditText
-            android:id="@+id/editTextTextEmailAddressinSignup"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="180dp"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/inputbg"
-            android:fontFamily="@font/plusjakartatextregular"
-            android:ems="10"
-            android:hint="E-mail"
-            android:inputType="textEmailAddress"
-            android:paddingLeft="20dp"
-            android:textColor="@color/white"
-            android:textColorHint="#60FFFFFF" />
+            <EditText
+                android:id="@+id/editTextTextEmailAddressinSignup"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/inputbg"
+                android:ems="10"
+                android:fontFamily="@font/plusjakartatextregular"
+                android:hint="E-mail"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="20dp"
+                android:textColor="@color/white"
+                android:textColorHint="#60FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextTextUsernameinSignup" />
 
-        <EditText
-            android:id="@+id/editTextNumberPasswordinSignup"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="260dp"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/inputbg"
-            android:fontFamily="@font/plusjakartatextregular"
-            android:ems="10"
-            android:maxLength="6"
-            android:hint="Pin"
-            android:inputType="numberPassword"
-            android:paddingLeft="20dp"
-            android:textColor="@color/white"
-            android:textColorHint="#60FFFFFF" />
+            <EditText
+                android:id="@+id/editTextNumberPasswordinSignup"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/inputbg"
+                android:ems="10"
+                android:fontFamily="@font/plusjakartatextregular"
+                android:hint="Pin"
+                android:inputType="numberPassword"
+                android:maxLength="6"
+                android:paddingLeft="20dp"
+                android:textColor="@color/white"
+                android:textColorHint="#60FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddressinSignup" />
 
-        <ImageButton
-            android:id="@+id/SignBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="260dp"
-            android:layout_marginTop="340dp"
-            android:background="@android:color/transparent"
-            android:clickable="true"
-            app:srcCompat="@drawable/gobtn" />
+            <ImageButton
+                android:id="@+id/SignBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/transparent"
+                android:backgroundTint="@color/black"
+                android:clickable="true"
+                android:elevation="30dp"
+                android:fadingEdge="vertical"
+                android:outlineAmbientShadowColor="@color/black"
+                android:outlineSpotShadowColor="@color/black"
+                android:translationZ="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextNumberPasswordinSignup"
+                app:srcCompat="@drawable/gobtn" />
 
-        <ProgressBar
-            android:id="@+id/progressBarinSignUp"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="150dp"
-            android:layout_marginLeft="125dp"
-            android:visibility="invisible"
-
-            />
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 
@@ -142,34 +205,9 @@
         android:layout_marginBottom="23dp"
         android:fontFamily="@font/plusjakartatextregular"
         android:text="fdev"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="20dp"
-        android:text="Signing Up?"
-        android:fontFamily="@font/plusjakartatextregular"
-        android:textColor="@color/white"
-        android:textSize="40sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="100dp"
-        android:lineSpacingExtra="10dp"
-        android:fontFamily="@font/plusjakartatextregular"
-        android:text="Dude, thank you! \nI won't decipoint you!"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
