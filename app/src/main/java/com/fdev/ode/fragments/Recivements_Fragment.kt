@@ -4,33 +4,28 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
 import com.fdev.ode.BaseClass
 import com.fdev.ode.MainActivity
 import com.fdev.ode.R
-import com.fdev.ode.util.DebtController
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlin.random.Random
 
 class Recivements_Fragment : Fragment() {
 
-    lateinit var scrollLayout: RelativeLayout
-
-    private var BlackFilter: ImageView? = null
-    private var AreYouSureCard: CardView? = null
-    private var Deletebutton: Button? = null
-    private var DontDeletebutton: Button? = null
-    private val db = Firebase.firestore
-    private val user = Firebase.auth.currentUser
-
     val baseClass = BaseClass()
+    lateinit var scrollLayout: RelativeLayout
+    private lateinit var blackFilter: ImageView
+    private lateinit var areYouSureCard: CardView
+    private lateinit var deletebutton: Button
+    private lateinit var dontDeletebutton: Button
+    private var db = Firebase.firestore
+    private var user = Firebase.auth.currentUser
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,13 +37,11 @@ class Recivements_Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        scrollLayout = view.findViewById(R.id.Scroll_RelativeofRecivements)
-        BlackFilter = view.findViewById(R.id.blackfilterinRecivements)
-        AreYouSureCard = view.findViewById(R.id.deleteDebtCardinRecivements)
-        Deletebutton = view.findViewById(R.id.deleteDebtBtninRecivements)
-        DontDeletebutton = view.findViewById(R.id.notDeleteDebtBtninRecivements)
-
-        val TAG = "LoadRecievements"
+        scrollLayout = view.findViewById(R.id.receivementsRelativeLayout)
+        blackFilter = view.findViewById(R.id.receivementsBlackFilter)
+        areYouSureCard = view.findViewById(R.id.receivementsDeleteDebtCard)
+        deletebutton = view.findViewById(R.id.receivementsDeleteDebtBtn)
+        dontDeletebutton = view.findViewById(R.id.receivementsNotDeleteDebtBtn)
 
         var amount = ArrayList<Long?>()
         var id = ArrayList<String?>()
@@ -62,10 +55,6 @@ class Recivements_Fragment : Fragment() {
             .addOnSuccessListener { document ->
                 if (document.data != null) {
 
-                    Log.d(
-                        TAG,
-                        "DocumentSnapshot data: ${document.get("amount") as ArrayList<String?>}"
-                    )
                     amount = document?.get("amount") as ArrayList<Long?>
                     id = document?.get("id") as ArrayList<String?>
                     label = document?.get("label") as ArrayList<String?>
@@ -73,180 +62,155 @@ class Recivements_Fragment : Fragment() {
                     mail = document?.get("to") as ArrayList<String?>
                     time = document?.get("time") as ArrayList<String?>
 
-                    Log.d(TAG, "amount: ${amount}")
+                    for (i in amount.indices) {
+                        if (name[i] != null &&
+                            label[i] != null &&
+                            amount[i] != null &&
+                            time[i] != null
+                        ) {
+                            var j = i + 1
+                            val sizeHeight = baseClass.getScreenHeight(requireActivity())
+                            val sizeWidth = baseClass.getScreenWidth(requireActivity()) * 0.7
+                            val font = resources.getFont(R.font.plusjakartatextregular)
+                            val boldFont = resources.getFont(R.font.plusjakartatexbold)
 
-                    Log.d(TAG, amount.size.toString())
-
-                    for (i in 0..amount.size - 1) {
-
-
-                        if (name.get(i) != null && label.get(i) != null && amount.get(i) != null && time.get(i) != null) {
-
-                        var j = i + 1
-                        val sizeheight = getScreenHeight()
-                        val sizewidth = getScreenWidth() * 0.7
-
-                        val face = resources.getFont(R.font.plusjakartatextregular)
-                        val boldface = resources.getFont(R.font.plusjakartatexbold)
-
-                        //Create  CardView
-                        val Card = context?.let { CardView(it) }
-                        Card!!.setLayoutParams(
-                            RelativeLayout.LayoutParams(
-                                RelativeLayout.LayoutParams.MATCH_PARENT,
-                                RelativeLayout.LayoutParams.WRAP_CONTENT
+                            //Create  CardView
+                            val cardView = context?.let { CardView(it) }
+                            cardView!!.setLayoutParams(
+                                RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT
+                                )
                             )
-                        )
-                        Card.radius = 18F
-                        Card.setContentPadding(25, 25, 25, 25)
-                        Card.setCardBackgroundColor(Color.parseColor(("#c71585")))
-                        Card.resources.getDrawable(R.drawable.black_background)
-                        Card.cardElevation = 8F
-                        Card.maxCardElevation = 12F
-                        scrollLayout.addView(Card)
-                        setMargins(
-                            Card,
-                            (sizewidth * .1).toInt(),
-                            ((i * sizeheight) * 0.35).toInt(),
-                            (sizewidth * .1).toInt(),
-                            (sizewidth * .1).toInt(),
-                        )
-
-                        //Create Name Text
-                        val Name = TextView(context)
-                        Name.textSize = 25f
-                        Name?.text = name.get(i).toString()
-                        Name.setLayoutParams(
-                            RelativeLayout.LayoutParams(
-                                RelativeLayout.LayoutParams.MATCH_PARENT,
-                                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                            cardView.radius = 18F
+                            cardView.setContentPadding(25, 25, 25, 25)
+                            cardView.setCardBackgroundColor(Color.parseColor(("#c71585")))
+                            cardView.resources.getDrawable(R.drawable.black_background)
+                            cardView.cardElevation = 8F
+                            cardView.maxCardElevation = 12F
+                            scrollLayout.addView(cardView)
+                            baseClass.setMargins(
+                                cardView,
+                                (sizeWidth * .1).toInt(),
+                                ((i * sizeHeight) * 0.35).toInt(),
+                                (sizeWidth * .1).toInt(),
+                                (sizeWidth * .1).toInt(),
                             )
-                        )
 
-                        Name.setGravity(Gravity.START);
-                        Name.setTypeface(boldface)
-                        Name.setTranslationZ(35F)
-                        Name.setTextColor(Color.WHITE)
-                        setMargins(
-                            Name,
-                            (sizewidth * .07).toInt(),
-                            (sizeheight * .01).toInt(),
-                            0,
-                            0
-                        )
-                        Card.addView(Name)
-
-
-                        //Create Label Text
-                        val Label = TextView(context)
-                        Label.textSize = 16f
-                        Label?.text = label.get(i).toString()
-                        Label.setTextColor(Color.WHITE)
-                        Label.setLayoutParams(
-                            RelativeLayout.LayoutParams(
-                                RelativeLayout.LayoutParams.MATCH_PARENT,
-                                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                            val nameText = TextView(context)
+                            nameText.textSize = 25f
+                            nameText?.text = name.get(i).toString()
+                            nameText.setLayoutParams(
+                                RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                )
                             )
-                        )
-                        Label.setGravity(Gravity.START);
-                        Label.setTypeface(face)
-                        Label.setTranslationZ(18F)
-                        setMargins(
-                            Label,
-                            (sizewidth * .07).toInt(),
-                            (sizeheight * .08).toInt(),
-                            (sizewidth * .60).toInt(),
-                            10
-                        )
-                        Card.addView(Label)
 
-                        //Create Amount Text
-                        val Amount = TextView(context)
-                        Amount?.text = amount.get(i).toString()
-                        Amount.textSize = 50f
-                        Amount.setTextColor(Color.WHITE)
-                        Amount.setGravity(Gravity.END)
-                        Card.addView(Amount)
-                        setMargins(
-                            Amount,
-                            0,
-                            (sizeheight * .05).toInt(),
-                            (sizewidth * .03).toInt(),
-                            0
-                        )
-
-
-                        //Create Time Text
-                        val Time = TextView(context)
-                        Time.textSize = 14f
-                        Time?.text = time.get(i).toString()
-                        Time.setTextColor(Color.WHITE)
-                        Time.setLayoutParams(
-                            RelativeLayout.LayoutParams(
-                                RelativeLayout.LayoutParams.MATCH_PARENT,
-                                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                            nameText.setGravity(Gravity.START);
+                            nameText.setTypeface(boldFont)
+                            nameText.setTranslationZ(35F)
+                            nameText.setTextColor(Color.WHITE)
+                            baseClass.setMargins(
+                                nameText,
+                                (sizeWidth * .07).toInt(),
+                                (sizeHeight * .01).toInt(),
+                                0,
+                                0
                             )
-                        )
-                        Time.setGravity(Gravity.START)
-                        Time.setTypeface(face)
-                        Time.setTranslationZ(18F)
-                        setMargins(
-                            Time,
-                            (sizewidth * .07).toInt(),
-                            (sizeheight * .165).toInt(),
-                            0,
-                            0
-                        )
-                        Card.addView(Time)
+                            cardView.addView(nameText)
 
-                        val Delete = ImageButton(context)
-                        Delete.setImageResource(R.drawable.white_trash);
-                        Delete.setBackgroundColor(Color.TRANSPARENT)
-                        Delete.setTranslationZ(18F)
-                        Card.addView(Delete)
-                        setMargins(
-                            Delete,
-                            (sizewidth * .01).toInt(),
-                            (sizeheight * .15).toInt(),
-                            0,
-                            0
-                        )
+                            val labelText = TextView(context)
+                            labelText.textSize = 16f
+                            labelText?.text = label[i].toString()
+                            labelText.setTextColor(Color.WHITE)
+                            labelText.setLayoutParams(
+                                RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                )
+                            )
+                            labelText.setGravity(Gravity.START);
+                            labelText.setTypeface(font)
+                            labelText.setTranslationZ(18F)
+                            baseClass.setMargins(
+                                labelText,
+                                (sizeWidth * .07).toInt(),
+                                (sizeHeight * .08).toInt(),
+                                (sizeWidth * .60).toInt(),
+                                10
+                            )
+                            cardView.addView(labelText)
 
+                            val amountText = TextView(context)
+                            amountText?.text = amount[i].toString()
+                            amountText.textSize = 50f
+                            amountText.setTextColor(Color.WHITE)
+                            amountText.setGravity(Gravity.END)
+                            cardView.addView(amountText)
+                            baseClass.setMargins(
+                                amountText,
+                                0,
+                                (sizeHeight * .05).toInt(),
+                                (sizeWidth * .03).toInt(),
+                                0
+                            )
 
-                        // Confromation Buttons(Yes,No) must be inside of Delete(CardView) in order to get the correct index
-                        Delete.setOnClickListener()
-                        {
-                            BlackFilter?.visibility = View.VISIBLE
-                            AreYouSureCard?.visibility = View.VISIBLE
+                            val timeText = TextView(context)
+                            timeText.textSize = 14f
+                            timeText?.text = time[i].toString()
+                            timeText.setTextColor(Color.WHITE)
+                            timeText.setLayoutParams(
+                                RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                )
+                            )
+                            timeText.setGravity(Gravity.START)
+                            timeText.setTypeface(font)
+                            timeText.setTranslationZ(18F)
+                            baseClass.setMargins(
+                                timeText,
+                                (sizeWidth * .07).toInt(),
+                                (sizeHeight * .165).toInt(),
+                                0,
+                                0
+                            )
+                            cardView.addView(timeText)
 
-                            //Don't Delete
-                            DontDeletebutton?.setOnClickListener()
+                            val deleteText = ImageButton(context)
+                            deleteText.setImageResource(R.drawable.white_trash);
+                            deleteText.setBackgroundColor(Color.TRANSPARENT)
+                            deleteText.setTranslationZ(18F)
+                            cardView.addView(deleteText)
+                            baseClass.setMargins(
+                                deleteText,
+                                (sizeWidth * .01).toInt(),
+                                (sizeHeight * .15).toInt(),
+                                0,
+                                0
+                            )
+
+                            deleteText.setOnClickListener()
                             {
-                                BlackFilter?.visibility = View.INVISIBLE
-                                AreYouSureCard?.visibility = View.INVISIBLE
-                            }
-                            //Delete Debt
-                            Deletebutton?.setOnClickListener() {
-                                deleteRecievement(amount, id, label, name, mail, time, i)
+                                blackFilter.visibility = View.VISIBLE
+                                areYouSureCard.visibility = View.VISIBLE
 
+                                dontDeletebutton.setOnClickListener()
+                                {
+                                    blackFilter.visibility = View.INVISIBLE
+                                    areYouSureCard.visibility = View.INVISIBLE
+                                }
 
+                                deletebutton.setOnClickListener() {
+                                    deleteRecievement(amount, id, label, name, mail, time, i)
+
+                                }
                             }
                         }
-
                     }
-
-                    }
-
-                } else {
-                    Log.d(TAG, "No such document")
-
                 }
             }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
-
-
     }
 
     private fun deleteRecievement(
@@ -259,19 +223,17 @@ class Recivements_Fragment : Fragment() {
         i: Int
     ) {
 
+        deleteDebt(amount, id, label, name, mail, time, i)
 
-        //delete Debt
-        deleteDebt(amount, id, label, name, mail,time, i)   // since i is in loop and firebase is working asynchronous it if mandatory to call the delete function here in order to use the same date
-
-        //delete recivedement
+        //delete receivement
         val user = user!!.email.toString()
 
-        amount.removeAt(i) //delete current amount
-        id.removeAt(i) // delete current id
-        label.removeAt(i) // delete current label
-        name.removeAt(i) // delete current name
-        mail.removeAt(i) // delete current mail
-        time.removeAt(i) // delete current time
+        amount.removeAt(i)
+        id.removeAt(i)
+        label.removeAt(i)
+        name.removeAt(i)
+        mail.removeAt(i)
+        time.removeAt(i)
 
         //Delete Recievemnets
         delete("Recivements", user, "amount", amount)
@@ -280,8 +242,6 @@ class Recivements_Fragment : Fragment() {
         delete("Recivements", user, "name", name)
         delete("Recivements", user, "to", mail)
         delete("Recivements", user, "time", time)
-
-
     }
 
     private fun deleteDebt(
@@ -293,15 +253,8 @@ class Recivements_Fragment : Fragment() {
         time: ArrayList<String?>,
         i: Int
     ) {
-
-
-        val EMAIL = mail.get(i).toString()
-        val ID = id.get(i).toString()
-
-        val TAG = "DeleteDebt"
-
-        Log.d( TAG,"Local Email: ${EMAIL}" )
-        Log.d( TAG,"Local Id: ${ID}" )
+        val email = mail.get(i).toString()
+        val idIndex = id.get(i).toString()
 
         var amount = ArrayList<Long?>()
         var id = ArrayList<String?>()
@@ -311,15 +264,11 @@ class Recivements_Fragment : Fragment() {
         var time = ArrayList<String?>()
 
         //Get the debts
-        val docRef = db.collection("Debts").document(EMAIL)
+        val docRef = db.collection("Debts").document(email)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
 
-                    Log.d(
-                        TAG,
-                        "DocumentSnapshot data: ${document.get("id") as ArrayList<String?>}"
-                    )
                     amount = document?.get("amount") as ArrayList<Long?>
                     id = document?.get("id") as ArrayList<String?>
                     label = document?.get("label") as ArrayList<String?>
@@ -327,79 +276,40 @@ class Recivements_Fragment : Fragment() {
                     mail = document?.get("to") as ArrayList<String?>
                     time = document?.get("time") as ArrayList<String?>
 
-                    for (i in 0..id.size -1)
-                    {
+                    for (j in id.indices) {
                         //Locate  the debt
-                        if(id.get(i)!!.equals(ID))
-                        {
-                            Log.d( TAG,"We Got it Boss: ${id.get(i)}" )
-                            Log.d( TAG,"Here's the location: $i" )
+                        if (id[i]!! == idIndex) {
 
-                            amount.removeAt(i) //delete located amount
-                            id.removeAt(i) // delete located id
-                            label.removeAt(i) // delete located label
-                            name.removeAt(i) // delete located name
-                            mail.removeAt(i) // delete located mail
-                            time.removeAt(i) // delete located time
+                            amount.removeAt(j) //delete located amount
+                            id.removeAt(j) // delete located id
+                            label.removeAt(j) // delete located label
+                            name.removeAt(j) // delete located name
+                            mail.removeAt(j) // delete located mail
+                            time.removeAt(j) // delete located time
 
-
-                            Log.d( TAG,"amount After remove: $amount" )
-                            Log.d( TAG,"id After remove: $id" )
-                            Log.d( TAG,"label After remove: $label" )
-                            Log.d( TAG,"name After remove: $name" )
-                            Log.d( TAG,"mail After remove: $mail" )
-                            Log.d( TAG,"time After remove: $time" )
-
-//                            //Delete Debt
-                            delete("Debts", EMAIL, "amount", amount)
-                            delete("Debts", EMAIL, "id", id)
-                            delete("Debts", EMAIL, "label", label)
-                            delete("Debts", EMAIL, "name", name)
-                            delete("Debts", EMAIL, "to", mail)
-                            delete("Debts", EMAIL, "time", time)
-
+                            //Delete Debt
+                            delete("Debts", email, "amount", amount)
+                            delete("Debts", email, "id", id)
+                            delete("Debts", email, "label", label)
+                            delete("Debts", email, "name", name)
+                            delete("Debts", email, "to", mail)
+                            delete("Debts", email, "time", time)
 
                             val intent = Intent(context, MainActivity::class.java)
-                            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
+                            startActivity(
+                                intent,
+                                ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
+                            )
 
                         }
                     }
-
-
                 }
             }
-
-
-
     }
 
     fun delete(Collection: String, Document: String, Field: String, Array: ArrayList<*>) {
         db.collection(Collection)
             .document(Document)
             .update(Field, Array)
-    }
-
-
-    fun getScreenWidth(): Int {
-        val display: Display = requireActivity().windowManager.defaultDisplay
-        val screenWidth: Int = display.getWidth()
-
-        return screenWidth
-    }
-
-    fun getScreenHeight(): Int {
-        val display: Display = requireActivity().windowManager.defaultDisplay
-        val screenHeight: Int = display.getHeight()
-
-        return screenHeight
-    }
-
-
-    fun setMargins(v: View, l: Int, t: Int, r: Int, b: Int) {
-        if (v.getLayoutParams() is ViewGroup.MarginLayoutParams) {
-            val p = v.getLayoutParams() as ViewGroup.MarginLayoutParams
-            p.setMargins(l, t, r, b)
-            v.requestLayout()
-        }
     }
 }

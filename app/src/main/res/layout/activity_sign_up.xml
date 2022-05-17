@@ -17,7 +17,7 @@
         tools:layout_editor_absoluteX="122dp" />
 
     <ProgressBar
-        android:id="@+id/progressBarinSignUp"
+        android:id="@+id/signUpProgressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -110,7 +110,7 @@
                 app:layout_constraintStart_toEndOf="@+id/loginTxt" />
 
             <EditText
-                android:id="@+id/editTextTextUsernameinSignup"
+                android:id="@+id/signUpUsernameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_centerHorizontal="true"
@@ -132,7 +132,7 @@
 
 
             <EditText
-                android:id="@+id/editTextTextEmailAddressinSignup"
+                android:id="@+id/signUpEmailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_centerHorizontal="true"
@@ -149,10 +149,10 @@
                 android:textColorHint="#60FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextUsernameinSignup" />
+                app:layout_constraintTop_toBottomOf="@+id/signUpUsernameEditText" />
 
             <EditText
-                android:id="@+id/editTextNumberPasswordinSignup"
+                android:id="@+id/signUpPinEditText"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_centerHorizontal="true"
@@ -170,10 +170,10 @@
                 android:textColorHint="#60FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddressinSignup" />
+                app:layout_constraintTop_toBottomOf="@+id/signUpEmailEditText" />
 
             <ImageButton
-                android:id="@+id/SignBtn"
+                android:id="@+id/signupBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -187,7 +187,7 @@
                 android:outlineSpotShadowColor="@color/black"
                 android:translationZ="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextNumberPasswordinSignup"
+                app:layout_constraintTop_toBottomOf="@+id/signUpPinEditText"
                 app:srcCompat="@drawable/gobtn" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

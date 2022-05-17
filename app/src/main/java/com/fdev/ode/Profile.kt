@@ -6,10 +6,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -21,10 +18,10 @@ import com.google.firebase.ktx.Firebase
 class Profile : AppCompatActivity() {
 
     private val baseClass = BaseClass()
-    private var BlackFilter: ImageView? = null
-    private var AreYouSureCard: CardView? = null
-    private var Deletebutton: Button? = null
-    private var DontDeletebutton: Button? = null
+    private var blackFilter: ImageView? = null
+    private var areYouSureCard: CardView? = null
+    private var deleteButton: Button? = null
+    private var dontDeleteButton: Button? = null
     private lateinit var logo: ImageView
 
     var scrollLayout: RelativeLayout? = null
@@ -37,20 +34,17 @@ class Profile : AppCompatActivity() {
 
         val username = findViewById<TextView>(R.id.username)
         val usermail = findViewById<TextView>(R.id.userMail)
-        logo = findViewById(R.id.logoinProfile)
+        logo = findViewById(R.id.profileLogo)
 
-        scrollLayout = findViewById(R.id.Scroll_Relative)
-        BlackFilter = findViewById(R.id.blackfilterinProfile)
-        AreYouSureCard = findViewById(R.id.deleteContactCard)
-        Deletebutton = findViewById(R.id.deleteContactBtn)
-        DontDeletebutton = findViewById(R.id.notDeleteContactBtn)
+        scrollLayout = findViewById(R.id.scroll_Relative)
+        blackFilter = findViewById(R.id.profileBlackFilter)
+        areYouSureCard = findViewById(R.id.deleteContactCard)
+        deleteButton = findViewById(R.id.deleteContactBtn)
+        dontDeleteButton = findViewById(R.id.notDeleteContactBtn)
 
+        loadContacts()
 
-        LoadContacts()
-
-        if (user != null) {
-            usermail.text = user.email
-        }
+        if (user != null) usermail.text = user.email
 
         //Set Username
         db.collection("Users").document(user?.email.toString()).get()
@@ -70,110 +64,84 @@ class Profile : AppCompatActivity() {
 
     }
 
-    private fun LoadContacts() {
-        //Load Contacts
-        val TAG = "ViewContact"
+    private fun loadContacts() {
         val docRef = db.collection("Contacts").document(user?.email.toString())
         var myContact = ArrayList<String?>()
         var ContactNames = ArrayList<String?>()
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-
-                    Log.d(
-                        TAG,
-                        "DocumentSnapshot data: ${document.get("contact") as ArrayList<String?>}"
-                    )
                     myContact = document.get("contact") as ArrayList<String?>
                     ContactNames = document.get("contactName") as ArrayList<String?>
-                    Log.d(TAG, "myContact: ${myContact}")
-
-                    Log.d(TAG, myContact.size.toString())
 
                     if (myContact.size != 0) { //User has contacts
-
                         for (i in myContact.indices) {
 
-                            val sizeheight = getScreenHeight(this) * 0.5
-                            val sizewidth = getScreenWidth(this)
+                            val sizeHeight = baseClass.getScreenHeight(this) * 0.5
+                            val sizeWidth = baseClass.getScreenWidth(this)
+                            val font = resources.getFont(R.font.plusjakartatextregular)
+                            val boldFont = resources.getFont(R.font.plusjakartatexbold)
 
-                            val face = resources.getFont(R.font.plusjakartatextregular)
-                            val boldface = resources.getFont(R.font.plusjakartatexbold)
-
-                            val Contact_Name = TextView(this)
-                            Contact_Name.textSize = 20f
-                            Contact_Name.text = nullprotect(ContactNames.get(i).toString())
-                            Contact_Name.setTypeface(boldface)
-                            scrollLayout?.addView(Contact_Name)
-                            setMargins(
-                                Contact_Name,
-                                (sizewidth * 0.1).toInt(),
-                                ((i * sizeheight) * 0.2).toInt(),
+                            val contactNameText = TextView(this)
+                            contactNameText.textSize = 20f
+                            contactNameText.text = ContactNames[i].toString()
+                            contactNameText.typeface = boldFont
+                            scrollLayout?.addView(contactNameText)
+                            baseClass.setMargins(
+                                contactNameText,
+                                (sizeWidth * 0.1).toInt(),
+                                ((i * sizeHeight) * 0.2).toInt(),
                                 25,
                                 1
                             )
 
-                            val Contact_Mail = TextView(this)
-                            Contact_Mail.textSize = 20f
-                            Contact_Mail.text = nullprotect(myContact.get(i).toString())
-                            Contact_Mail.setTypeface(face)
-                            scrollLayout?.addView(Contact_Mail)
-                            setMargins(
-                                Contact_Mail,
-                                (sizewidth * 0.1).toInt(),
-                                (((i * sizeheight) * 0.2) + ((sizeheight) * 0.08)).toInt(),
+                            val contactMailText = TextView(this)
+                            contactMailText.textSize = 20f
+                            contactMailText.text = myContact[i].toString()
+                            contactMailText.typeface = font
+                            scrollLayout?.addView(contactMailText)
+                            baseClass.setMargins(
+                                contactMailText,
+                                (sizeWidth * 0.1).toInt(),
+                                (((i * sizeHeight) * 0.2) + ((sizeHeight) * 0.08)).toInt(),
                                 25,
                                 1
                             )
 
-                            val Delete = ImageButton(this)
-                            Delete.setImageResource(R.drawable.delete);
-                            Delete.setBackgroundColor(Color.TRANSPARENT)
-                            scrollLayout?.addView(Delete)
-                            setMargins(
-                                Delete,
-                                (sizewidth * 0.8).toInt(),
-                                (((i * sizeheight) * 0.2)).toInt(),
+                            val deleteText = ImageButton(this)
+                            deleteText.setImageResource(R.drawable.delete);
+                            deleteText.setBackgroundColor(Color.TRANSPARENT)
+                            scrollLayout?.addView(deleteText)
+                            baseClass.setMargins(
+                                deleteText,
+                                (sizeWidth * 0.8).toInt(),
+                                (((i * sizeHeight) * 0.2)).toInt(),
                                 0,
                                 0
                             )
 
-
-                            // Confromation Buttons(Yes,No) must be inside of Delete(CardView) in order to get the correct index
-                            Delete.setOnClickListener()
+                            deleteText.setOnClickListener()
                             {
-                                BlackFilter?.visibility = View.VISIBLE
-                                AreYouSureCard?.visibility = View.VISIBLE
+                                blackFilter?.visibility = View.VISIBLE
+                                areYouSureCard?.visibility = View.VISIBLE
                                 baseClass.setViewsDisabled(listOf(logo))
 
-                                //Don't Delete
-                                DontDeletebutton?.setOnClickListener()
+                                dontDeleteButton?.setOnClickListener()
                                 {
-                                    BlackFilter?.visibility = View.INVISIBLE
-                                    AreYouSureCard?.visibility = View.INVISIBLE
+                                    blackFilter?.visibility = View.INVISIBLE
+                                    areYouSureCard?.visibility = View.INVISIBLE
                                     baseClass.setViewsEnabled(listOf(logo))
                                 }
-                                //Delete Contact
-                                Deletebutton?.setOnClickListener() {
+
+                                deleteButton?.setOnClickListener() {
                                     deleteContact(myContact, ContactNames, i)
                                     baseClass.setViewsEnabled(listOf(logo))
                                 }
                             }
-
-
                         }
                     }
-
-
-                } else {
-                    Log.d(TAG, "No such document")
-
                 }
             }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
-
     }
 
     private fun deleteContact(
@@ -184,7 +152,6 @@ class Profile : AppCompatActivity() {
 
         myContact.removeAt(i) //delete mail address
         ContactNames.removeAt(i) // delete name
-
 
         //Update the data with new ArrayList
         db.collection("Contacts").document(user?.email.toString())
@@ -197,31 +164,4 @@ class Profile : AppCompatActivity() {
         startActivity(getIntent(), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
 
     }
-
-
-    fun setMargins(v: View, l: Int, t: Int, r: Int, b: Int) {
-        if (v.getLayoutParams() is MarginLayoutParams) {
-            val p = v.getLayoutParams() as MarginLayoutParams
-            p.setMargins(l, t, r, b)
-            v.requestLayout()
-        }
-    }
-
-    fun getScreenHeight(context: Context?): Int {
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        return displayMetrics.heightPixels
-    }
-
-    fun getScreenWidth(context: Context?): Int {
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        return displayMetrics.widthPixels
-    }
-
-    fun nullprotect(value: String): String {
-        if (value == null) return ""
-        else return value
-    }
-
 }

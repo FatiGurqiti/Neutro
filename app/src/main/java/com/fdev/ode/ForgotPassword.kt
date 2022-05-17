@@ -15,26 +15,22 @@ class ForgotPassword : AppCompatActivity() {
 
         val baseClass = BaseClass()
         val resetButton = findViewById<Button>(R.id.reset)
-        val resetPassword = findViewById<EditText>(R.id.emailreset)
+        val resetPassword = findViewById<EditText>(R.id.emailReset)
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         val forgotPassword = findViewById<TextView>(R.id.forgotPasswordText)
-
 
         resetButton.setOnClickListener {
             progressBar.visibility = View.VISIBLE
 
             if (baseClass.isOnline(applicationContext)) {
-
                 if (!resetPassword.text.isNullOrEmpty()) {
                     FirebaseAuth.getInstance().sendPasswordResetEmail(resetPassword.text.toString())
                         .addOnCompleteListener { task ->
 
                             if (task.isSuccessful) {
-
                                 resetButton.visibility = View.GONE
                                 resetPassword.visibility = View.GONE
                                 forgotPassword.text = "Please check your mailbox"
-
 
                                 val toast = Toast.makeText(
                                     applicationContext,
@@ -46,7 +42,6 @@ class ForgotPassword : AppCompatActivity() {
                                 Thread.sleep(2000L)
                                 startActivity(Intent(applicationContext, LogIn::class.java))
 
-
                             } else {
                                 val toast = Toast.makeText(
                                     applicationContext,
@@ -57,11 +52,10 @@ class ForgotPassword : AppCompatActivity() {
                             }
                         }
                 }
-            }
-            else
-            {
-                Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show()
-            }
+            } else
+                Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT)
+                    .show()
+
             progressBar.visibility = View.INVISIBLE
         }
     }

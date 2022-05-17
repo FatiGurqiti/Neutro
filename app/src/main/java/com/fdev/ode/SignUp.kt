@@ -24,33 +24,31 @@ class SignUp : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
-        val progressBar = findViewById<ProgressBar>(R.id.progressBarinSignUp)
+        val progressBar = findViewById<ProgressBar>(R.id.signUpProgressBar)
         auth = Firebase.auth
+        val signUpBtn = findViewById<ImageButton>(R.id.signupBtn)
 
-        //SignUp
-        val SignUpButton = findViewById<ImageButton>(R.id.SignBtn)
-        SignUpButton.setOnClickListener {
+        signUpBtn.setOnClickListener {
 
             if (baseClass.isOnline(applicationContext)) {
                 progressBar.visibility = View.VISIBLE
 
-                val username = findViewById<EditText>(R.id.editTextTextUsernameinSignup)
-                val email = findViewById<EditText>(R.id.editTextTextEmailAddressinSignup)
-                val pin = findViewById<EditText>(R.id.editTextNumberPasswordinSignup)
+                val username = findViewById<EditText>(R.id.signUpUsernameEditText)
+                val email = findViewById<EditText>(R.id.signUpEmailEditText)
+                val pin = findViewById<EditText>(R.id.signUpPinEditText)
 
-                val Username = username.text.toString()
-                val Email = email.text.toString()
-                val Pin = pin.text.toString()
+                val usernameTxt = username.text.toString()
+                val emailTxt = email.text.toString()
+                val pinTxt = pin.text.toString()
 
-                if (TextUtils.isEmpty(Username)
-                    || TextUtils.isEmpty(Email)
-                    || TextUtils.isEmpty(Pin)
-                ) {
-                    //Inputs are empty
+                if (TextUtils.isEmpty(usernameTxt)
+                    || TextUtils.isEmpty(emailTxt)
+                    || TextUtils.isEmpty(pinTxt)
+                )
                     Toast.makeText(this, "Mind if you fill the inputs?", Toast.LENGTH_SHORT).show()
-                } else {
-                    //Inputs are filled
-                    if (Pin.length < 6) {
+
+                else {
+                    if (pinTxt.length < 6) {
                         Toast.makeText(
                             this,
                             "Pin should be at least 6 chacters",
@@ -59,7 +57,7 @@ class SignUp : AppCompatActivity() {
                             .show()
                     } else {
 
-                        val docRef = db.collection("Users").document(Email)
+                        val docRef = db.collection("Users").document(emailTxt)
 
                         docRef.get()
                             .addOnSuccessListener { document ->
@@ -72,8 +70,12 @@ class SignUp : AppCompatActivity() {
 
                                 } else { //User doesn't exist
 
-                                    CreateUser(Email, Pin)  //To create auth
-                                    UserData(Username, Email, Pin) //To save userdata to firestore
+                                    CreateUser(emailTxt, pinTxt)  //To create auth
+                                    UserData(
+                                        usernameTxt,
+                                        emailTxt,
+                                        pinTxt
+                                    ) //To save userdata to firestore
 
                                     Toast.makeText(
                                         this,
@@ -95,28 +97,19 @@ class SignUp : AppCompatActivity() {
         }
 
 
-        //Open Login Activity
-        val LoginTxt = findViewById<TextView>(R.id.loginTxt)
-        LoginTxt.setOnClickListener {
+        val loginTxt = findViewById<TextView>(R.id.loginTxt)
+        loginTxt.setOnClickListener {
             val intent = Intent(this, LogIn::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
-
-
     }
 
-
     private fun CreateUser(Email: String, Pin: String) {
-        var TAG = "CreateUserAuth"
         auth.createUserWithEmailAndPassword(Email, Pin)
             .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "createUserWithEmail:success")
-                    canclick = true
-                } else {
+                if (task.isSuccessful)  canclick = true
+                else {
                     // If sign in fails, display a message to the user.
-                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     canclick = false
                     Toast.makeText(
                         baseContext, "Authentication failed.",
@@ -127,13 +120,11 @@ class SignUp : AppCompatActivity() {
     }
 
     private fun UserData(Username: String, Email: String, Pin: String) {
-        // Create a new user with a first and last name
         val user = hashMapOf(
             "username" to Username,
             "email" to Email,
             "pin" to Pin
         )
-
         db.collection("Users").document(Email).set(user)
 
     }

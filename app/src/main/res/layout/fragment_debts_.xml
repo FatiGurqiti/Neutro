@@ -7,9 +7,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.Debts_Fragment">
 
-
     <ScrollView
-        android:id="@+id/Scroll_RelativeofDebts"
+        android:id="@+id/debtsScrollView"
         android:layout_width="match_parent"
         android:layout_height="614dp"
         android:layout_alignParentTop="true"
@@ -18,9 +17,8 @@
         android:paddingTop="30dp"
         android:paddingBottom="10dp">
 
-
         <RelativeLayout
-            android:id="@+id/Scroll_RelativeofContactList"
+            android:id="@+id/debtsContactList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">

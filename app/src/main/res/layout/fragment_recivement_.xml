@@ -16,7 +16,7 @@
         android:paddingBottom="10dp">
 
         <RelativeLayout
-            android:id="@+id/Scroll_RelativeofRecivements"
+            android:id="@+id/receivementsRelativeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -26,7 +26,7 @@
 
 
     <ImageView
-        android:id="@+id/blackfilterinRecivements"
+        android:id="@+id/receivementsBlackFilter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="-30dp"
@@ -37,7 +37,7 @@
 
     <!-- Delete Debt -->
     <androidx.cardview.widget.CardView
-        android:id="@+id/deleteDebtCardinRecivements"
+        android:id="@+id/receivementsDeleteDebtCard"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_marginLeft="30dp"
@@ -83,10 +83,10 @@
                 android:layout_height="1dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/notDeleteDebtBtninRecivements"/>
+                app:layout_constraintBottom_toTopOf="@+id/receivementsNotDeleteDebtBtn"/>
 
             <Button
-                android:id="@+id/notDeleteDebtBtninRecivements"
+                android:id="@+id/receivementsNotDeleteDebtBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -97,11 +97,11 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/deleteDebtBtninRecivements"
+                app:layout_constraintBottom_toTopOf="@+id/receivementsDeleteDebtBtn"
                 />
 
             <Button
-                android:id="@+id/deleteDebtBtninRecivements"
+                android:id="@+id/receivementsDeleteDebtBtn"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:backgroundTint="#E40031"
@@ -111,7 +111,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/notDeleteDebtBtninRecivements"
+                app:layout_constraintTop_toBottomOf="@+id/receivementsNotDeleteDebtBtn"
                 />
 
 

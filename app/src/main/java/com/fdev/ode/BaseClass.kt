@@ -23,7 +23,7 @@ class BaseClass {
 
     fun setMargins(v: View, l: Int, t: Int, r: Int, b: Int) {
         if (v.getLayoutParams() is ViewGroup.MarginLayoutParams) {
-            val p = v.getLayoutParams() as ViewGroup.MarginLayoutParams
+            val p = v.layoutParams as ViewGroup.MarginLayoutParams
             p.setMargins(l, t, r, b)
             v.requestLayout()
         }
@@ -33,6 +33,12 @@ class BaseClass {
         val displayMetrics = DisplayMetrics()
         activity.windowManager.getDefaultDisplay().getMetrics(displayMetrics)
         return displayMetrics.widthPixels
+    }
+
+    fun getScreenHeight(activity: Activity): Int {
+        val displayMetrics = DisplayMetrics()
+        activity.windowManager.getDefaultDisplay().getMetrics(displayMetrics)
+        return displayMetrics.heightPixels
     }
 
     fun setViewsDisabled(view : List<View>)

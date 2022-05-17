@@ -1,12 +1,9 @@
 package com.fdev.ode
 
 import android.app.ActivityOptions
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -28,63 +25,56 @@ class LogIn : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         val user = Firebase.auth.currentUser
-
+        val signUpBtn = findViewById<TextView>(R.id.signUpTxt)
+        val forgotPassword = findViewById<TextView>(R.id.forgotPassword)
+        val login = findViewById<ImageButton>(R.id.logoinBtn)
         progressBar = findViewById(R.id.progressBarInLogIn)
-        val SignUpbtn = findViewById<TextView>(R.id.SignUpTxt)
-        val forgotpassword = findViewById<TextView>(R.id.forgotPassword)
-        val LogIn = findViewById<ImageButton>(R.id.logoinBtn)
-        email = findViewById(R.id.Email)
-        pin = findViewById(R.id.password)
+        email = findViewById(R.id.loginEmail)
+        pin = findViewById(R.id.loginPassword)
 
-        if (user != null) {
+        if (user != null)
             email.setText(user.email.toString())
-        }
 
         progressBar.bringToFront()
         progressBar.visibility = View.INVISIBLE
 
-        forgotpassword.setOnClickListener()
+        forgotPassword.setOnClickListener()
         {
             val intent = Intent(this, ForgotPassword::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
-        SignUpbtn.setOnClickListener {
+        signUpBtn.setOnClickListener {
             progressBar.visibility = View.VISIBLE
             val intent = Intent(this, SignUp::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
             progressBar.visibility = View.INVISIBLE
         }
 
-        LogIn.setOnClickListener {
+        login.setOnClickListener {
             progressBar.visibility = View.VISIBLE
 
             if (baseClass.isOnline(applicationContext)) {
+                val emailTxt = email.text.toString()
+                val pinTxt = pin.text.toString()
 
-                val Email = email.text.toString()
-                val Pin = pin.text.toString()
-
-                if (TextUtils.isEmpty(Email)
-                    || TextUtils.isEmpty(Pin)
-                    || Email.length < 6
-                ) {
-                    //Inputs are empty
+                if (TextUtils.isEmpty(emailTxt)
+                    || TextUtils.isEmpty(pinTxt)
+                    || emailTxt.length < 6
+                )
                     Toast.makeText(this, "Mind if you fill the inputs?", Toast.LENGTH_SHORT).show()
-                } else {
-                    val TAG = "Login"
+                else {
 
                     auth = Firebase.auth
-                    auth.signInWithEmailAndPassword(Email, Pin)
+                    auth.signInWithEmailAndPassword(emailTxt, pinTxt)
                         .addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
                                 // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "signInWithEmail:success")
 
                                 val intent = Intent(this, MainActivity::class.java)
                                 startActivity(intent)
                             } else {
                                 // If sign in fails, display a message to the user.
-                                Log.w(TAG, "signInWithEmail:failure", task.exception)
                                 Toast.makeText(
                                     baseContext, "Authentication failed.",
                                     Toast.LENGTH_SHORT
@@ -92,14 +82,11 @@ class LogIn : AppCompatActivity() {
 
                             }
                         }
-
-
                 }
-            }
-            else
-            {
-                Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show()
-            }
+            } else
+                Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT)
+                    .show()
+
             progressBar.visibility = View.INVISIBLE
         }
 
@@ -108,12 +95,5 @@ class LogIn : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         progressBar.visibility = View.INVISIBLE
-    }
-
-    private fun isNetworkAvailable(): Boolean {
-        val connectivityManager =
-            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetworkInfo = connectivityManager.activeNetworkInfo
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected
     }
 }

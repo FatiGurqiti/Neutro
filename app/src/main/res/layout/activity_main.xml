@@ -9,7 +9,7 @@
 
 
     <ImageView
-        android:id="@+id/blackfilter"
+        android:id="@+id/blackFilter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="4dp"
@@ -18,7 +18,7 @@
         android:visibility="invisible" />
 
     <ImageView
-        android:id="@+id/secondblackfilter"
+        android:id="@+id/secondaryBlackFilter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="5dp"
@@ -27,7 +27,7 @@
         android:visibility="invisible" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/ContactListCard"
+        android:id="@+id/contactListCard"
         android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="400dp"
@@ -60,7 +60,7 @@
             />
 
         <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollViewofContactList"
+            android:id="@+id/contactListScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -72,7 +72,7 @@
 
 
             <RelativeLayout
-                android:id="@+id/Scroll_RelativeofContactList"
+                android:id="@+id/debtsContactList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -166,7 +166,7 @@
             />
 
         <EditText
-            android:id="@+id/AmountText"
+            android:id="@+id/amountText"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
@@ -184,7 +184,7 @@
             android:textColorHint="#60FFFFFF" />
 
         <EditText
-            android:id="@+id/LabelText"
+            android:id="@+id/labelText"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
@@ -202,7 +202,6 @@
             android:textColorHint="#60FFFFFF"
             />
 
-
         <Button
             android:id="@+id/addDebtBtnInCard"
             android:layout_width="match_parent"
@@ -216,7 +215,6 @@
             />
 
     </androidx.cardview.widget.CardView>
-
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab"
@@ -253,10 +251,9 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/tab"/>
 
-
     <!-- Add Contact -->
     <androidx.cardview.widget.CardView
-        android:id="@+id/addcontactCard"
+        android:id="@+id/addContactCard"
         android:layout_width="match_parent"
         android:visibility="invisible"
         android:layout_height="280dp"
@@ -300,7 +297,7 @@
             />
 
         <EditText
-            android:id="@+id/AddOdeNumber"
+            android:id="@+id/addNeutroNumber"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
@@ -314,7 +311,6 @@
             android:paddingLeft="20dp"
             android:textColor="@color/white"
             android:textColorHint="#60FFFFFF" />
-
 
         <Button
             android:id="@+id/addContactBtn"
@@ -331,7 +327,7 @@
     </androidx.cardview.widget.CardView>
 
     <ProgressBar
-        android:id="@+id/progressBarinMainActivity"
+        android:id="@+id/mainActivityProgressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -341,7 +337,7 @@
         />
 
     <ImageButton
-        android:id="@+id/profilebtn"
+        android:id="@+id/profileBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -360,7 +356,6 @@
         android:layout_marginTop="-12dp"
         app:cardBackgroundColor="#407BFF"
         app:cardCornerRadius="18dp">
-
 
         <TextView
             android:id="@+id/totalText"
