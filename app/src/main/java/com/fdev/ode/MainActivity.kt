@@ -1,13 +1,10 @@
 package com.fdev.ode
 
 import android.app.ActivityOptions
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.DisplayMetrics
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -45,22 +42,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        totalAmount = findViewById(R.id.debtText)
         val profile = findViewById<ImageButton>(R.id.profileBtn)
         val blackFilter = findViewById<ImageView>(R.id.blackFilter)
         val contactCard = findViewById<CardView>(R.id.addContactCard)
-        val ContactBtn = findViewById<ImageButton>(R.id.contactBtn)
+        val contactButton = findViewById<ImageButton>(R.id.contactBtn)
         val cancelContact = findViewById<ImageButton>(R.id.cancelContact)
         val addContactButton = findViewById<Button>(R.id.addContactBtn)
-
         val addDebtBtn = findViewById<Button>(R.id.addDebtBtnInCard)
         val debtBtn = findViewById<ImageButton>(R.id.addDebtBtn)
         val debtCard = findViewById<CardView>(R.id.addDebtCard)
         val cancelDebtCard = findViewById<ImageButton>(R.id.cancelDebtCard)
         val cancelContactList = findViewById<ImageButton>(R.id.cancelContactList)
-
         val dropDown = findViewById<ImageButton>(R.id.dropDownBtn)
-        val neturoNo = findViewById<EditText>(R.id.addNeutroNumber)
+        val neutroNr = findViewById<EditText>(R.id.addNeutroNumber)
 
         contactListCard = findViewById(R.id.contactListCard)
         contactName = findViewById(R.id.contactName)
@@ -68,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         amountText = findViewById(R.id.amountText)
         labelText = findViewById(R.id.labelText)
         totalText = findViewById(R.id.totalText)
-
+        totalAmount = findViewById(R.id.debtText)
         secondaryBlackFilter = findViewById(R.id.secondaryBlackFilter)
         progressBar = findViewById(R.id.mainActivityProgressBar)
 
@@ -106,7 +100,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        addDebtBtn.setOnClickListener() {
+        addDebtBtn.setOnClickListener {
             baseClass.setViewsDisabled(listOf(profile, debtBtn))
 
             val contact = contactName?.text.toString()
@@ -156,7 +150,7 @@ class MainActivity : AppCompatActivity() {
                 contactMail?.setText("")
                 amountText?.setText("")
                 labelText?.setText("")
-                ContactBtn.isEnabled = true
+                contactButton.isEnabled = true
                 debtBtn.isEnabled = true
                 progressBar?.visibility = View.INVISIBLE
                 finish()
@@ -164,7 +158,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        cancelContactList.setOnClickListener() {
+        cancelContactList.setOnClickListener {
             progressBar?.visibility = View.VISIBLE
             baseClass.setViewsEnabled(listOf(profile, debtBtn))
             secondaryBlackFilter?.visibility = View.INVISIBLE
@@ -175,16 +169,16 @@ class MainActivity : AppCompatActivity() {
         }
         cancelContactList.translationZ = 22F
 
-        debtBtn.setOnClickListener() {
+        debtBtn.setOnClickListener {
             progressBar?.visibility = View.VISIBLE
             baseClass.setViewsDisabled(listOf(profile, debtBtn))
             blackFilter.visibility = View.VISIBLE
             debtCard.visibility = View.VISIBLE
-            ContactBtn.isEnabled = false
+            contactButton.isEnabled = false
             progressBar?.visibility = View.INVISIBLE
         }
 
-        dropDown.setOnClickListener() {
+        dropDown.setOnClickListener {
             secondaryBlackFilter?.visibility = View.VISIBLE
             contactListCard?.visibility = View.VISIBLE
             amountText?.isEnabled = false
@@ -199,23 +193,23 @@ class MainActivity : AppCompatActivity() {
             contactMail?.setText("")
             amountText?.setText("")
             labelText?.setText("")
-            ContactBtn.isEnabled = true;
+            contactButton.isEnabled = true
             debtCard.visibility = View.INVISIBLE
             progressBar?.visibility = View.INVISIBLE
         }
 
-        ContactBtn.setOnClickListener() {
+        contactButton.setOnClickListener {
             progressBar?.visibility = View.VISIBLE
             baseClass.setViewsDisabled(listOf(profile, debtBtn))
             blackFilter.visibility = View.VISIBLE
             contactCard.visibility = View.VISIBLE
-            debtBtn.isEnabled = false;
+            debtBtn.isEnabled = false
             progressBar?.visibility = View.INVISIBLE
         }
 
         addContactButton.setOnClickListener()
         {
-            val neutroNo = neturoNo.text.toString()
+            val neutroNo = neutroNr.text.toString()
             val userMail = user?.email.toString()
 
             if (TextUtils.isEmpty(neutroNo))
@@ -228,7 +222,7 @@ class MainActivity : AppCompatActivity() {
 
                     blackFilter.visibility = View.INVISIBLE
                     contactCard.visibility = View.INVISIBLE
-                    neturoNo.setText("")
+                    neutroNr.setText("")
                     debtBtn.isEnabled = true
                     progressBar?.visibility = View.INVISIBLE
 
@@ -251,8 +245,8 @@ class MainActivity : AppCompatActivity() {
             baseClass.setViewsEnabled(listOf(profile, debtBtn))
             blackFilter.visibility = View.INVISIBLE
             contactCard.visibility = View.INVISIBLE
-            neturoNo.setText("")
-            debtBtn.isEnabled = true;
+            neutroNr.setText("")
+            debtBtn.isEnabled = true
             progressBar?.visibility = View.INVISIBLE
         }
 
@@ -265,7 +259,6 @@ class MainActivity : AppCompatActivity() {
 
 
     fun getDebtOrRecievement(type: String) {
-
         if (type == "Debts") totalText?.text = "Total Debt"
         else totalText?.setText("Total Receivement")
 
@@ -278,14 +271,12 @@ class MainActivity : AppCompatActivity() {
                     val valueArray: ArrayList<Double?> =
                         document.get("amount") as ArrayList<Double?>
                     var value = 0.0
-                    for (i in valueArray.indices) {
+                    // Add new data on top of old data
+                    for (i in valueArray.indices)
                         value += valueArray[i]!!.toDouble()
-                    }
                     totalAmount?.text = value.toString()
-
                 }
             }
-
     }
 
 
@@ -315,14 +306,12 @@ class MainActivity : AppCompatActivity() {
                                 val contactNameTxt = TextView(this)
                                 contactNameTxt.textSize = 20f
                                 contactNameTxt.text = contactNames.get(i).toString()
-                                contactNameTxt.setLayoutParams(
-                                    RelativeLayout.LayoutParams(
-                                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                                        RelativeLayout.LayoutParams.WRAP_CONTENT
-                                    )
+                                contactNameTxt.layoutParams = RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT
                                 )
-                                contactNameTxt.setTypeface(boldFont)
-                                contactNameTxt.setTranslationZ(20F)
+                                contactNameTxt.typeface = boldFont
+                                contactNameTxt.translationZ = 20F
                                 scrollLayout.addView(contactNameTxt)
                                 baseClass.setMargins(
                                     contactNameTxt,
@@ -335,8 +324,8 @@ class MainActivity : AppCompatActivity() {
                                 contactNameTxt.setOnClickListener()
                                 {
                                     setContactNameAndMail(
-                                        contactNames.get(i).toString(),
-                                        myContact.get(i).toString()
+                                        contactNames[i].toString(),
+                                        myContact[i].toString()
                                     )
 
                                 }
@@ -344,13 +333,11 @@ class MainActivity : AppCompatActivity() {
                                 val contactMailTxt = TextView(this)
                                 contactMailTxt.textSize = 20f
                                 contactMailTxt.text = myContact.get(i).toString()
-                                contactMailTxt.setTypeface(font)
-                                contactMailTxt.setTranslationZ(20F)
-                                contactMailTxt.setLayoutParams(
-                                    RelativeLayout.LayoutParams(
-                                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                                        RelativeLayout.LayoutParams.WRAP_CONTENT
-                                    )
+                                contactMailTxt.typeface = font
+                                contactMailTxt.translationZ = 20F
+                                contactMailTxt.layoutParams = RelativeLayout.LayoutParams(
+                                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                                    RelativeLayout.LayoutParams.WRAP_CONTENT
                                 )
                                 scrollLayout.addView(contactMailTxt)
                                 baseClass.setMargins(
@@ -361,7 +348,7 @@ class MainActivity : AppCompatActivity() {
                                     0
                                 )
 
-                                contactMailTxt.setOnClickListener() {
+                                contactMailTxt.setOnClickListener {
                                     setContactNameAndMail(contactNames.get(i)!!, myContact.get(i)!!)
                                 }
                             }
@@ -420,7 +407,7 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                 } else {
-                    // There is no previus data. So, simply add the current one
+                    // There is no previous data. So, simply add the current one
                     myContact.add(email)
                     addFreshData(myContact, email, to)
                 }
