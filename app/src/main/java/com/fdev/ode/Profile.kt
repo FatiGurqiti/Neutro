@@ -20,11 +20,12 @@ import com.google.firebase.ktx.Firebase
 
 class Profile : AppCompatActivity() {
 
-
+    private val baseClass = BaseClass()
     private var BlackFilter: ImageView? = null
     private var AreYouSureCard: CardView? = null
     private var Deletebutton: Button? = null
     private var DontDeletebutton: Button? = null
+    private lateinit var logo: ImageView
 
     var scrollLayout: RelativeLayout? = null
     private val db = Firebase.firestore
@@ -36,7 +37,7 @@ class Profile : AppCompatActivity() {
 
         val username = findViewById<TextView>(R.id.username)
         val usermail = findViewById<TextView>(R.id.userMail)
-        val logo = findViewById<ImageView>(R.id.logoinProfile)
+        logo = findViewById(R.id.logoinProfile)
 
         scrollLayout = findViewById(R.id.Scroll_Relative)
         BlackFilter = findViewById(R.id.blackfilterinProfile)
@@ -143,16 +144,19 @@ class Profile : AppCompatActivity() {
                             {
                                 BlackFilter?.visibility = View.VISIBLE
                                 AreYouSureCard?.visibility = View.VISIBLE
+                                baseClass.setViewsDisabled(listOf(logo))
 
                                 //Don't Delete
                                 DontDeletebutton?.setOnClickListener()
                                 {
                                     BlackFilter?.visibility = View.INVISIBLE
                                     AreYouSureCard?.visibility = View.INVISIBLE
+                                    baseClass.setViewsEnabled(listOf(logo))
                                 }
                                 //Delete Contact
                                 Deletebutton?.setOnClickListener() {
                                     deleteContact(myContact, ContactNames, i)
+                                    baseClass.setViewsEnabled(listOf(logo))
                                 }
                             }
 

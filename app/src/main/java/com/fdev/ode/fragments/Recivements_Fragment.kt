@@ -30,6 +30,7 @@ class Recivements_Fragment : Fragment() {
     private val db = Firebase.firestore
     private val user = Firebase.auth.currentUser
 
+    val baseClass = BaseClass()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,6 +41,7 @@ class Recivements_Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         scrollLayout = view.findViewById(R.id.Scroll_RelativeofRecivements)
         BlackFilter = view.findViewById(R.id.blackfilterinRecivements)
         AreYouSureCard = view.findViewById(R.id.deleteDebtCardinRecivements)

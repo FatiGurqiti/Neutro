@@ -9,14 +9,13 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.fdev.ode.fragments.Debts_Fragment
 import com.fdev.ode.fragments.FragmentAdapter
 import com.fdev.ode.util.DebtController
 import com.google.android.material.tabs.TabLayout
@@ -29,11 +28,10 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
+    private val baseClass = BaseClass()
     private val user = Firebase.auth.currentUser
     private val db = Firebase.firestore
     private val debtController = DebtController()
-
-    private var totalRecivable:Double = 0.0
 
     private var Contactname: EditText? = null
     private var Contactmail: EditText? = null
@@ -44,7 +42,6 @@ class MainActivity : AppCompatActivity() {
     private var labelText: EditText? = null
     private var TotalText: TextView? = null
     private var TotalAmount: TextView? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +64,6 @@ class MainActivity : AppCompatActivity() {
         val dropDown = findViewById<ImageButton>(R.id.dropDownBtn)
         val odenumber = findViewById<EditText>(R.id.AddOdeNumber)
 
-
         ContactlistCard = findViewById(R.id.ContactListCard)
         Contactname = findViewById(R.id.contactName)
         Contactmail = findViewById(R.id.contactMail)
@@ -78,19 +74,19 @@ class MainActivity : AppCompatActivity() {
         Secondblackfilter = findViewById(R.id.secondblackfilter)
         progressBar = findViewById(R.id.progressBarinMainActivity)
 
+        //receivements = findViewById(R.id.Scroll_RelativeofRecivements)
+
         val tab = findViewById<TabLayout>(R.id.tab)
         val viewpager2 = findViewById<ViewPager2>(R.id.viewPager2)
         val fragmentadapter: FragmentAdapter
 
-
-        var fm: FragmentManager = supportFragmentManager
+        val fm: FragmentManager = supportFragmentManager
         fragmentadapter = FragmentAdapter(fm, lifecycle)
         viewpager2.adapter = fragmentadapter
 
 
         GetDebtOrRecivement("Debts") //load debt amount by default
         loadContacts()
-
 
         //On Fragment change
         tab.addOnTabSelectedListener(object : OnTabSelectedListener {
@@ -124,6 +120,9 @@ class MainActivity : AppCompatActivity() {
         })
 
         AddDebtButton.setOnClickListener() {
+            baseClass.setViewsDisabled(listOf(profile,debtbtn))
+            Log.d("disabled","debt")
+
             val contact = Contactname?.text.toString()
             val contactmail = Contactmail?.text.toString()
             val amount = amountText?.text.toString()
@@ -170,6 +169,7 @@ class MainActivity : AppCompatActivity() {
 
         CancelContactList.setOnClickListener() {
             progressBar?.visibility = View.VISIBLE
+            baseClass.setViewsEnabled(listOf(profile,debtbtn))
             Secondblackfilter?.visibility = View.INVISIBLE
             ContactlistCard?.visibility = View.INVISIBLE
             amountText?.isEnabled = true
@@ -180,6 +180,7 @@ class MainActivity : AppCompatActivity() {
 
         debtbtn.setOnClickListener() {
             progressBar?.visibility = View.VISIBLE
+            baseClass.setViewsDisabled(listOf(profile,debtbtn))
             blackfilter.visibility = View.VISIBLE
             debtCard.visibility = View.VISIBLE
             ContactBtn.isEnabled = false;
@@ -195,6 +196,7 @@ class MainActivity : AppCompatActivity() {
 
         CanceldebtCard.setOnClickListener() {
             progressBar?.visibility = View.VISIBLE
+            baseClass.setViewsEnabled(listOf(profile,debtbtn))
             blackfilter.visibility = View.INVISIBLE
             Contactname?.setText("")
             Contactmail?.setText("")
@@ -207,6 +209,7 @@ class MainActivity : AppCompatActivity() {
 
         ContactBtn.setOnClickListener() {
             progressBar?.visibility = View.VISIBLE
+            baseClass.setViewsDisabled(listOf(profile,debtbtn))
             blackfilter.visibility = View.VISIBLE
             contactCard.visibility = View.VISIBLE
             debtbtn.isEnabled = false;
@@ -215,7 +218,6 @@ class MainActivity : AppCompatActivity() {
 
         AddContactBtn.setOnClickListener()
         {
-
             val odeNO = odenumber.text.toString()
             val userMail =user?.email.toString()
 
@@ -255,6 +257,7 @@ class MainActivity : AppCompatActivity() {
 
         CancelContact.setOnClickListener() {
             progressBar?.visibility = View.VISIBLE
+            baseClass.setViewsEnabled(listOf(profile,debtbtn))
             blackfilter.visibility = View.INVISIBLE
             contactCard.visibility = View.INVISIBLE
             odenumber.setText("")

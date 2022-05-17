@@ -35,4 +35,15 @@ class BaseClass {
         return displayMetrics.widthPixels
     }
 
+    fun setViewsDisabled(view : List<View>)
+    {
+        for (i in view.indices)
+            view[i].isEnabled = false
+    }
+    fun setViewsEnabled(view : List<View>)
+    {
+        for (i in view.indices)
+            view[i].isEnabled = true
+    }
+
 }
