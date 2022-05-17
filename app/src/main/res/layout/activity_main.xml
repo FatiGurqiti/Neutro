@@ -12,7 +12,7 @@
         android:id="@+id/blackfilter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="2dp"
+        android:elevation="4dp"
         android:src="@drawable/blackfilter"
         android:translationZ="12dp"
         android:visibility="invisible" />
@@ -89,7 +89,7 @@
         android:translationZ="16dp"
         android:elevation="16dp"
         android:background="@color/white"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         app:cardCornerRadius="18dp"
@@ -203,7 +203,7 @@
 
         <Button
             android:id="@+id/addDebtBtnInCard"
-            android:layout_width="380dp"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginBottom="-10dp"
             android:backgroundTint="#00C320"
@@ -235,7 +235,6 @@
             android:id="@+id/debtsTAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="Debts" />
 
 
@@ -250,8 +249,7 @@
         android:id="@+id/viewPager2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tab"
-        />
+        android:layout_below="@+id/tab"/>
 
 
     <!-- Add Contact -->
@@ -318,7 +316,7 @@
 
         <Button
             android:id="@+id/addContactBtn"
-            android:layout_width="380dp"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginBottom="-10dp"
             android:backgroundTint="#E40031"
@@ -443,15 +441,5 @@
             android:textColor="@color/white"
             android:textSize="18sp" />
 
-
     </androidx.cardview.widget.CardView>
-
-
-
-
-
-
-
-
-
 </RelativeLayout>

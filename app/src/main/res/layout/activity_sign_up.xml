@@ -96,19 +96,18 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginRight="130dp"
                 android:clickable="true"
                 android:fontFamily="@font/plusjakartatextregular"
                 android:text="Sign Up"
                 android:textAlignment="textEnd"
                 android:textColor="#4b51ff"
                 android:textSize="28sp"
-                app:layout_constraintStart_toEndOf="@+id/loginTxt"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginLeft="25dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/loginTxt" />
 
             <EditText
                 android:id="@+id/editTextTextUsernameinSignup"

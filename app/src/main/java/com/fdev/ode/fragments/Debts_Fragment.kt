@@ -74,10 +74,8 @@ class Debts_Fragment : Fragment() {
 
                         val sizeheight = getScreenHeight()
                         val sizewidth = getScreenWidth() * 0.7
-
                         val face = resources.getFont(R.font.plusjakartatextregular)
                         val boldface = resources.getFont(R.font.plusjakartatexbold)
-
 
                         //Create  CardView
                         val Card = context?.let { CardView(it) }
@@ -105,8 +103,8 @@ class Debts_Fragment : Fragment() {
 
                         //Create Name Text
                         val Name = TextView(context)
-                        Name?.textSize = 25f
-                        Name?.text = name.get(i).toString()
+                        Name.textSize = 25f
+                        Name.text = name.get(i).toString()
                         Name.setLayoutParams(
                             RelativeLayout.LayoutParams(
                                 RelativeLayout.LayoutParams.MATCH_PARENT,
