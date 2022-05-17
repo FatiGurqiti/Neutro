@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.fdev.ode.BaseClass
 import com.fdev.ode.MainActivity
 import com.fdev.ode.R
 import com.fdev.ode.util.DebtController
@@ -46,7 +47,6 @@ class Recivements_Fragment : Fragment() {
         DontDeletebutton = view.findViewById(R.id.notDeleteDebtBtninRecivements)
 
         val TAG = "LoadRecievements"
-
 
         var amount = ArrayList<Long?>()
         var id = ArrayList<String?>()

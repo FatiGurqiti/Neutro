@@ -34,10 +34,10 @@ class Profile : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-
         val username = findViewById<TextView>(R.id.username)
         val usermail = findViewById<TextView>(R.id.userMail)
         val logo = findViewById<ImageView>(R.id.logoinProfile)
+
         scrollLayout = findViewById(R.id.Scroll_Relative)
         BlackFilter = findViewById(R.id.blackfilterinProfile)
         AreYouSureCard = findViewById(R.id.deleteContactCard)

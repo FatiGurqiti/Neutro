@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.Recivements_Fragment">
 
     <ScrollView
@@ -13,9 +13,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
         android:paddingTop="30dp"
-        android:paddingBottom="10dp"
-        >
-
+        android:paddingBottom="10dp">
 
         <RelativeLayout
             android:id="@+id/Scroll_RelativeofRecivements"
@@ -41,66 +39,84 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/deleteDebtCardinRecivements"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="30dp"
+        android:background="@color/white"
+        android:elevation="30dp"
         android:translationZ="30dp"
         android:visibility="invisible"
-        android:elevation="30dp"
-        android:background="@color/white"
-        android:layout_marginTop="100dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        app:cardCornerRadius="18dp"
-        >
+        app:cardCornerRadius="18dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="Delete Debt"
-            android:textSize="16sp"
             android:layout_marginTop="15dp"
+            android:text="Delete Debt"
+            android:textAlignment="center"
             android:textColor="#80000000"
-            />
+            android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/areYouSure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="Are you sure you want yo delete this debt?"
-            android:textSize="18sp"
             android:layout_marginLeft="30dp"
+            android:layout_marginTop="70dp"
             android:layout_marginRight="30dp"
             android:fontFamily="@font/plusjakartatextregular"
-            android:layout_marginTop="70dp"
+            android:text="Are you sure you want yo delete this debt?"
+            android:textAlignment="center"
             android:textColor="@color/black"
-            />
+            android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/notDeleteDebtBtninRecivements"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginBottom="-10dp"
-            android:layout_marginLeft="190dp"
-            android:background="@android:color/transparent"
-            android:text="Nope"
-            android:fontFamily="@font/plusjakartatextregular"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            />
-        <Button
-            android:id="@+id/deleteDebtBtninRecivements"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
             android:layout_marginBottom="-10dp"
-            android:layout_marginRight="180dp"
-            android:backgroundTint="#E40031"
-            android:text="Yes"
-            android:fontFamily="@font/plusjakartatextregular"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:layout_gravity="bottom"
-            />
+            >
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/notDeleteDebtBtninRecivements"/>
+
+            <Button
+                android:id="@+id/notDeleteDebtBtninRecivements"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/plusjakartatextregular"
+                android:text="Nope"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/deleteDebtBtninRecivements"
+                />
+
+            <Button
+                android:id="@+id/deleteDebtBtninRecivements"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:backgroundTint="#E40031"
+                android:text="Yes"
+                android:fontFamily="@font/plusjakartatextregular"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/notDeleteDebtBtninRecivements"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
