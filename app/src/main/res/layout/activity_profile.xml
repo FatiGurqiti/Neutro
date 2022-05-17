@@ -31,10 +31,9 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/accountname"
-        android:layout_marginTop="32dp"
         android:layout_marginLeft="30dp"
-        />
+        android:layout_marginTop="32dp"
+        android:src="@drawable/accountname" />
 
 
     <TextView
@@ -53,10 +52,9 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/mail"
-        android:layout_marginTop="116dp"
         android:layout_marginLeft="30dp"
-        />
+        android:layout_marginTop="116dp"
+        android:src="@drawable/mail" />
 
     <TextView
         android:id="@+id/userMail"
@@ -85,65 +83,61 @@
         android:id="@+id/deleteContactCard"
         android:layout_width="match_parent"
         android:layout_height="250dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="220dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/white"
+        android:elevation="25dp"
         android:translationZ="25dp"
         android:visibility="invisible"
-        android:elevation="25dp"
-        android:background="@color/white"
-        android:layout_marginTop="220dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        app:cardCornerRadius="18dp"
-        >
+        app:cardCornerRadius="18dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="Delete Contact"
-            android:textSize="22sp"
             android:layout_marginTop="15dp"
+            android:text="Delete Contact"
+            android:textAlignment="center"
             android:textColor="#80000000"
-            />
+            android:textSize="22sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="Are you sure you want yo delete this contact?"
-            android:textSize="24sp"
             android:layout_marginLeft="30dp"
+            android:layout_marginTop="85dp"
             android:layout_marginRight="30dp"
             android:fontFamily="@font/plusjakartatextregular"
-            android:layout_marginTop="85dp"
+            android:text="Are you sure you want yo delete this contact?"
+            android:textAlignment="center"
             android:textColor="@color/black"
-            />
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/notDeleteContactBtn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginBottom="-10dp"
-            android:layout_marginLeft="190dp"
-            android:background="@android:color/transparent"
-            android:text="Nope"
-            android:fontFamily="@font/plusjakartatextregular"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
             android:layout_gravity="bottom"
-            />
+            android:layout_marginLeft="190dp"
+            android:layout_marginBottom="-10dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/plusjakartatextregular"
+            android:text="Nope"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+
         <Button
             android:id="@+id/deleteContactBtn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginBottom="-10dp"
-            android:layout_marginRight="180dp"
-            android:backgroundTint="#E40031"
-            android:text="Yes"
-            android:fontFamily="@font/plusjakartatextregular"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
             android:layout_gravity="bottom"
-            />
+            android:layout_marginRight="180dp"
+            android:layout_marginBottom="-10dp"
+            android:backgroundTint="#E40031"
+            android:fontFamily="@font/plusjakartatextregular"
+            android:text="Yes"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -162,15 +156,24 @@
 
         >
 
-        <ScrollView
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Contacts"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollViewofProfile"
             android:layout_width="match_parent"
-            android:layout_height="614dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="60dp">
-
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="30dp"
+            >
 
             <RelativeLayout
                 android:id="@+id/Scroll_Relative"
@@ -178,17 +181,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Contacts"
-                    android:textAlignment="center"
-                    android:textSize="18sp"
-                    android:layout_marginTop="15dp"
-                    />
-
             </RelativeLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.cardview.widget.CardView>
 

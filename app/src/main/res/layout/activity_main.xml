@@ -59,14 +59,16 @@
             android:layout_marginTop="15dp"
             />
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollViewofContactList"
             android:layout_width="match_parent"
-            android:layout_height="614dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="60dp">
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="10dp"
+            >
 
 
             <RelativeLayout
@@ -76,7 +78,7 @@
                 android:orientation="vertical">
 
             </RelativeLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.cardview.widget.CardView>
 
@@ -235,14 +237,14 @@
             android:id="@+id/debtsTAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Debts" />
+            android:text="DEBTS" />
 
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/toCollectTAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Receivement" />
+            android:text="RECIEVEMENTS" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2

@@ -322,10 +322,8 @@ class MainActivity : AppCompatActivity() {
 
                     if (myContact.size != 0) { //User has contacts
 
-                    for (i in 0..myContact.size -1 ) {
+                    for (i in myContact.indices ) {
                         if(myContact.get(i) != null && ContactNames.get(i) != null ){
-
-                        val j = i + 1;
 
                         val sizeheight = getScreenHeight(this) * 0.5
                         val sizewidth = getScreenWidth(this)
@@ -334,8 +332,8 @@ class MainActivity : AppCompatActivity() {
                         val boldface = resources.getFont(R.font.plusjakartatexbold)
 
                         val Contact_Name = TextView(this)
-                        Contact_Name?.textSize = 20f
-                        Contact_Name?.text = ContactNames.get(i).toString()
+                        Contact_Name.textSize = 20f
+                        Contact_Name.text = ContactNames.get(i).toString()
                         Contact_Name.setLayoutParams(
                             RelativeLayout.LayoutParams(
                                 RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -348,7 +346,7 @@ class MainActivity : AppCompatActivity() {
                         setMargins(
                             Contact_Name,
                             (sizewidth * 0.1).toInt(),
-                            ((j * sizeheight) * 0.2).toInt(),
+                            ((i * sizeheight) * 0.2).toInt(),
                             0,
                             0
                         )
@@ -374,7 +372,7 @@ class MainActivity : AppCompatActivity() {
                         setMargins(
                             Contact_Mail,
                             (sizewidth * 0.1).toInt(),
-                            (((j * sizeheight) * 0.2) + ((sizeheight) * 0.08)).toInt(),
+                            (((i * sizeheight) * 0.2) + ((sizeheight) * 0.08)).toInt(),
                             0,
                             0
                         )

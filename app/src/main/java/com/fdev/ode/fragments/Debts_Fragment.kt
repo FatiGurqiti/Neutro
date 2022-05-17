@@ -9,12 +9,10 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
-import com.fdev.ode.MainActivity
 import com.fdev.ode.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlin.random.Random
 
 class Debts_Fragment : Fragment() {
 
@@ -87,7 +85,7 @@ class Debts_Fragment : Fragment() {
                         )
                         Card.radius = 18F
                         Card.setContentPadding(25, 25, 25, 25)
-                        Card.setCardBackgroundColor(Color.parseColor("#32cd32"))
+                        Card.setCardBackgroundColor(Color.parseColor("#1dacd6"))
                         Card.resources.getDrawable(R.drawable.black_background)
                         Card.cardElevation = 8F
                         Card.maxCardElevation = 12F

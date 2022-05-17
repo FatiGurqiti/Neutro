@@ -89,11 +89,10 @@ class Profile : AppCompatActivity() {
 
                     Log.d(TAG, myContact.size.toString())
 
-                    if (myContact.size != 0){ //User has contacts
+                    if (myContact.size != 0) { //User has contacts
 
-                        for (i in 0..myContact.size - 1) {
+                        for (i in myContact.indices) {
 
-                            var j = i + 1
                             val sizeheight = getScreenHeight(this) * 0.5
                             val sizewidth = getScreenWidth(this)
 
@@ -108,7 +107,7 @@ class Profile : AppCompatActivity() {
                             setMargins(
                                 Contact_Name,
                                 (sizewidth * 0.1).toInt(),
-                                ((j * sizeheight) * 0.2).toInt(),
+                                ((i * sizeheight) * 0.2).toInt(),
                                 25,
                                 1
                             )
@@ -121,7 +120,7 @@ class Profile : AppCompatActivity() {
                             setMargins(
                                 Contact_Mail,
                                 (sizewidth * 0.1).toInt(),
-                                (((j * sizeheight) * 0.2) + ((sizeheight) * 0.08)).toInt(),
+                                (((i * sizeheight) * 0.2) + ((sizeheight) * 0.08)).toInt(),
                                 25,
                                 1
                             )
@@ -133,7 +132,7 @@ class Profile : AppCompatActivity() {
                             setMargins(
                                 Delete,
                                 (sizewidth * 0.8).toInt(),
-                                (((j * sizeheight) * 0.2)).toInt(),
+                                (((i * sizeheight) * 0.2)).toInt(),
                                 0,
                                 0
                             )
@@ -159,7 +158,7 @@ class Profile : AppCompatActivity() {
 
 
                         }
-                }
+                    }
 
 
                 } else {
@@ -215,9 +214,9 @@ class Profile : AppCompatActivity() {
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.widthPixels
     }
-    fun nullprotect(value: String) :String
-    {
-        if(value == null) return ""
+
+    fun nullprotect(value: String): String {
+        if (value == null) return ""
         else return value
     }
 
