@@ -18,6 +18,7 @@ class SignUp : AppCompatActivity() {
     private val db = Firebase.firestore
     private lateinit var auth: FirebaseAuth
     private var canclick = false
+    private val baseClass = BaseClass()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,62 +29,68 @@ class SignUp : AppCompatActivity() {
 
         //SignUp
         val SignUpButton = findViewById<ImageButton>(R.id.SignBtn)
-        SignUpButton.setOnClickListener() {
-            progressBar.visibility = View.VISIBLE
+        SignUpButton.setOnClickListener {
 
-            val username = findViewById<EditText>(R.id.editTextTextUsernameinSignup)
-            val email = findViewById<EditText>(R.id.editTextTextEmailAddressinSignup)
-            val pin = findViewById<EditText>(R.id.editTextNumberPasswordinSignup)
+            if (baseClass.isOnline(applicationContext)) {
+                progressBar.visibility = View.VISIBLE
 
-            val Username = username.text.toString()
-            val Email = email.text.toString()
-            val Pin = pin.text.toString()
+                val username = findViewById<EditText>(R.id.editTextTextUsernameinSignup)
+                val email = findViewById<EditText>(R.id.editTextTextEmailAddressinSignup)
+                val pin = findViewById<EditText>(R.id.editTextNumberPasswordinSignup)
 
-            if (TextUtils.isEmpty(Username)
-                || TextUtils.isEmpty(Email)
-                || TextUtils.isEmpty(Pin)
-            ) {
-                //Inputs are empty
-                Toast.makeText(this, "Mind if you fill the inputs?", Toast.LENGTH_SHORT).show()
-            } else {
-                //Inputs are filled
-                if (Pin.length < 6) {
-                    Toast.makeText(this, "Pin should be at least 6 chacters", Toast.LENGTH_SHORT)
-                        .show()
+                val Username = username.text.toString()
+                val Email = email.text.toString()
+                val Pin = pin.text.toString()
+
+                if (TextUtils.isEmpty(Username)
+                    || TextUtils.isEmpty(Email)
+                    || TextUtils.isEmpty(Pin)
+                ) {
+                    //Inputs are empty
+                    Toast.makeText(this, "Mind if you fill the inputs?", Toast.LENGTH_SHORT).show()
                 } else {
+                    //Inputs are filled
+                    if (Pin.length < 6) {
+                        Toast.makeText(
+                            this,
+                            "Pin should be at least 6 chacters",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    } else {
 
-                    val docRef = db.collection("Users").document(Email)
+                        val docRef = db.collection("Users").document(Email)
 
-                    docRef.get()
-                        .addOnSuccessListener { document ->
-                            if (document.data != null) { //user exists
-                                Toast.makeText(
-                                    this,
-                                    "This user is already exists",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                        docRef.get()
+                            .addOnSuccessListener { document ->
+                                if (document.data != null) { //user exists
+                                    Toast.makeText(
+                                        this,
+                                        "This user is already exists",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
-                            } else { //User doesn't exist
+                                } else { //User doesn't exist
 
-                                CreateUser(Email, Pin)  //To create auth
-                                UserData(Username, Email, Pin) //To save userdata to firestore
+                                    CreateUser(Email, Pin)  //To create auth
+                                    UserData(Username, Email, Pin) //To save userdata to firestore
 
-                                Toast.makeText(
-                                    this,
-                                    "Account created successfully",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                    Toast.makeText(
+                                        this,
+                                        "Account created successfully",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
-                                val intent = Intent(this, LogIn::class.java)
-                                startActivity(intent)
+                                    val intent = Intent(this, LogIn::class.java)
+                                    startActivity(intent)
+                                }
                             }
-                        }
-
-
+                    }
                 }
+            } else {
+                Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT)
+                    .show()
             }
-
-
             progressBar.visibility = View.INVISIBLE
         }
 

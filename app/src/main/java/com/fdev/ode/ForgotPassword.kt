@@ -6,10 +6,6 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlin.concurrent.thread
 
 
 class ForgotPassword : AppCompatActivity() {
@@ -17,47 +13,55 @@ class ForgotPassword : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
 
+        val baseClass = BaseClass()
         val resetButton = findViewById<Button>(R.id.reset)
         val resetPassword = findViewById<EditText>(R.id.emailreset)
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         val forgotPassword = findViewById<TextView>(R.id.forgotPasswordText)
 
+
         resetButton.setOnClickListener {
             progressBar.visibility = View.VISIBLE
 
-            if (!resetPassword.text.isNullOrEmpty()) {
-                FirebaseAuth.getInstance().sendPasswordResetEmail(resetPassword.text.toString())
-                    .addOnCompleteListener { task ->
+            if (baseClass.isOnline(applicationContext)) {
 
-                        if (task.isSuccessful) {
+                if (!resetPassword.text.isNullOrEmpty()) {
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(resetPassword.text.toString())
+                        .addOnCompleteListener { task ->
 
-                            resetButton.visibility = View.GONE
-                            resetPassword.visibility = View.GONE
-                            forgotPassword.text = "Please check your mailbox"
+                            if (task.isSuccessful) {
 
-
-                            val toast = Toast.makeText(
-                                applicationContext,
-                                "An email is sent to your mailbox",
-                                Toast.LENGTH_SHORT
-                            )
-                            toast.show()
-
-                            Thread.sleep(2000L)
-                            startActivity(Intent(applicationContext, LogIn::class.java))
+                                resetButton.visibility = View.GONE
+                                resetPassword.visibility = View.GONE
+                                forgotPassword.text = "Please check your mailbox"
 
 
-                        } else {
-                            val toast = Toast.makeText(
-                                applicationContext,
-                                "No such user",
-                                Toast.LENGTH_SHORT
-                            )
-                            toast.show()
+                                val toast = Toast.makeText(
+                                    applicationContext,
+                                    "An email is sent to your mailbox",
+                                    Toast.LENGTH_SHORT
+                                )
+                                toast.show()
+
+                                Thread.sleep(2000L)
+                                startActivity(Intent(applicationContext, LogIn::class.java))
+
+
+                            } else {
+                                val toast = Toast.makeText(
+                                    applicationContext,
+                                    "No such user",
+                                    Toast.LENGTH_SHORT
+                                )
+                                toast.show()
+                            }
                         }
-                    }
+                }
             }
-
+            else
+            {
+                Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show()
+            }
             progressBar.visibility = View.INVISIBLE
         }
     }
