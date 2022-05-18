@@ -1,6 +1,5 @@
-package com.fdev.ode.fragments
+package com.fdev.ode.flow.fragments
 
-import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -11,10 +10,10 @@ class FragmentAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
 
     override fun createFragment(position: Int): Fragment {
 
-        when (position) {
-            1 -> return Recivements_Fragment()
-            2 -> return Debts_Fragment()
-            else -> return Debts_Fragment()
+        return when (position) {
+            1 -> Recivements_Fragment()
+            2 -> Debts_Fragment()
+            else -> Debts_Fragment()
         }
     }
 

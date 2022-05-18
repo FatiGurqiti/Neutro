@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fcfcfc"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.Debts_Fragment">
+    tools:context=".flow.fragments.Debts_Fragment">
 
     <ScrollView
         android:id="@+id/debtsScrollView"
@@ -22,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
         </RelativeLayout>
     </ScrollView>
 

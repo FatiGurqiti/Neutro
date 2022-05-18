@@ -1,4 +1,4 @@
-package com.fdev.ode.fragments
+package com.fdev.ode.flow.fragments
 
 import android.app.ActivityOptions
 import android.content.Intent
@@ -9,7 +9,7 @@ import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.fdev.ode.BaseClass
-import com.fdev.ode.MainActivity
+import com.fdev.ode.flow.main.MainActivity
 import com.fdev.ode.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore

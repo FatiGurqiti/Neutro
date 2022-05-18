@@ -1,4 +1,4 @@
-package com.fdev.ode
+package com.fdev.ode.flow.main
 
 import android.app.ActivityOptions
 import android.content.Intent
@@ -9,10 +9,13 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.fdev.ode.fragments.FragmentAdapter
-import com.fdev.ode.util.DebtController
+import com.fdev.ode.BaseClass
+import com.fdev.ode.R
+import com.fdev.ode.flow.fragments.FragmentAdapter
+import com.fdev.ode.flow.profile.Profile
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.firebase.auth.ktx.auth
@@ -26,7 +29,6 @@ class MainActivity : AppCompatActivity() {
     private val baseClass = BaseClass()
     private val user = Firebase.auth.currentUser
     private val db = Firebase.firestore
-    private val debtController = DebtController()
 
     private var contactName: EditText? = null
     private var contactMail: EditText? = null
@@ -37,11 +39,12 @@ class MainActivity : AppCompatActivity() {
     private var labelText: EditText? = null
     private var totalText: TextView? = null
     private var totalAmount: TextView? = null
+    lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         val profile = findViewById<ImageButton>(R.id.profileBtn)
         val blackFilter = findViewById<ImageView>(R.id.blackFilter)
         val contactCard = findViewById<CardView>(R.id.addContactCard)
@@ -55,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         val cancelContactList = findViewById<ImageButton>(R.id.cancelContactList)
         val dropDown = findViewById<ImageButton>(R.id.dropDownBtn)
         val neutroNr = findViewById<EditText>(R.id.addNeutroNumber)
+        val scrollLayout = findViewById<RelativeLayout>(R.id.debtsContactList)
 
         contactListCard = findViewById(R.id.contactListCard)
         contactName = findViewById(R.id.contactName)
@@ -66,6 +70,7 @@ class MainActivity : AppCompatActivity() {
         secondaryBlackFilter = findViewById(R.id.secondaryBlackFilter)
         progressBar = findViewById(R.id.mainActivityProgressBar)
 
+
         val tab = findViewById<TabLayout>(R.id.tab)
         val viewpager2 = findViewById<ViewPager2>(R.id.viewPager2)
         val fragmentAdapter: FragmentAdapter
@@ -74,8 +79,8 @@ class MainActivity : AppCompatActivity() {
         fragmentAdapter = FragmentAdapter(fm, lifecycle)
         viewpager2.adapter = fragmentAdapter
 
-        getDebtOrRecievement("Debts") //load debt amount by default
-        loadContacts()
+        viewModel.getDebtOrRecievement("Debts", totalText, totalAmount)
+        loadContacts(scrollLayout)
 
         //On Fragment change
         tab.addOnTabSelectedListener(object : OnTabSelectedListener {
@@ -83,9 +88,9 @@ class MainActivity : AppCompatActivity() {
                 viewpager2.currentItem = tab.position
 
                 if (tab.position == 0)
-                    getDebtOrRecievement("Debts")
+                    viewModel.getDebtOrRecievement("Debts", totalText, totalAmount)
                 else
-                    getDebtOrRecievement("Recivements")
+                    viewModel.getDebtOrRecievement("Recivements", totalText, totalAmount)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -119,10 +124,10 @@ class MainActivity : AppCompatActivity() {
                 blackFilter.visibility = View.INVISIBLE
                 debtCard.visibility = View.INVISIBLE
 
-                val generatedID = debtController.GenerateID()
+                val generatedID = viewModel.generateId()
 
                 //Update Debt Table
-                debtController.AddDebtAndReceivement(
+                viewModel.addDebtOrReceivement(
                     generatedID,
                     contactMailTxt,
                     contact,
@@ -131,20 +136,7 @@ class MainActivity : AppCompatActivity() {
                     "Recivements"
                 ) //Add recievement
 
-                //Get Username of contact
-                db.collection("Users").document(user?.email.toString()).get()
-                    .addOnSuccessListener { document ->
-                        if (document.data != null) {
-                            debtController.AddDebtAndReceivement(
-                                generatedID,
-                                contactMailTxt,
-                                document.getString("username").toString(),
-                                label,
-                                amount.toDouble(),
-                                "Debts"
-                            ) //Add debt
-                        }
-                    }
+                viewModel.getContactUserName(generatedID,contactMailTxt,label,amount)
 
                 contactName?.setText("")
                 contactMail?.setText("")
@@ -153,8 +145,7 @@ class MainActivity : AppCompatActivity() {
                 contactButton.isEnabled = true
                 debtBtn.isEnabled = true
                 progressBar?.visibility = View.INVISIBLE
-                finish()
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+                refresh()
             }
         }
 
@@ -225,13 +216,7 @@ class MainActivity : AppCompatActivity() {
                     neutroNr.setText("")
                     debtBtn.isEnabled = true
                     progressBar?.visibility = View.INVISIBLE
-
-                    //Refresh page
-                    finish()
-                    startActivity(
-                        intent,
-                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
-                    )
+                    refresh()
                 } else
                     Toast.makeText(
                         this, "I'm sorry. You can't add yourself",
@@ -240,7 +225,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        cancelContact.setOnClickListener() {
+        cancelContact.setOnClickListener {
             progressBar?.visibility = View.VISIBLE
             baseClass.setViewsEnabled(listOf(profile, debtBtn))
             blackFilter.visibility = View.INVISIBLE
@@ -251,47 +236,20 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        profile.setOnClickListener() {
+        profile.setOnClickListener {
             val intent = Intent(this, Profile::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
     }
 
+    private fun loadContacts(scrollLayout: RelativeLayout) {
 
-    fun getDebtOrRecievement(type: String) {
-        if (type == "Debts") totalText?.text = "Total Debt"
-        else totalText?.setText("Total Receivement")
-
-        val user = Firebase.auth.currentUser
-        val docRef = db.collection(type).document(user!!.email.toString())
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document.data != null) {
-                    //Get Old data
-                    val valueArray: ArrayList<Double?> =
-                        document.get("amount") as ArrayList<Double?>
-                    var value = 0.0
-                    // Add new data on top of old data
-                    for (i in valueArray.indices)
-                        value += valueArray[i]!!.toDouble()
-                    totalAmount?.text = value.toString()
-                }
-            }
-    }
-
-
-    private fun loadContacts() {
-        val scrollLayout = findViewById<RelativeLayout>(R.id.debtsContactList)
-
-        //Load Contacts
         val docRef = db.collection("Contacts").document(user?.email.toString())
-        var myContact = ArrayList<String?>()
-        var contactNames = ArrayList<String?>()
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    myContact = document.get("contact") as ArrayList<String?>
-                    contactNames = document.get("contactName") as ArrayList<String?>
+                    val myContact = document.get("contact") as ArrayList<String?>
+                    val contactNames = document.get("contactName") as ArrayList<String?>
 
                     if (myContact.size != 0) { //User has contacts
 
@@ -305,7 +263,7 @@ class MainActivity : AppCompatActivity() {
 
                                 val contactNameTxt = TextView(this)
                                 contactNameTxt.textSize = 20f
-                                contactNameTxt.text = contactNames.get(i).toString()
+                                contactNameTxt.text = contactNames[i].toString()
                                 contactNameTxt.layoutParams = RelativeLayout.LayoutParams(
                                     RelativeLayout.LayoutParams.MATCH_PARENT,
                                     RelativeLayout.LayoutParams.WRAP_CONTENT
@@ -332,7 +290,7 @@ class MainActivity : AppCompatActivity() {
 
                                 val contactMailTxt = TextView(this)
                                 contactMailTxt.textSize = 20f
-                                contactMailTxt.text = myContact.get(i).toString()
+                                contactMailTxt.text = myContact[i].toString()
                                 contactMailTxt.typeface = font
                                 contactMailTxt.translationZ = 20F
                                 contactMailTxt.layoutParams = RelativeLayout.LayoutParams(
@@ -349,7 +307,7 @@ class MainActivity : AppCompatActivity() {
                                 )
 
                                 contactMailTxt.setOnClickListener {
-                                    setContactNameAndMail(contactNames.get(i)!!, myContact.get(i)!!)
+                                    setContactNameAndMail(contactNames[i]!!, myContact[i]!!)
                                 }
                             }
                         }
@@ -369,12 +327,7 @@ class MainActivity : AppCompatActivity() {
                     contactAdd(userMail, email) // add this to contact
 
                     Toast.makeText(this, "Contact added successfully", Toast.LENGTH_SHORT).show()
-                    //Refresh page
-                    finish()
-                    startActivity(
-                        intent,
-                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
-                    )
+                    refresh()
                 }
             }
     }
@@ -382,24 +335,22 @@ class MainActivity : AppCompatActivity() {
     private fun contactAdd(email: String, to: String) {
 
         var myContact = ArrayList<String?>() //email address
-        var contactName = ArrayList<String?>() //contact's name
 
         val docRef: DocumentReference = db.collection("Contacts").document(to)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-
                     //Get previous Contacts
                     myContact = document.get("contact") as ArrayList<String?>
-                    contactName = document.get("contactName") as ArrayList<String?>
+                    val contactName = document.get("contactName") as ArrayList<String?>
 
                     //Get name of the current contanct
                     db.collection("Users")
                         .document(to)
                         .get()
-                        .addOnSuccessListener { document ->
-                            if (document.data != null) {
-                                val username = document.get("username")
+                        .addOnSuccessListener {
+                            if (it.data != null) {
+                                val username = it.get("username")
                                 contactName.add(username.toString())
 
                                 myContact.add(email)
@@ -409,82 +360,42 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     // There is no previous data. So, simply add the current one
                     myContact.add(email)
-                    addFreshData(myContact, email, to)
+                    viewModel.addFreshData(myContact, email, to)
                 }
             }
     }
 
     private fun updateContact(myContact: ArrayList<String?>, email: String, to: String) {
-        //  Update contact
-        preventDuplicatedData(myContact)
+        viewModel.preventDuplicatedData(myContact)
         db.collection("Contacts").document(to)
             .update("contact", myContact)
-
-        var contactNames = ArrayList<String?>()
 
         val docRef = db.collection("Contacts").document(to)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     //Get the old data
-                    contactNames = document.get("contactName") as ArrayList<String?>
+                    val contactNames = document.get("contactName") as ArrayList<String?>
 
                     db.collection("Users")
                         .document(email)
                         .get()
-                        .addOnSuccessListener { document ->
-                            if (document.data != null) {
+                        .addOnSuccessListener {
+                            if (it.data != null) {
                                 //Get name of the current contact
-                                contactNames.add(document.getString("username"))
-                                preventDuplicatedData(contactNames)
+                                contactNames.add(it.getString("username"))
+                                viewModel.preventDuplicatedData(contactNames)
 
                                 //Update the data
                                 db.collection("Contacts").document(to)
                                     .update("contactName", contactNames)
 
-                                finish()
-                                startActivity(
-                                    intent,
-                                    ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
-                                )
+                                refresh()
                             }
                         }
                 }
             }
     }
-
-    fun preventDuplicatedData(list: ArrayList<String?>): ArrayList<String?> {
-        for (i in 0..list.size) {
-            for (j in i + 1..list.size) {
-                if (j < list.size) {
-                    if (list[i] == list[j])
-                        list.removeAt(j)
-                }
-            }
-        }
-        return list
-    }
-
-    private fun addFreshData(myContact: ArrayList<String?>, email: String, to: String) {
-
-        val contactName = ArrayList<String?>()
-        val docRef = db.collection("Users").document(email)
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document.data != null) {
-                    //Update username
-                    contactName.add(document.getString("username"))
-
-                    val contactHash = hashMapOf(
-                        "contact" to myContact,
-                        "contactName" to contactName
-                    )
-                    db.collection("Contacts").document(to)
-                        .set(contactHash)
-                }
-            }
-    }
-
 
     fun setContactNameAndMail(name: String, mail: String) {
         progressBar?.visibility = View.VISIBLE
@@ -497,8 +408,13 @@ class MainActivity : AppCompatActivity() {
         progressBar?.visibility = View.INVISIBLE
     }
 
+    private fun refresh(){
+        finish()
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+    }
+
     override fun onBackPressed() {
-        //Do nothing when back button is clicked
+        //Literally NOTHING!
     }
 }
 

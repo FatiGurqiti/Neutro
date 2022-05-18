@@ -1,90 +1,62 @@
-package com.fdev.ode
+package com.fdev.ode.flow.profile
 
+import android.app.Activity
 import android.app.ActivityOptions
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
+import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
-import android.os.Bundle
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat.startActivity
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.fdev.ode.BaseClass
+import com.fdev.ode.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-
-class Profile : AppCompatActivity() {
+class ProfileViewModel : ViewModel() {
 
     private val baseClass = BaseClass()
-    private var blackFilter: ImageView? = null
-    private var areYouSureCard: CardView? = null
-    private var deleteButton: Button? = null
-    private var dontDeleteButton: Button? = null
-    private lateinit var logo: ImageView
-
-    var scrollLayout: RelativeLayout? = null
     private val db = Firebase.firestore
     private val user = Firebase.auth.currentUser
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
-
-        val username = findViewById<TextView>(R.id.username)
-        val usermail = findViewById<TextView>(R.id.userMail)
-        logo = findViewById(R.id.profileLogo)
-
-        scrollLayout = findViewById(R.id.scroll_Relative)
-        blackFilter = findViewById(R.id.profileBlackFilter)
-        areYouSureCard = findViewById(R.id.deleteContactCard)
-        deleteButton = findViewById(R.id.deleteContactBtn)
-        dontDeleteButton = findViewById(R.id.notDeleteContactBtn)
-
-        loadContacts()
-
-        if (user != null) usermail.text = user.email
-
-        //Set Username
-        db.collection("Users").document(user?.email.toString()).get()
-            .addOnSuccessListener { document ->
-                if (document.data != null) {
-                    username.setText(document.getString("username"))
-                }
-            }
-
-        //Copy mail adress
-        logo.setOnClickListener() {
-            Toast.makeText(this, "Cleveeer", Toast.LENGTH_SHORT).show()
-            val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clipData = ClipData.newPlainText("text", user?.email.toString())
-            clipboardManager.setPrimaryClip(clipData)
-        }
-
+    val isDeleted: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
     }
 
-    private fun loadContacts() {
+    fun loadContacts(
+        resources: Resources,
+        profile: Activity,
+        scrollLayout: RelativeLayout?,
+        blackFilter: ImageView?,
+        areYouSureCard: CardView?,
+        logo: ImageView,
+        dontDeleteButton: Button?,
+        deleteButton: Button?
+    ) {
         val docRef = db.collection("Contacts").document(user?.email.toString())
         var myContact = ArrayList<String?>()
-        var ContactNames = ArrayList<String?>()
+        var contactNames = ArrayList<String?>()
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     myContact = document.get("contact") as ArrayList<String?>
-                    ContactNames = document.get("contactName") as ArrayList<String?>
+                    contactNames = document.get("contactName") as ArrayList<String?>
 
                     if (myContact.size != 0) { //User has contacts
                         for (i in myContact.indices) {
 
-                            val sizeHeight = baseClass.getScreenHeight(this) * 0.5
-                            val sizeWidth = baseClass.getScreenWidth(this)
+                            val sizeHeight = baseClass.getScreenHeight(profile) * 0.5
+                            val sizeWidth = baseClass.getScreenWidth(profile)
                             val font = resources.getFont(R.font.plusjakartatextregular)
                             val boldFont = resources.getFont(R.font.plusjakartatexbold)
 
-                            val contactNameText = TextView(this)
+                            val contactNameText = TextView(profile.applicationContext)
                             contactNameText.textSize = 20f
-                            contactNameText.text = ContactNames[i].toString()
+                            contactNameText.text = contactNames[i].toString()
                             contactNameText.typeface = boldFont
                             scrollLayout?.addView(contactNameText)
                             baseClass.setMargins(
@@ -95,7 +67,7 @@ class Profile : AppCompatActivity() {
                                 1
                             )
 
-                            val contactMailText = TextView(this)
+                            val contactMailText = TextView(profile.applicationContext)
                             contactMailText.textSize = 20f
                             contactMailText.text = myContact[i].toString()
                             contactMailText.typeface = font
@@ -108,7 +80,7 @@ class Profile : AppCompatActivity() {
                                 1
                             )
 
-                            val deleteText = ImageButton(this)
+                            val deleteText = ImageButton(profile.applicationContext)
                             deleteText.setImageResource(R.drawable.delete);
                             deleteText.setBackgroundColor(Color.TRANSPARENT)
                             scrollLayout?.addView(deleteText)
@@ -134,7 +106,7 @@ class Profile : AppCompatActivity() {
                                 }
 
                                 deleteButton?.setOnClickListener() {
-                                    deleteContact(myContact, ContactNames, i)
+                                    deleteContact(myContact, contactNames, i)
                                     baseClass.setViewsEnabled(listOf(logo))
                                 }
                             }
@@ -144,12 +116,12 @@ class Profile : AppCompatActivity() {
             }
     }
 
+
     private fun deleteContact(
         myContact: ArrayList<String?>,
         ContactNames: ArrayList<String?>,
         i: Int
     ) {
-
         myContact.removeAt(i) //delete mail address
         ContactNames.removeAt(i) // delete name
 
@@ -160,8 +132,14 @@ class Profile : AppCompatActivity() {
         db.collection("Contacts").document(user?.email.toString())
             .update("contactName", ContactNames)
 
-        finish()
-        startActivity(getIntent(), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+        isDeleted.value = true
+    }
 
+    fun setUserName(username: TextView) {
+        db.collection("Users").document(user?.email.toString()).get()
+            .addOnSuccessListener { document ->
+                if (document.data != null)
+                    username.text = document.getString("username")
+            }
     }
 }

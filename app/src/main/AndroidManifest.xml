@@ -13,25 +13,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OdeVersion2">
         <activity
-            android:name=".ForgotPassword"
+            android:name=".flow.forgotPassword.ForgotPassword"
             android:exported="false"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".Profile"
+            android:name=".flow.profile.Profile"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".flow.main.MainActivity"
             android:exported="false"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".SignUp"
+            android:name=".flow.signup.SignUp"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LogIn"
+            android:name=".flow.login.LogIn"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
