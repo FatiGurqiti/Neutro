@@ -24,7 +24,6 @@
         </RelativeLayout>
     </ScrollView>
 
-
     <ImageView
         android:id="@+id/receivementsBlackFilter"
         android:layout_width="match_parent"

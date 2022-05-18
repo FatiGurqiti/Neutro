@@ -12,11 +12,11 @@ import com.fdev.ode.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_debts_.*
 
 class Debts_Fragment : Fragment() {
 
     private val baseClass = BaseClass()
-    lateinit var scrollLayout: RelativeLayout
     var totalDebt: Double = 0.0
 
     override fun onCreateView(
@@ -30,8 +30,6 @@ class Debts_Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        scrollLayout = view.findViewById(R.id.debtsContactList)
-
         val db = Firebase.firestore
         val user = Firebase.auth.currentUser
 
@@ -76,7 +74,7 @@ class Debts_Fragment : Fragment() {
                                 (sizeWidth * .1).toInt(),
                                 (sizeWidth * .1).toInt(),
                             )
-                            scrollLayout.addView(Card)
+                            debtsContactList.addView(Card)
 
                             val nameView = TextView(context)
                             nameView.textSize = 25f

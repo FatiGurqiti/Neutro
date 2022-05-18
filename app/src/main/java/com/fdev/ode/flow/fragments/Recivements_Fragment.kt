@@ -14,15 +14,11 @@ import com.fdev.ode.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_recivement_.*
 
 class Recivements_Fragment : Fragment() {
 
-    val baseClass = BaseClass()
-    lateinit var scrollLayout: RelativeLayout
-    private lateinit var blackFilter: ImageView
-    private lateinit var areYouSureCard: CardView
-    private lateinit var deletebutton: Button
-    private lateinit var dontDeletebutton: Button
+    private val baseClass = BaseClass()
     private var db = Firebase.firestore
     private var user = Firebase.auth.currentUser
 
@@ -37,30 +33,17 @@ class Recivements_Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        scrollLayout = view.findViewById(R.id.receivementsRelativeLayout)
-        blackFilter = view.findViewById(R.id.receivementsBlackFilter)
-        areYouSureCard = view.findViewById(R.id.receivementsDeleteDebtCard)
-        deletebutton = view.findViewById(R.id.receivementsDeleteDebtBtn)
-        dontDeletebutton = view.findViewById(R.id.receivementsNotDeleteDebtBtn)
-
-        var amount = ArrayList<Long?>()
-        var id = ArrayList<String?>()
-        var label = ArrayList<String?>()
-        var name = ArrayList<String?>()
-        var mail = ArrayList<String?>()
-        var time = ArrayList<String?>()
-
         val docRef = db.collection("Recivements").document(user?.email.toString())
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
 
-                    amount = document?.get("amount") as ArrayList<Long?>
-                    id = document?.get("id") as ArrayList<String?>
-                    label = document?.get("label") as ArrayList<String?>
-                    name = document?.get("name") as ArrayList<String?>
-                    mail = document?.get("to") as ArrayList<String?>
-                    time = document?.get("time") as ArrayList<String?>
+                    val amount = document?.get("amount") as ArrayList<Long?>
+                    val id = document?.get("id") as ArrayList<String?>
+                    val label = document?.get("label") as ArrayList<String?>
+                    val name = document?.get("name") as ArrayList<String?>
+                    val mail = document?.get("to") as ArrayList<String?>
+                    val time = document?.get("time") as ArrayList<String?>
 
                     for (i in amount.indices) {
                         if (name[i] != null &&
@@ -88,7 +71,7 @@ class Recivements_Fragment : Fragment() {
                             cardView.resources.getDrawable(R.drawable.black_background)
                             cardView.cardElevation = 8F
                             cardView.maxCardElevation = 12F
-                            scrollLayout.addView(cardView)
+                            receivementsRelativeLayout.addView(cardView)
                             baseClass.setMargins(
                                 cardView,
                                 (sizeWidth * .1).toInt(),
@@ -146,7 +129,7 @@ class Recivements_Fragment : Fragment() {
                             amountText?.text = amount[i].toString()
                             amountText.textSize = 50f
                             amountText.setTextColor(Color.WHITE)
-                            amountText.setGravity(Gravity.END)
+                            amountText.gravity = Gravity.END
                             cardView.addView(amountText)
                             baseClass.setMargins(
                                 amountText,
@@ -160,15 +143,13 @@ class Recivements_Fragment : Fragment() {
                             timeText.textSize = 14f
                             timeText?.text = time[i].toString()
                             timeText.setTextColor(Color.WHITE)
-                            timeText.setLayoutParams(
-                                RelativeLayout.LayoutParams(
-                                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                                )
+                            timeText.layoutParams = RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.MATCH_PARENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT,
                             )
-                            timeText.setGravity(Gravity.START)
-                            timeText.setTypeface(font)
-                            timeText.setTranslationZ(18F)
+                            timeText.gravity = Gravity.START
+                            timeText.typeface = font
+                            timeText.translationZ = 18F
                             baseClass.setMargins(
                                 timeText,
                                 (sizeWidth * .07).toInt(),
@@ -181,7 +162,7 @@ class Recivements_Fragment : Fragment() {
                             val deleteText = ImageButton(context)
                             deleteText.setImageResource(R.drawable.white_trash);
                             deleteText.setBackgroundColor(Color.TRANSPARENT)
-                            deleteText.setTranslationZ(18F)
+                            deleteText.translationZ = 18F
                             cardView.addView(deleteText)
                             baseClass.setMargins(
                                 deleteText,
@@ -193,16 +174,16 @@ class Recivements_Fragment : Fragment() {
 
                             deleteText.setOnClickListener()
                             {
-                                blackFilter.visibility = View.VISIBLE
-                                areYouSureCard.visibility = View.VISIBLE
+                                receivementsBlackFilter.visibility = View.VISIBLE
+                                receivementsDeleteDebtCard.visibility = View.VISIBLE
 
-                                dontDeletebutton.setOnClickListener()
+                                receivementsNotDeleteDebtBtn.setOnClickListener()
                                 {
-                                    blackFilter.visibility = View.INVISIBLE
-                                    areYouSureCard.visibility = View.INVISIBLE
+                                    receivementsBlackFilter.visibility = View.INVISIBLE
+                                    receivementsDeleteDebtCard.visibility = View.INVISIBLE
                                 }
 
-                                deletebutton.setOnClickListener() {
+                                receivementsDeleteDebtBtn.setOnClickListener() {
                                     deleteRecievement(amount, id, label, name, mail, time, i)
 
                                 }

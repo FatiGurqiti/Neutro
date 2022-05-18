@@ -9,31 +9,27 @@ import com.fdev.ode.BaseClass
 import com.fdev.ode.R
 import com.fdev.ode.flow.login.LogIn
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_forgot_password.*
 
 
 class ForgotPassword : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
-
         val baseClass = BaseClass()
-        val resetButton = findViewById<Button>(R.id.reset)
-        val resetPassword = findViewById<EditText>(R.id.emailReset)
-        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
-        val forgotPassword = findViewById<TextView>(R.id.forgotPasswordText)
 
-        resetButton.setOnClickListener {
+        reset.setOnClickListener {
             progressBar.visibility = View.VISIBLE
 
             if (baseClass.isOnline(applicationContext)) {
-                if (!resetPassword.text.isNullOrEmpty()) {
-                    FirebaseAuth.getInstance().sendPasswordResetEmail(resetPassword.text.toString())
+                if (!emailReset.text.isNullOrEmpty()) {
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(emailReset.text.toString())
                         .addOnCompleteListener { task ->
 
                             if (task.isSuccessful) {
-                                resetButton.visibility = View.GONE
-                                resetPassword.visibility = View.GONE
-                                forgotPassword.text = "Please check your mailbox"
+                                reset.visibility = View.GONE
+                                emailReset.visibility = View.GONE
+                                forgotPasswordText.text = "Please check your mailbox"
 
                                 val toast = Toast.makeText(
                                     applicationContext,

@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.fdev.ode.BaseClass
 import com.fdev.ode.R
 import com.fdev.ode.flow.login.LogIn
+import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUp : AppCompatActivity() {
 
@@ -23,20 +24,13 @@ class SignUp : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up)
         viewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
 
-        val progressBar = findViewById<ProgressBar>(R.id.signUpProgressBar)
-        val signUpBtn = findViewById<ImageButton>(R.id.signupBtn)
-        val loginTxt = findViewById<TextView>(R.id.loginTxt)
-        val username = findViewById<EditText>(R.id.signUpUsernameEditText)
-        val email = findViewById<EditText>(R.id.signUpEmailEditText)
-        val pin = findViewById<EditText>(R.id.signUpPinEditText)
-
-        signUpBtn.setOnClickListener {
-            progressBar.visibility = View.VISIBLE
-            if (canClick(username, email, pin)) {
+        signupBtn.setOnClickListener {
+            signUpProgressBar.visibility = View.VISIBLE
+            if (canClick(signUpUsernameEditText, signUpEmailEditText, signUpPinEditText)) {
                 viewModel.signup(
-                    username.text.toString(),
-                    email.text.toString(),
-                    pin.text.toString(),
+                    signUpUsernameEditText.text.toString(),
+                    signUpEmailEditText.text.toString(),
+                    signUpPinEditText.text.toString(),
                     this
                 )
 
@@ -48,7 +42,7 @@ class SignUp : AppCompatActivity() {
                         Toast.makeText(this, "Unexpected Error", Toast.LENGTH_SHORT).show()
                 })
             }
-            progressBar.visibility = View.INVISIBLE
+            signUpProgressBar.visibility = View.INVISIBLE
         }
 
         loginTxt.setOnClickListener()

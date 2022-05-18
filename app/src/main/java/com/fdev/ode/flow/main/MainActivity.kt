@@ -22,6 +22,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,68 +30,28 @@ class MainActivity : AppCompatActivity() {
     private val baseClass = BaseClass()
     private val user = Firebase.auth.currentUser
     private val db = Firebase.firestore
-
-    private var contactName: EditText? = null
-    private var contactMail: EditText? = null
-    private var progressBar: ProgressBar? = null
-    private var secondaryBlackFilter: ImageView? = null
-    private var contactListCard: CardView? = null
-    private var amountText: EditText? = null
-    private var labelText: EditText? = null
-    private var totalText: TextView? = null
-    private var totalAmount: TextView? = null
     lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        val profile = findViewById<ImageButton>(R.id.profileBtn)
-        val blackFilter = findViewById<ImageView>(R.id.blackFilter)
-        val contactCard = findViewById<CardView>(R.id.addContactCard)
-        val contactButton = findViewById<ImageButton>(R.id.contactBtn)
-        val cancelContact = findViewById<ImageButton>(R.id.cancelContact)
-        val addContactButton = findViewById<Button>(R.id.addContactBtn)
-        val addDebtBtn = findViewById<Button>(R.id.addDebtBtnInCard)
-        val debtBtn = findViewById<ImageButton>(R.id.addDebtBtn)
-        val debtCard = findViewById<CardView>(R.id.addDebtCard)
-        val cancelDebtCard = findViewById<ImageButton>(R.id.cancelDebtCard)
-        val cancelContactList = findViewById<ImageButton>(R.id.cancelContactList)
-        val dropDown = findViewById<ImageButton>(R.id.dropDownBtn)
-        val neutroNr = findViewById<EditText>(R.id.addNeutroNumber)
-        val scrollLayout = findViewById<RelativeLayout>(R.id.debtsContactList)
 
-        contactListCard = findViewById(R.id.contactListCard)
-        contactName = findViewById(R.id.contactName)
-        contactMail = findViewById(R.id.contactMail)
-        amountText = findViewById(R.id.amountText)
-        labelText = findViewById(R.id.labelText)
-        totalText = findViewById(R.id.totalText)
-        totalAmount = findViewById(R.id.debtText)
-        secondaryBlackFilter = findViewById(R.id.secondaryBlackFilter)
-        progressBar = findViewById(R.id.mainActivityProgressBar)
+        val fragmentAdapter = FragmentAdapter(supportFragmentManager, lifecycle)
+        viewPager2.adapter = fragmentAdapter
 
-
-        val tab = findViewById<TabLayout>(R.id.tab)
-        val viewpager2 = findViewById<ViewPager2>(R.id.viewPager2)
-        val fragmentAdapter: FragmentAdapter
-
-        val fm: FragmentManager = supportFragmentManager
-        fragmentAdapter = FragmentAdapter(fm, lifecycle)
-        viewpager2.adapter = fragmentAdapter
-
-        viewModel.getDebtOrRecievement("Debts", totalText, totalAmount)
-        loadContacts(scrollLayout)
+        viewModel.getDebtOrRecievement("Debts", totalText, debtText)
+        loadContacts(debtsContactList)
 
         //On Fragment change
         tab.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                viewpager2.currentItem = tab.position
+                viewPager2.currentItem = tab.position
 
                 if (tab.position == 0)
-                    viewModel.getDebtOrRecievement("Debts", totalText, totalAmount)
+                    viewModel.getDebtOrRecievement("Debts", totalText, debtText)
                 else
-                    viewModel.getDebtOrRecievement("Recivements", totalText, totalAmount)
+                    viewModel.getDebtOrRecievement("Recivements", totalText, debtText)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -99,14 +60,14 @@ class MainActivity : AppCompatActivity() {
         })
 
 
-        viewpager2.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+        viewPager2.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 tab.selectTab(tab.getTabAt(position))
             }
         })
 
         addDebtBtn.setOnClickListener {
-            baseClass.setViewsDisabled(listOf(profile, debtBtn))
+            baseClass.setViewsDisabled(listOf(profileBtn, addDebtBtn))
 
             val contact = contactName?.text.toString()
             val contactMailTxt = contactMail?.text.toString()
@@ -120,9 +81,9 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Debt added succesfully", Toast.LENGTH_SHORT)
                     .show()
 
-                progressBar?.visibility = View.VISIBLE
+                mainActivityProgressBar?.visibility = View.VISIBLE
                 blackFilter.visibility = View.INVISIBLE
-                debtCard.visibility = View.INVISIBLE
+                addDebtCard.visibility = View.INVISIBLE
 
                 val generatedID = viewModel.generateId()
 
@@ -136,40 +97,40 @@ class MainActivity : AppCompatActivity() {
                     "Recivements"
                 ) //Add recievement
 
-                viewModel.getContactUserName(generatedID,contactMailTxt,label,amount)
+                viewModel.getContactUserName(generatedID, contactMailTxt, label, amount)
 
                 contactName?.setText("")
                 contactMail?.setText("")
                 amountText?.setText("")
                 labelText?.setText("")
-                contactButton.isEnabled = true
-                debtBtn.isEnabled = true
-                progressBar?.visibility = View.INVISIBLE
+                contactBtn.isEnabled = true
+                addDebtBtn.isEnabled = true
+                mainActivityProgressBar?.visibility = View.INVISIBLE
                 refresh()
             }
         }
 
         cancelContactList.setOnClickListener {
-            progressBar?.visibility = View.VISIBLE
-            baseClass.setViewsEnabled(listOf(profile, debtBtn))
+            mainActivityProgressBar?.visibility = View.VISIBLE
+            baseClass.setViewsEnabled(listOf(profileBtn, addDebtBtn))
             secondaryBlackFilter?.visibility = View.INVISIBLE
             contactListCard?.visibility = View.INVISIBLE
             amountText?.isEnabled = true
             labelText?.isEnabled = true
-            progressBar?.visibility = View.INVISIBLE
+            mainActivityProgressBar?.visibility = View.INVISIBLE
         }
         cancelContactList.translationZ = 22F
 
-        debtBtn.setOnClickListener {
-            progressBar?.visibility = View.VISIBLE
-            baseClass.setViewsDisabled(listOf(profile, debtBtn))
+        addDebtBtn.setOnClickListener {
+            mainActivityProgressBar?.visibility = View.VISIBLE
+            baseClass.setViewsDisabled(listOf(profileBtn, addDebtBtn))
             blackFilter.visibility = View.VISIBLE
-            debtCard.visibility = View.VISIBLE
-            contactButton.isEnabled = false
-            progressBar?.visibility = View.INVISIBLE
+            addDebtCard.visibility = View.VISIBLE
+            contactBtn.isEnabled = false
+            mainActivityProgressBar?.visibility = View.INVISIBLE
         }
 
-        dropDown.setOnClickListener {
+        dropDownBtn.setOnClickListener {
             secondaryBlackFilter?.visibility = View.VISIBLE
             contactListCard?.visibility = View.VISIBLE
             amountText?.isEnabled = false
@@ -177,45 +138,45 @@ class MainActivity : AppCompatActivity() {
         }
 
         cancelDebtCard.setOnClickListener() {
-            progressBar?.visibility = View.VISIBLE
-            baseClass.setViewsEnabled(listOf(profile, debtBtn))
+            mainActivityProgressBar?.visibility = View.VISIBLE
+            baseClass.setViewsEnabled(listOf(profileBtn, addDebtBtn))
             blackFilter.visibility = View.INVISIBLE
             contactName?.setText("")
             contactMail?.setText("")
             amountText?.setText("")
             labelText?.setText("")
-            contactButton.isEnabled = true
-            debtCard.visibility = View.INVISIBLE
-            progressBar?.visibility = View.INVISIBLE
+            contactBtn.isEnabled = true
+            addDebtCard.visibility = View.INVISIBLE
+            mainActivityProgressBar?.visibility = View.INVISIBLE
         }
 
-        contactButton.setOnClickListener {
-            progressBar?.visibility = View.VISIBLE
-            baseClass.setViewsDisabled(listOf(profile, debtBtn))
+        contactBtn.setOnClickListener {
+            mainActivityProgressBar?.visibility = View.VISIBLE
+            baseClass.setViewsDisabled(listOf(profileBtn, addDebtBtn))
             blackFilter.visibility = View.VISIBLE
-            contactCard.visibility = View.VISIBLE
-            debtBtn.isEnabled = false
-            progressBar?.visibility = View.INVISIBLE
+            addContactCard.visibility = View.VISIBLE
+            addDebtBtn.isEnabled = false
+            mainActivityProgressBar?.visibility = View.INVISIBLE
         }
 
-        addContactButton.setOnClickListener()
+        addContactBtn.setOnClickListener()
         {
-            val neutroNo = neutroNr.text.toString()
+            val neutroNo = addNeutroNumber.text.toString()
             val userMail = user?.email.toString()
 
             if (TextUtils.isEmpty(neutroNo))
                 Toast.makeText(this, "Something is missing", Toast.LENGTH_SHORT).show()
             else {
-                progressBar?.visibility = View.VISIBLE
+                mainActivityProgressBar?.visibility = View.VISIBLE
                 //Add this to your Contact
                 if (neutroNo != userMail) {
                     contactCheck(neutroNo)
 
                     blackFilter.visibility = View.INVISIBLE
-                    contactCard.visibility = View.INVISIBLE
-                    neutroNr.setText("")
-                    debtBtn.isEnabled = true
-                    progressBar?.visibility = View.INVISIBLE
+                    addContactCard.visibility = View.INVISIBLE
+                    addNeutroNumber.setText("")
+                    addDebtBtn.isEnabled = true
+                    mainActivityProgressBar?.visibility = View.INVISIBLE
                     refresh()
                 } else
                     Toast.makeText(
@@ -226,17 +187,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         cancelContact.setOnClickListener {
-            progressBar?.visibility = View.VISIBLE
-            baseClass.setViewsEnabled(listOf(profile, debtBtn))
+            mainActivityProgressBar?.visibility = View.VISIBLE
+            baseClass.setViewsEnabled(listOf(profileBtn, addDebtBtn))
             blackFilter.visibility = View.INVISIBLE
-            contactCard.visibility = View.INVISIBLE
-            neutroNr.setText("")
-            debtBtn.isEnabled = true
-            progressBar?.visibility = View.INVISIBLE
+            addContactCard.visibility = View.INVISIBLE
+            addNeutroNumber.setText("")
+            addDebtBtn.isEnabled = true
+            mainActivityProgressBar?.visibility = View.INVISIBLE
         }
 
 
-        profile.setOnClickListener {
+        profileBtn.setOnClickListener {
             val intent = Intent(this, Profile::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
@@ -340,6 +301,7 @@ class MainActivity : AppCompatActivity() {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
+
                     //Get previous Contacts
                     myContact = document.get("contact") as ArrayList<String?>
                     val contactName = document.get("contactName") as ArrayList<String?>
@@ -398,17 +360,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setContactNameAndMail(name: String, mail: String) {
-        progressBar?.visibility = View.VISIBLE
+        mainActivityProgressBar?.visibility = View.VISIBLE
         secondaryBlackFilter?.visibility = View.INVISIBLE
         contactListCard?.visibility = View.INVISIBLE
         contactName?.setText(name)
         contactMail?.setText(mail)
         amountText?.isEnabled = true
         labelText?.isEnabled = true
-        progressBar?.visibility = View.INVISIBLE
+        mainActivityProgressBar?.visibility = View.INVISIBLE
     }
 
-    private fun refresh(){
+    private fun refresh() {
         finish()
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
