@@ -26,13 +26,16 @@
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.124" />
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bluebg.xml" value="0.161" />
+        <entry key="app/src/main/res/drawable/tab_background.xml" value="0.1225" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2666213989257813" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.21677093505859377" />
+        <entry key="app/src/main/res/layout/activity_notifications.xml" value="0.20185185185185187" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.20925553319919518" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.3098958333333333" />
-        <entry key="app/src/main/res/layout/fragment_debts_.xml" value="0.3098958333333333" />
-        <entry key="app/src/main/res/layout/fragment_recivement_.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_debts_.xml" value="0.19876454671223956" />
+        <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.20185185185185187" />
+        <entry key="app/src/main/res/layout/fragment_recivement_.xml" value="0.20401458740234377" />
       </map>
     </option>
   </component>

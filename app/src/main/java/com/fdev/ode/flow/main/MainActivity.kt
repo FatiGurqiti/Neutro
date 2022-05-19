@@ -20,6 +20,7 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_recivement_.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         addDebtBtnInCard.setOnClickListener {
-            baseClass.setViewsDisabled(listOf(profileBtn, addDebtBtn))
+            baseClass.disableViews(listOf(profileBtn, addDebtBtn, notificationsBtn))
 
             if (TextUtils.isEmpty(contactName?.text.toString()) ||
                 TextUtils.isEmpty(amountText?.text.toString()) ||
@@ -111,7 +112,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         cancelContactList.setOnClickListener {
-            baseClass.setViewsEnabled(listOf(profileBtn, addDebtBtn))
+            baseClass.enableViews(
+                listOf(
+                    profileBtn,
+                    notificationsBtn,
+                    addDebtBtn,
+                    cancelContact,
+                    cancelDebtCard,
+                    addDebtBtnInCard
+                )
+            )
             secondaryBlackFilter?.visibility = View.INVISIBLE
             contactListCard?.visibility = View.INVISIBLE
             setTextStatus(true)
@@ -119,7 +129,7 @@ class MainActivity : AppCompatActivity() {
         cancelContactList.translationZ = 22F
 
         addDebtBtn.setOnClickListener {
-            baseClass.setViewsDisabled(listOf(profileBtn, addDebtBtn))
+            baseClass.disableViews(listOf(profileBtn, addDebtBtn, notificationsBtn))
             blackFilter.visibility = View.VISIBLE
             addDebtCard.visibility = View.VISIBLE
             contactBtn.isEnabled = false
@@ -127,12 +137,13 @@ class MainActivity : AppCompatActivity() {
 
         dropDownBtn.setOnClickListener {
             secondaryBlackFilter?.visibility = View.VISIBLE
+            baseClass.disableViews(listOf(cancelContact, cancelDebtCard, addDebtBtnInCard))
             contactListCard?.visibility = View.VISIBLE
             setTextStatus(false)
         }
 
         cancelDebtCard.setOnClickListener {
-            baseClass.setViewsEnabled(listOf(profileBtn, addDebtBtn))
+            baseClass.enableViews(listOf(profileBtn, addDebtBtn, notificationsBtn))
             blackFilter.visibility = View.INVISIBLE
             emptyInputs()
             contactBtn.isEnabled = true
@@ -140,7 +151,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         contactBtn.setOnClickListener {
-            baseClass.setViewsDisabled(listOf(profileBtn, addDebtBtn))
+            baseClass.disableViews(listOf(profileBtn, addDebtBtn, notificationsBtn))
             blackFilter.visibility = View.VISIBLE
             addContactCard.visibility = View.VISIBLE
         }
@@ -175,7 +186,7 @@ class MainActivity : AppCompatActivity() {
 
         cancelContact.setOnClickListener {
             mainActivityProgressBar?.visibility = View.VISIBLE
-            baseClass.setViewsEnabled(listOf(profileBtn, addDebtBtn))
+            baseClass.enableViews(listOf(profileBtn, addDebtBtn, notificationsBtn))
             blackFilter.visibility = View.INVISIBLE
             addContactCard.visibility = View.INVISIBLE
             addContactMail.setText("")
@@ -191,14 +202,13 @@ class MainActivity : AppCompatActivity() {
 
 
     fun setContactNameAndMail(name: String, mail: String) {
-        mainActivityProgressBar?.visibility = View.VISIBLE
         secondaryBlackFilter?.visibility = View.INVISIBLE
         contactListCard?.visibility = View.INVISIBLE
         contactName?.setText(name)
         contactMail?.setText(mail)
+        baseClass.enableViews(listOf(cancelContact, cancelDebtCard, addDebtBtnInCard))
         amountText?.isEnabled = true
         labelText?.isEnabled = true
-        mainActivityProgressBar?.visibility = View.INVISIBLE
     }
 
     private fun emptyInputs() {

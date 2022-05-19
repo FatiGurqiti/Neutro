@@ -5,7 +5,7 @@ import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
 import com.fdev.ode.databinding.ActivityNotificationsBinding
-import com.fdev.ode.flow.ui.main.SectionsPagerAdapter
+import com.fdev.ode.flow.ui.notification.SectionsPagerAdapter
 
 class Notifications : AppCompatActivity() {
 

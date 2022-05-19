@@ -112,7 +112,7 @@ class ProfileViewModel : ViewModel() {
                                                             else {
                                                                 blackFilter?.visibility = View.VISIBLE
                                                                 areYouSureCard?.visibility = View.VISIBLE
-                                                                baseClass.setViewsDisabled(listOf(logo))
+                                                                baseClass.disableViews(listOf(logo))
                                                             }
                                                         }
                                                     }
@@ -124,12 +124,12 @@ class ProfileViewModel : ViewModel() {
                                 {
                                     blackFilter?.visibility = View.INVISIBLE
                                     areYouSureCard?.visibility = View.INVISIBLE
-                                    baseClass.setViewsEnabled(listOf(logo))
+                                    baseClass.enableViews(listOf(logo))
                                 }
 
                                 deleteButton?.setOnClickListener() {
                                     deleteContact(myContact, contactName, i)
-                                    baseClass.setViewsEnabled(listOf(logo))
+                                    baseClass.enableViews(listOf(logo))
                                 }
                             }
                         }

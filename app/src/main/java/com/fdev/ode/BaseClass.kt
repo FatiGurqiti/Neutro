@@ -41,12 +41,12 @@ class BaseClass {
         return displayMetrics.heightPixels
     }
 
-    fun setViewsDisabled(view : List<View>)
+    fun disableViews(view : List<View>)
     {
         for (i in view.indices)
             view[i].isEnabled = false
     }
-    fun setViewsEnabled(view : List<View>)
+    fun enableViews(view : List<View>)
     {
         for (i in view.indices)
             view[i].isEnabled = true

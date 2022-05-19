@@ -1,4 +1,4 @@
-package com.fdev.ode.flow.ui.main
+package com.fdev.ode.flow.ui.notification
 
 import android.content.Context
 import androidx.fragment.app.Fragment
