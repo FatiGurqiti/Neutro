@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OdeVersion2">
         <activity
-            android:name=".flow.Notifications"
+            android:name=".flow.notifications.Notifications"
             android:exported="false"
             android:label="@string/title_activity_notifications"
             android:theme="@style/Theme.OdeVersion2.NoActionBar" />

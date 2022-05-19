@@ -1,4 +1,4 @@
-package com.fdev.ode.flow.ui.notification
+package com.fdev.ode.flow.notifications.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

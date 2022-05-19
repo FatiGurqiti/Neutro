@@ -2,6 +2,7 @@ package com.fdev.ode.flow.main
 
 import android.content.Context
 import android.content.res.Resources
+import android.util.Log
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
@@ -298,13 +299,37 @@ class MainViewModel : ViewModel() {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    addContact(email, userMail)  // add contact to this user
-                    addContact(userMail, email) // add this to contact
+                    sendContactRequest(email, userMail)
+                    toast.contactRequestSent(context)
                     closeContactCard.value = true
-                    toast.contactAdded(context)
+
                 } else {
                     toast.noSuchUser(context)
                     closeContactCard.value = false
+                }
+            }
+    }
+
+    private fun sendContactRequest(contactMail: String, usersMail: String) {
+
+        var mails = ArrayList<String?>()
+        mails.add(usersMail)
+        val docRef = db.collection("ContactRequests").document(contactMail)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    mails += document.get("mail") as ArrayList<String>
+
+                    mails = preventDuplicatedData(mails)
+                    db.collection("ContactRequests").document(contactMail)
+                        .update("mail", mails)
+
+                } else {
+                    val contactHash = hashMapOf(
+                        "mail" to mails
+                    )
+                    db.collection("ContactRequests").document(contactMail)
+                        .set(contactHash)
                 }
             }
     }
@@ -342,27 +367,26 @@ class MainViewModel : ViewModel() {
     }
 
     private fun updateContact(myContact: ArrayList<String?>, email: String, to: String) {
-        preventDuplicatedData(myContact)
+
+        val contact = preventDuplicatedData(myContact)
         db.collection("Contacts").document(to)
-            .update("contact", myContact)
+            .update("contact", contact)
 
         val docRef = db.collection("Contacts").document(to)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     //Get the old data
-                    val contactNames = document?.get("contactName") as ArrayList<String?>
+                    var contactNames = document?.get("contactName") as ArrayList<String?>
 
                     db.collection("Users")
                         .document(email)
                         .get()
                         .addOnSuccessListener {
                             if (it.data != null) {
-                                //Get name of the current contact
                                 contactNames.add(it.getString("username"))
-                                preventDuplicatedData(contactNames)
+                                contactNames = preventDuplicatedData(contactNames)
 
-                                //Update the data
                                 db.collection("Contacts").document(to)
                                     .update("contactName", contactNames)
 

@@ -1,4 +1,4 @@
-package com.fdev.ode.flow.ui.notification
+package com.fdev.ode.flow.notifications.fragments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

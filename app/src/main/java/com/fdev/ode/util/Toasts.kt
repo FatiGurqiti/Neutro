@@ -148,4 +148,13 @@ class Toasts {
         toast.show()
     }
 
+    fun contactRequestSent(context: Context) {
+        val toast = Toast.makeText(
+            context,
+            "Contact request has been sent",
+            Toast.LENGTH_SHORT
+        )
+        toast.show()
+    }
+
 }

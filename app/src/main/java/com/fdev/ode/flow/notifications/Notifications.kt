@@ -1,11 +1,11 @@
-package com.fdev.ode.flow
+package com.fdev.ode.flow.notifications
 
 import android.os.Bundle
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
 import com.fdev.ode.databinding.ActivityNotificationsBinding
-import com.fdev.ode.flow.ui.notification.SectionsPagerAdapter
+import com.fdev.ode.flow.notifications.fragments.SectionsPagerAdapter
 
 class Notifications : AppCompatActivity() {
 

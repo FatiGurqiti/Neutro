@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.fdev.ode.BaseClass
 import com.fdev.ode.R
-import com.fdev.ode.flow.Notifications
+import com.fdev.ode.flow.notifications.Notifications
 import com.fdev.ode.flow.fragments.FragmentAdapter
 import com.fdev.ode.flow.profile.Profile
 import com.fdev.ode.util.Toasts
@@ -20,7 +20,6 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_recivement_.*
 
 
 class MainActivity : AppCompatActivity() {
