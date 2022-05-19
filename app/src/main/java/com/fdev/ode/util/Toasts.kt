@@ -130,4 +130,13 @@ class Toasts {
         )
         toast.show()
     }
+    fun unfinishedBusiness(context: Context){
+        val toast = Toast.makeText(
+            context,
+            "You have unfinished business with this person!",
+            Toast.LENGTH_SHORT
+        )
+        toast.show()
+    }
+
 }

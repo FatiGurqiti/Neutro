@@ -14,7 +14,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_profile.*
 
-
 class Profile : AppCompatActivity() {
 
     private lateinit var viewModel: ProfileViewModel
@@ -33,7 +32,8 @@ class Profile : AppCompatActivity() {
             deleteContactCard,
             profileLogo,
             notDeleteContactBtn,
-            deleteContactBtn
+            deleteContactBtn,
+            applicationContext
         )
         val user = Firebase.auth.currentUser
         if (user != null) userMail.text = user.email

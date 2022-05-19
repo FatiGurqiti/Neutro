@@ -263,12 +263,12 @@ class Recivements_Fragment : Fragment() {
                             //Locate  the debt
                             if (id[i]!! == idIndex) {
 
-                                amount.removeAt(j) //delete located amount
-                                id.removeAt(j) // delete located id
-                                label.removeAt(j) // delete located label
-                                name.removeAt(j) // delete located name
-                                mail.removeAt(j) // delete located mail
-                                time.removeAt(j) // delete located time
+                                amount.removeAt(j)
+                                id.removeAt(j)
+                                label.removeAt(j)
+                                name.removeAt(j)
+                                mail.removeAt(j)
+                                time.removeAt(j)
 
                                 //Delete Debt
                                 delete("Debts", email, "amount", amount)

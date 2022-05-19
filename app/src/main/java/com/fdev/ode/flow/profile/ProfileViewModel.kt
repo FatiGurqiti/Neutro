@@ -1,18 +1,17 @@
 package com.fdev.ode.flow.profile
 
 import android.app.Activity
-import android.app.ActivityOptions
-import android.content.Intent
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.view.View
 import android.widget.*
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fdev.ode.BaseClass
 import com.fdev.ode.R
+import com.fdev.ode.util.Toasts
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -22,6 +21,7 @@ import kotlinx.coroutines.runBlocking
 
 class ProfileViewModel : ViewModel() {
 
+    private val toast = Toasts()
     private val baseClass = BaseClass()
     private val db = Firebase.firestore
     private val user = Firebase.auth.currentUser
@@ -38,14 +38,15 @@ class ProfileViewModel : ViewModel() {
         areYouSureCard: CardView?,
         logo: ImageView,
         dontDeleteButton: Button?,
-        deleteButton: Button?
+        deleteButton: Button?,
+        context: Context
     ) {
         val docRef = db.collection("Contacts").document(user?.email.toString())
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     val myContact = document?.get("contact") as ArrayList<String?>
-                    val contactNames = document?.get("contactName") as ArrayList<String?>
+                    val contactName = document?.get("contactName") as ArrayList<String?>
 
                     if (myContact.size != 0) { //User has contacts
                         for (i in myContact.indices) {
@@ -57,7 +58,7 @@ class ProfileViewModel : ViewModel() {
 
                             val contactNameText = TextView(profile.applicationContext)
                             contactNameText.textSize = 20f
-                            contactNameText.text = contactNames[i].toString()
+                            contactNameText.text = contactName[i].toString()
                             contactNameText.typeface = boldFont
                             scrollLayout?.addView(contactNameText)
                             baseClass.setMargins(
@@ -95,9 +96,29 @@ class ProfileViewModel : ViewModel() {
 
                             deleteText.setOnClickListener()
                             {
-                                blackFilter?.visibility = View.VISIBLE
-                                areYouSureCard?.visibility = View.VISIBLE
-                                baseClass.setViewsDisabled(listOf(logo))
+                                db.collection("Debts").document(user?.email.toString()).get()
+                                    .addOnSuccessListener { document ->
+                                        if (document.data != null) {
+                                            if (myContact[i] in document.get("to") as ArrayList<*>)
+                                                toast.unfinishedBusiness(context)
+                                            else {
+                                                db.collection("Recivements")
+                                                    .document(user?.email.toString()).get()
+                                                    .addOnSuccessListener {
+
+                                                        if (it.data != null) {
+                                                            if (myContact[i] in it.get("to") as ArrayList<*>)
+                                                                toast.unfinishedBusiness(context)
+                                                            else {
+                                                                blackFilter?.visibility = View.VISIBLE
+                                                                areYouSureCard?.visibility = View.VISIBLE
+                                                                baseClass.setViewsDisabled(listOf(logo))
+                                                            }
+                                                        }
+                                                    }
+                                            }
+                                        }
+                                    }
 
                                 dontDeleteButton?.setOnClickListener()
                                 {
@@ -107,7 +128,7 @@ class ProfileViewModel : ViewModel() {
                                 }
 
                                 deleteButton?.setOnClickListener() {
-                                    deleteContact(myContact, contactNames, i)
+                                    deleteContact(myContact, contactName, i)
                                     baseClass.setViewsEnabled(listOf(logo))
                                 }
                             }
@@ -120,7 +141,7 @@ class ProfileViewModel : ViewModel() {
 
     private fun deleteContact(
         myContact: ArrayList<String?>,
-        ContactNames: ArrayList<String?>,
+        contactName: ArrayList<String?>,
         i: Int
     ) {
 
@@ -131,14 +152,14 @@ class ProfileViewModel : ViewModel() {
             }
 
             myContact.removeAt(i) //delete mail address
-            ContactNames.removeAt(i) // delete name
+            contactName.removeAt(i) // delete name
 
             //Update the data with new ArrayList
             db.collection("Contacts").document(user?.email.toString())
                 .update("contact", myContact)
 
             db.collection("Contacts").document(user?.email.toString())
-                .update("contactName", ContactNames)
+                .update("contactName", contactName)
         }
 
     }
@@ -150,4 +171,9 @@ class ProfileViewModel : ViewModel() {
                     username.text = document?.getString("username")
             }
     }
+
 }
+
+
+
+
