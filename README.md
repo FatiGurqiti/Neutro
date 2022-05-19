@@ -47,7 +47,7 @@ These datas are beign kept on Firestore as *ArrayLists*
 To add new data to the cloud, program creates an Arraylist for the data and checks if the user has previous data by runing a query. If the user has previous data; get them all to new Array Lists and add current data on top of the Array List and update the Array List on Firebase with new Array List. 
 
 ```
-                    IDArray = document.get("id") as ArrayList<String?> //Get array from FireBase
+                    IDArray = document?.get("id") as ArrayList<String?> //Get array from FireBase
 
                     IDArray.add(id)  //Add current data to it
 

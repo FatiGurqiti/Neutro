@@ -16,6 +16,9 @@ import com.fdev.ode.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class ProfileViewModel : ViewModel() {
 
@@ -38,13 +41,11 @@ class ProfileViewModel : ViewModel() {
         deleteButton: Button?
     ) {
         val docRef = db.collection("Contacts").document(user?.email.toString())
-        var myContact = ArrayList<String?>()
-        var contactNames = ArrayList<String?>()
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    myContact = document.get("contact") as ArrayList<String?>
-                    contactNames = document.get("contactName") as ArrayList<String?>
+                    val myContact = document?.get("contact") as ArrayList<String?>
+                    val contactNames = document?.get("contactName") as ArrayList<String?>
 
                     if (myContact.size != 0) { //User has contacts
                         for (i in myContact.indices) {
@@ -122,24 +123,31 @@ class ProfileViewModel : ViewModel() {
         ContactNames: ArrayList<String?>,
         i: Int
     ) {
-        myContact.removeAt(i) //delete mail address
-        ContactNames.removeAt(i) // delete name
 
-        //Update the data with new ArrayList
-        db.collection("Contacts").document(user?.email.toString())
-            .update("contact", myContact)
+        runBlocking {
+            launch {
+                delay(1000L)
+                isDeleted.value = true
+            }
 
-        db.collection("Contacts").document(user?.email.toString())
-            .update("contactName", ContactNames)
+            myContact.removeAt(i) //delete mail address
+            ContactNames.removeAt(i) // delete name
 
-        isDeleted.value = true
+            //Update the data with new ArrayList
+            db.collection("Contacts").document(user?.email.toString())
+                .update("contact", myContact)
+
+            db.collection("Contacts").document(user?.email.toString())
+                .update("contactName", ContactNames)
+        }
+
     }
 
     fun setUserName(username: TextView) {
         db.collection("Users").document(user?.email.toString()).get()
             .addOnSuccessListener { document ->
                 if (document.data != null)
-                    username.text = document.getString("username")
+                    username.text = document?.getString("username")
             }
     }
 }

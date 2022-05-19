@@ -37,10 +37,10 @@ class Debts_Fragment : Fragment() {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    val amount = document.get("amount") as ArrayList<Long?>
-                    val label = document.get("label") as ArrayList<String?>
-                    val name = document.get("name") as ArrayList<String?>
-                    val time = document.get("time") as ArrayList<String?>
+                    val amount = document?.get("amount") as ArrayList<Long?>
+                    val label = document?.get("label") as ArrayList<String?>
+                    val name = document?.get("name") as ArrayList<String?>
+                    val time = document?.get("time") as ArrayList<String?>
 
                     for (i in amount.indices) {
 

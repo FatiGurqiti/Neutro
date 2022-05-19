@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        addDebtBtn.setOnClickListener {
+        addDebtBtnInCard.setOnClickListener {
             baseClass.setViewsDisabled(listOf(profileBtn, addDebtBtn))
 
             val contact = contactName?.text.toString()
@@ -201,8 +201,8 @@ class MainActivity : AppCompatActivity() {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    val myContact = document.get("contact") as ArrayList<String?>
-                    val contactNames = document.get("contactName") as ArrayList<String?>
+                    val myContact = document?.get("contact") as ArrayList<String?>
+                    val contactNames = document?.get("contactName") as ArrayList<String?>
 
                     if (myContact.size != 0) { //User has contacts
 
@@ -294,8 +294,8 @@ class MainActivity : AppCompatActivity() {
                 if (document.data != null) {
 
                     //Get previous Contacts
-                    myContact = document.get("contact") as ArrayList<String?>
-                    val contactName = document.get("contactName") as ArrayList<String?>
+                    myContact = document?.get("contact") as ArrayList<String?>
+                    val contactName = document?.get("contactName") as ArrayList<String?>
 
                     //Get name of the current contanct
                     db.collection("Users")
@@ -328,7 +328,7 @@ class MainActivity : AppCompatActivity() {
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     //Get the old data
-                    val contactNames = document.get("contactName") as ArrayList<String?>
+                    val contactNames = document?.get("contactName") as ArrayList<String?>
 
                     db.collection("Users")
                         .document(email)

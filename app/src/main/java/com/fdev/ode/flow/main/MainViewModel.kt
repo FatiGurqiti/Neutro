@@ -26,7 +26,7 @@ class MainViewModel : ViewModel() {
                     addDebtOrReceivement(
                         generatedID,
                         contactMailTxt,
-                        document.getString("username").toString(),
+                        document?.getString("username").toString(),
                         label,
                         amount.toDouble(),
                         "Debts"
@@ -42,7 +42,7 @@ class MainViewModel : ViewModel() {
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     //Update username
-                    contactName.add(document.getString("username"))
+                    contactName.add(document?.getString("username"))
 
                     val contactHash = hashMapOf(
                         "contact" to myContact,
@@ -66,7 +66,7 @@ class MainViewModel : ViewModel() {
                 if (document.data != null) {
                     //Get Old data
                     val valueArray: ArrayList<Double?> =
-                        document.get("amount") as ArrayList<Double?>
+                        document?.get("amount") as ArrayList<Double?>
                     var value = 0.0
                     // Add new data on top of old data
                     for (i in valueArray.indices)
@@ -112,12 +112,12 @@ class MainViewModel : ViewModel() {
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     //get Old data
-                    idArray = document.get("id") as ArrayList<String?>
-                    toArray = document.get("to") as ArrayList<String?>
-                    nameArray = document.get("name") as ArrayList<String?>
-                    labelArray = document.get("label") as ArrayList<String?>
-                    timeArray = document.get("time") as ArrayList<String?>
-                    amountArray = document.get("amount") as ArrayList<Double?>
+                    idArray = document?.get("id") as ArrayList<String?>
+                    toArray = document?.get("to") as ArrayList<String?>
+                    nameArray = document?.get("name") as ArrayList<String?>
+                    labelArray = document?.get("label") as ArrayList<String?>
+                    timeArray = document?.get("time") as ArrayList<String?>
+                    amountArray = document?.get("amount") as ArrayList<Double?>
 
                     //add data to it
                     idArray.add(id)

@@ -4,6 +4,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.cardview.widget.CardView
@@ -15,6 +16,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_recivement_.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class Recivements_Fragment : Fragment() {
 
@@ -185,7 +189,6 @@ class Recivements_Fragment : Fragment() {
 
                                 receivementsDeleteDebtBtn.setOnClickListener() {
                                     deleteRecievement(amount, id, label, name, mail, time, i)
-
                                 }
                             }
                         }
@@ -204,7 +207,7 @@ class Recivements_Fragment : Fragment() {
         i: Int
     ) {
 
-        deleteDebt(amount, id, label, name, mail, time, i)
+        deleteDebt(id, mail, i)
 
         //delete receivement
         val user = user!!.email.toString()
@@ -226,23 +229,12 @@ class Recivements_Fragment : Fragment() {
     }
 
     private fun deleteDebt(
-        amount: ArrayList<Long?>,
-        id: ArrayList<String?>,
-        label: ArrayList<String?>,
-        name: ArrayList<String?>,
-        mail: ArrayList<String?>,
-        time: ArrayList<String?>,
+        idList: ArrayList<String?>,
+        mailList: ArrayList<String?>,
         i: Int
     ) {
-        val email = mail.get(i).toString()
-        val idIndex = id.get(i).toString()
-
-        var amount = ArrayList<Long?>()
-        var id = ArrayList<String?>()
-        var label = ArrayList<String?>()
-        var name = ArrayList<String?>()
-        var mail = ArrayList<String?>()
-        var time = ArrayList<String?>()
+        val email = mailList[i].toString()
+        val idIndex = idList[i].toString()
 
         //Get the debts
         val docRef = db.collection("Debts").document(email)
@@ -250,40 +242,46 @@ class Recivements_Fragment : Fragment() {
             .addOnSuccessListener { document ->
                 if (document.data != null) {
 
-                    amount = document?.get("amount") as ArrayList<Long?>
-                    id = document?.get("id") as ArrayList<String?>
-                    label = document?.get("label") as ArrayList<String?>
-                    name = document?.get("name") as ArrayList<String?>
-                    mail = document?.get("to") as ArrayList<String?>
-                    time = document?.get("time") as ArrayList<String?>
-
-                    for (j in id.indices) {
-                        //Locate  the debt
-                        if (id[i]!! == idIndex) {
-
-                            amount.removeAt(j) //delete located amount
-                            id.removeAt(j) // delete located id
-                            label.removeAt(j) // delete located label
-                            name.removeAt(j) // delete located name
-                            mail.removeAt(j) // delete located mail
-                            time.removeAt(j) // delete located time
-
-                            //Delete Debt
-                            delete("Debts", email, "amount", amount)
-                            delete("Debts", email, "id", id)
-                            delete("Debts", email, "label", label)
-                            delete("Debts", email, "name", name)
-                            delete("Debts", email, "to", mail)
-                            delete("Debts", email, "time", time)
-
+                    runBlocking {
+                        launch {
+                            delay(1000)
                             val intent = Intent(context, MainActivity::class.java)
                             startActivity(
                                 intent,
                                 ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
                             )
+                        }
 
+                        val amount = document?.get("amount") as ArrayList<Long?>
+                        val id = document?.get("id") as ArrayList<String?>
+                        val label = document?.get("label") as ArrayList<String?>
+                        val name = document?.get("name") as ArrayList<String?>
+                        val mail = document?.get("to") as ArrayList<String?>
+                        val time = document?.get("time") as ArrayList<String?>
+
+                        for (j in id.indices) {
+                            //Locate  the debt
+                            if (id[i]!! == idIndex) {
+
+                                amount.removeAt(j) //delete located amount
+                                id.removeAt(j) // delete located id
+                                label.removeAt(j) // delete located label
+                                name.removeAt(j) // delete located name
+                                mail.removeAt(j) // delete located mail
+                                time.removeAt(j) // delete located time
+
+                                //Delete Debt
+                                delete("Debts", email, "amount", amount)
+                                delete("Debts", email, "id", id)
+                                delete("Debts", email, "label", label)
+                                delete("Debts", email, "name", name)
+                                delete("Debts", email, "to", mail)
+                                delete("Debts", email, "time", time)
+
+                            }
                         }
                     }
+
                 }
             }
     }
