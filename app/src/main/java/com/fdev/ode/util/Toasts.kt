@@ -68,6 +68,15 @@ class Toasts {
         toast.show()
     }
 
+    fun contactExists(context: Context){
+        val toast = Toast.makeText(
+            context,
+            "This person is already in your contact list",
+            Toast.LENGTH_SHORT
+        )
+        toast.show()
+    }
+
     fun contactAdded(context: Context){
         val toast = Toast.makeText(
             context,

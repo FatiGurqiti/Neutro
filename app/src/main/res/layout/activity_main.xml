@@ -28,36 +28,33 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/contactListCard"
-        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_alignParentBottom="true"
-        android:translationZ="18dp"
-        android:elevation="18dp"
-        android:background="@color/white"
-        app:cardCornerRadius="18dp"
         android:layout_marginBottom="-12dp"
-        >
+        android:background="@color/white"
+        android:elevation="18dp"
+        android:translationZ="18dp"
+        android:visibility="invisible"
+        app:cardCornerRadius="18dp">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:src="@drawable/black_line"
-            android:layout_marginTop="30dp"
             android:layout_marginLeft="170dp"
+            android:layout_marginTop="30dp"
             android:layout_marginRight="170dp"
-            />
+            android:src="@drawable/black_line" />
 
         <ImageButton
             android:id="@+id/cancelContactList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/cancel"
-            android:background="@android:color/transparent"
             android:layout_gravity="end"
-            android:layout_marginEnd="15dp"
             android:layout_marginTop="15dp"
-            />
+            android:layout_marginEnd="15dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/cancel" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/contactListScrollView"
@@ -67,8 +64,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="60dp"
-            android:layout_marginBottom="10dp"
-            >
+            android:layout_marginBottom="10dp">
 
 
             <RelativeLayout
@@ -86,36 +82,34 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/addDebtCard"
         android:layout_width="match_parent"
-        android:visibility="invisible"
         android:layout_height="430dp"
-        android:translationZ="16dp"
-        android:elevation="16dp"
-        android:background="@color/white"
-        android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
-        app:cardCornerRadius="18dp"
-        >
+        android:background="@color/white"
+        android:elevation="16dp"
+        android:translationZ="16dp"
+        android:visibility="invisible"
+        app:cardCornerRadius="18dp">
 
         <ImageButton
             android:id="@+id/cancelDebtCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/cancel"
-            android:background="@android:color/transparent"
             android:layout_gravity="end"
-            android:layout_marginEnd="15dp"
             android:layout_marginTop="12dp"
-            />
+            android:layout_marginEnd="15dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/cancel" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="Add Debt"
-            android:textSize="22sp"
             android:layout_marginTop="15dp"
+            android:text="Add Debt"
+            android:textAlignment="center"
             android:textColor="#000000"
-            />
+            android:textSize="22sp" />
 
 
         <EditText
@@ -128,24 +122,22 @@
             android:layout_marginRight="30dp"
             android:background="@drawable/inputbg"
             android:ems="10"
+            android:enabled="false"
             android:hint="Contact"
             android:inputType="text"
             android:paddingLeft="20dp"
             android:textColor="@color/white"
-            android:textColorHint="#60FFFFFF"
-            android:enabled="false"
-            />
+            android:textColorHint="#60FFFFFF" />
 
         <ImageButton
             android:id="@+id/dropDownBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/dropdown"
-            android:background="@android:color/transparent"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="95dp"
             android:layout_gravity="end"
-            />
+            android:layout_marginTop="95dp"
+            android:layout_marginRight="40dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/dropdown" />
 
         <EditText
             android:id="@+id/contactName"
@@ -157,13 +149,12 @@
             android:layout_marginRight="30dp"
             android:background="@drawable/inputbg"
             android:ems="10"
+            android:enabled="false"
             android:hint="Name"
             android:inputType="text"
             android:paddingLeft="20dp"
             android:textColor="@color/white"
-            android:textColorHint="#60FFFFFF"
-            android:enabled="false"
-            />
+            android:textColorHint="#60FFFFFF" />
 
         <EditText
             android:id="@+id/amountText"
@@ -194,25 +185,23 @@
             android:background="@drawable/inputbg"
             android:ems="10"
             android:hint="Label"
-            android:maxLines="1"
-            android:maxLength="35"
             android:inputType="text"
+            android:maxLength="35"
+            android:maxLines="1"
             android:paddingLeft="20dp"
             android:textColor="@color/white"
-            android:textColorHint="#60FFFFFF"
-            />
+            android:textColorHint="#60FFFFFF" />
 
         <Button
             android:id="@+id/addDebtBtnInCard"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_gravity="bottom"
             android:layout_marginBottom="-10dp"
             android:backgroundTint="#00C320"
             android:text="Add"
             android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:layout_gravity="bottom"
-            />
+            android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>
 
@@ -233,14 +222,14 @@
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/debtsTAB"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="DEBTS" />
 
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/toCollectTAB"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="RECIEVEMENTS" />
     </com.google.android.material.tabs.TabLayout>
@@ -249,52 +238,49 @@
         android:id="@+id/viewPager2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tab"/>
+        android:layout_below="@+id/tab" />
 
     <!-- Add Contact -->
     <androidx.cardview.widget.CardView
         android:id="@+id/addContactCard"
         android:layout_width="match_parent"
-        android:visibility="invisible"
         android:layout_height="280dp"
-        android:translationZ="16dp"
-        android:elevation="16dp"
-        android:background="@color/white"
-        android:layout_marginTop="120dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="120dp"
         android:layout_marginRight="20dp"
-        app:cardCornerRadius="18dp"
-        >
+        android:background="@color/white"
+        android:elevation="16dp"
+        android:translationZ="16dp"
+        android:visibility="invisible"
+        app:cardCornerRadius="18dp">
 
         <ImageButton
             android:id="@+id/cancelContact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/cancel"
-            android:background="@android:color/transparent"
             android:layout_gravity="end"
-            android:layout_marginEnd="15dp"
             android:layout_marginTop="12dp"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="Add Contact"
-            android:textSize="22sp"
-            android:layout_marginTop="15dp"
-            android:textColor="#000000"
-            />
+            android:layout_marginEnd="15dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/cancel" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Add Contact"
             android:textAlignment="center"
-            android:text="Enter e-mail"
-            android:textSize="18sp"
+            android:textColor="#000000"
+            android:textSize="22sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="85dp"
+            android:text="Enter e-mail"
+            android:textAlignment="center"
             android:textColor="#80000000"
-            />
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/addNeutroNumber"
@@ -316,14 +302,13 @@
             android:id="@+id/addContactBtn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_gravity="bottom"
             android:layout_marginBottom="-10dp"
             android:backgroundTint="#E40031"
-            android:text="Add"
             android:fontFamily="@font/plusjakartatextregular"
+            android:text="Add"
             android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:layout_gravity="bottom"
-            />
+            android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
     <ProgressBar
@@ -331,24 +316,41 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="300dp"
         android:layout_marginLeft="155dp"
-        android:visibility="invisible"
-        />
+        android:layout_marginTop="300dp"
+        android:visibility="invisible" />
 
-    <ImageButton
-        android:id="@+id/profileBtn"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="2dp"
+        android:translationZ="2dp"
         android:layout_alignParentRight="true"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="15dp"
-        android:elevation="2dp"
-        android:translationZ="2dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/profile"
-        tools:layout_editor_absoluteY="61dp" />
+        tools:layout_editor_absoluteY="61dp">
+
+        <ImageButton
+            android:id="@+id/profileBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/notificationsBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/bell"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileBtn"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

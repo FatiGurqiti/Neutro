@@ -4,6 +4,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.fdev.ode.BaseClass
 import com.fdev.ode.R
+import com.fdev.ode.flow.Notifications
 import com.fdev.ode.flow.fragments.FragmentAdapter
 import com.fdev.ode.flow.profile.Profile
 import com.fdev.ode.util.Toasts
@@ -161,19 +163,21 @@ class MainActivity : AppCompatActivity() {
             val neutroNo = addNeutroNumber.text.toString()
             val userMail = user?.email.toString()
 
+
             if (TextUtils.isEmpty(neutroNo)) toast.somethingIsMissing(applicationContext)
             else {
                 mainActivityProgressBar?.visibility = View.VISIBLE
                 //Add this to your Contact
                 if (neutroNo != userMail) {
-                    contactCheck(neutroNo)
+                    //contactCheck(neutroNo)
+                    doContactExist(neutroNo)
 
-                    blackFilter.visibility = View.INVISIBLE
-                    addContactCard.visibility = View.INVISIBLE
-                    addNeutroNumber.setText("")
-                    addDebtBtn.isEnabled = true
-                    mainActivityProgressBar?.visibility = View.INVISIBLE
-                    refresh()
+//                    blackFilter.visibility = View.INVISIBLE
+//                    addContactCard.visibility = View.INVISIBLE
+//                    addNeutroNumber.setText("")
+//                    addDebtBtn.isEnabled = true
+//                    mainActivityProgressBar?.visibility = View.INVISIBLE
+//                    refresh()
                 } else toast.cantAddYourself(applicationContext)
             }
         }
@@ -191,6 +195,10 @@ class MainActivity : AppCompatActivity() {
 
         profileBtn.setOnClickListener {
             val intent = Intent(this, Profile::class.java)
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+        }
+        notificationsBtn.setOnClickListener {
+            val intent = Intent(this, Notifications::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
     }
@@ -265,6 +273,21 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                     }
+                }
+            }
+    }
+
+    private fun doContactExist(email: String) {
+
+        val userMail = user!!.email.toString()
+        val docRef = db.collection("Contacts").document(userMail)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    if (email in document.get("contact") as ArrayList<String>)
+                        toast.contactExists(applicationContext)
+                    else
+                        contactCheck(email)
                 }
             }
     }

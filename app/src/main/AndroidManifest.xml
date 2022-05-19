@@ -13,19 +13,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OdeVersion2">
         <activity
+            android:name=".flow.Notifications"
+            android:exported="false"
+            android:label="@string/title_activity_notifications"
+            android:theme="@style/Theme.OdeVersion2.NoActionBar" />
+        <activity
             android:name=".flow.forgotPassword.ForgotPassword"
             android:exported="false"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".flow.profile.Profile"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".flow.main.MainActivity"
             android:exported="false"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".flow.signup.SignUp"
             android:exported="false"
