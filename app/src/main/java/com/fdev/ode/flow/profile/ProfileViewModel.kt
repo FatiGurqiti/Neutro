@@ -144,13 +144,11 @@ class ProfileViewModel : ViewModel() {
         contactName: ArrayList<String?>,
         i: Int
     ) {
-
         runBlocking {
             launch {
                 delay(1000L)
                 isDeleted.value = true
             }
-
             myContact.removeAt(i) //delete mail address
             contactName.removeAt(i) // delete name
 

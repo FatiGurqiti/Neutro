@@ -27,6 +27,9 @@ class MainViewModel : ViewModel() {
     val refresh: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
+    val closeContactCard: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
 
     fun loadContacts(
         scrollLayout: RelativeLayout,
@@ -97,7 +100,10 @@ class MainViewModel : ViewModel() {
                                 )
 
                                 contactMailTxt.setOnClickListener {
-                                    activity.setContactNameAndMail(contactNames[i]!!, myContact[i]!!)
+                                    activity.setContactNameAndMail(
+                                        contactNames[i]!!,
+                                        myContact[i]!!
+                                    )
                                 }
                             }
                         }
@@ -127,7 +133,7 @@ class MainViewModel : ViewModel() {
             }
     }
 
-    fun addFreshData(myContact: ArrayList<String?>, email: String, to: String) {
+    private fun addFreshData(myContact: ArrayList<String?>, email: String, to: String) {
         val contactName = ArrayList<String?>()
         val docRef = db.collection("Users").document(email)
         docRef.get()
@@ -270,17 +276,18 @@ class MainViewModel : ViewModel() {
     }
 
 
-    fun ifContactExist(email: String,context: Context) {
+    fun ifContactExist(email: String, context: Context) {
 
         val userMail = user!!.email.toString()
         val docRef = db.collection("Contacts").document(userMail)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    if (email in document.get("contact") as ArrayList<String>)
+                    if (email in document.get("contact") as ArrayList<String>) {
                         toast.contactExists(context)
-                    else
-                        contactCheck(email,context)
+                        closeContactCard.value = false
+                    } else
+                        contactCheck(email, context)
                 }
             }
     }
@@ -293,7 +300,11 @@ class MainViewModel : ViewModel() {
                 if (document.data != null) {
                     addContact(email, userMail)  // add contact to this user
                     addContact(userMail, email) // add this to contact
+                    closeContactCard.value = true
                     toast.contactAdded(context)
+                } else {
+                    toast.noSuchUser(context)
+                    closeContactCard.value = false
                 }
             }
     }
@@ -355,7 +366,7 @@ class MainViewModel : ViewModel() {
                                 db.collection("Contacts").document(to)
                                     .update("contactName", contactNames)
 
-                                refresh.value=true
+                                refresh.value = true
                             }
                         }
                 }

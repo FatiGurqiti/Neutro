@@ -283,7 +283,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/addNeutroNumber"
+            android:id="@+id/addContactMail"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
