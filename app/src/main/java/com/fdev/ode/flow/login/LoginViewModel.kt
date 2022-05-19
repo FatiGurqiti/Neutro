@@ -4,11 +4,13 @@ import android.app.Activity
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.fdev.ode.util.Toasts
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class LoginViewModel : ViewModel() {
 
+    val toast = Toasts()
     val canLogin: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
@@ -19,12 +21,7 @@ class LoginViewModel : ViewModel() {
             .addOnCompleteListener(activity) { task ->
                 if (task.isSuccessful) {
                     canLogin.value = true
-                } else {
-                    Toast.makeText(
-                        activity.applicationContext, "Authentication failed.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                } else toast.authFail(activity.applicationContext)
             }
     }
 }

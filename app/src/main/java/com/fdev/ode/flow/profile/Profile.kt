@@ -5,11 +5,11 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
-import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.fdev.ode.R
+import com.fdev.ode.util.Toasts
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -23,6 +23,7 @@ class Profile : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
+        val toast = Toasts()
 
         viewModel.loadContacts(
             resources,
@@ -48,7 +49,7 @@ class Profile : AppCompatActivity() {
 
         //Copy mail adress
         profileLogo.setOnClickListener {
-            Toast.makeText(this, "Cleveeer", Toast.LENGTH_SHORT).show()
+            toast.clever(applicationContext)
             val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clipData = ClipData.newPlainText("text", user?.email.toString())
             clipboardManager.setPrimaryClip(clipData)

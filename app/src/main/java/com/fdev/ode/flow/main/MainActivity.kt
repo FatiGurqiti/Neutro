@@ -7,15 +7,13 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.fdev.ode.BaseClass
 import com.fdev.ode.R
 import com.fdev.ode.flow.fragments.FragmentAdapter
 import com.fdev.ode.flow.profile.Profile
+import com.fdev.ode.util.Toasts
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.firebase.auth.ktx.auth
@@ -31,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private val user = Firebase.auth.currentUser
     private val db = Firebase.firestore
     lateinit var viewModel: MainViewModel
+    private val toast = Toasts()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,12 +74,10 @@ class MainActivity : AppCompatActivity() {
             val label = labelText?.text.toString()
 
             if (TextUtils.isEmpty(contact) || TextUtils.isEmpty(amount) || TextUtils.isEmpty(label)) {//Input is null
-                Toast.makeText(this, "Something is missing", Toast.LENGTH_SHORT)
-                    .show()
+                toast.somethingIsMissing(applicationContext)
             } else {
-                Toast.makeText(this, "Debt added succesfully", Toast.LENGTH_SHORT)
-                    .show()
 
+                toast.debtAdded(applicationContext)
                 mainActivityProgressBar?.visibility = View.VISIBLE
                 blackFilter.visibility = View.INVISIBLE
                 addDebtCard.visibility = View.INVISIBLE
@@ -164,8 +161,7 @@ class MainActivity : AppCompatActivity() {
             val neutroNo = addNeutroNumber.text.toString()
             val userMail = user?.email.toString()
 
-            if (TextUtils.isEmpty(neutroNo))
-                Toast.makeText(this, "Something is missing", Toast.LENGTH_SHORT).show()
+            if (TextUtils.isEmpty(neutroNo)) toast.somethingIsMissing(applicationContext)
             else {
                 mainActivityProgressBar?.visibility = View.VISIBLE
                 //Add this to your Contact
@@ -178,11 +174,7 @@ class MainActivity : AppCompatActivity() {
                     addDebtBtn.isEnabled = true
                     mainActivityProgressBar?.visibility = View.INVISIBLE
                     refresh()
-                } else
-                    Toast.makeText(
-                        this, "I'm sorry. You can't add yourself",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                } else toast.cantAddYourself(applicationContext)
             }
         }
 
@@ -286,8 +278,7 @@ class MainActivity : AppCompatActivity() {
                 if (document.data != null) {
                     contactAdd(email, userMail)  // add contact to this user
                     contactAdd(userMail, email) // add this to contact
-
-                    Toast.makeText(this, "Contact added successfully", Toast.LENGTH_SHORT).show()
+                    toast.contactAdded(applicationContext)
                     refresh()
                 }
             }

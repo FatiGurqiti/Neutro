@@ -1,20 +1,8 @@
 package com.fdev.ode.flow.main
 
-import android.app.Activity
-import android.app.ActivityOptions
-import android.content.Context
-import android.content.res.Resources
-import android.widget.EditText
-import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fdev.ode.BaseClass
-import com.fdev.ode.R
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDateTime
@@ -23,10 +11,8 @@ import kotlin.random.Random
 
 class MainViewModel : ViewModel() {
 
-    private val baseClass = BaseClass()
     private val db = Firebase.firestore
     private val user = Firebase.auth.currentUser
-
 
     fun getContactUserName(
         generatedID: String,

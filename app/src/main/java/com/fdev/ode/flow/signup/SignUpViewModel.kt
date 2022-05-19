@@ -1,9 +1,9 @@
 package com.fdev.ode.flow.signup
 
 import android.app.Activity
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.fdev.ode.util.Toasts
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -14,9 +14,11 @@ class SignUpViewModel : ViewModel() {
 
     private val db = Firebase.firestore
     private lateinit var auth: FirebaseAuth
+    private val toast = Toasts()
     val isUserCreated: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
+
 
     fun signup(username: String, email: String, pin: String, activity: Activity) {
 
@@ -24,23 +26,12 @@ class SignUpViewModel : ViewModel() {
         val docRef = db.collection("Users").document(email)
         docRef.get()
             .addOnSuccessListener { document ->
-                if (document.data != null) { //user exists
-                    Toast.makeText(
-                        activity.applicationContext,
-                        "This user is already exists",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                } else { //User doesn't exist
+                if (document.data != null)  //user exists
+                    toast.userExists(activity.applicationContext)
+                else { //User doesn't exist
                     userData(username, email, pin)
                     auth.createUserWithEmailAndPassword(email, pin)
-
-                    Toast.makeText(
-                        activity.applicationContext,
-                        "Account created successfully",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
+                    toast.accountCreated(activity.applicationContext)
                     isUserCreated.value = true
                 }
             }

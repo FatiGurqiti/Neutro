@@ -12,12 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.fdev.ode.BaseClass
 import com.fdev.ode.R
 import com.fdev.ode.flow.login.LogIn
+import com.fdev.ode.util.Toasts
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUp : AppCompatActivity() {
 
     private val baseClass = BaseClass()
     private lateinit var viewModel: SignUpViewModel
+    private val toast = Toasts()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +40,7 @@ class SignUp : AppCompatActivity() {
                     if (it) {
                         val intent = Intent(this, LogIn::class.java)
                         startActivity(intent)
-                    } else
-                        Toast.makeText(this, "Unexpected Error", Toast.LENGTH_SHORT).show()
+                    } else toast.unexpectedError(applicationContext)
                 })
             }
             signUpProgressBar.visibility = View.INVISIBLE
@@ -64,28 +65,13 @@ class SignUp : AppCompatActivity() {
             if (TextUtils.isEmpty(username.text)
                 || TextUtils.isEmpty(email.text)
                 || TextUtils.isEmpty(pin.text)
-            ) {
-                Toast.makeText(
-                    baseContext,
-                    "Mind if you fill the inputs?",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-            } else {
-                if (pin.text.length < 6) {
-                    Toast.makeText(
-                        baseContext,
-                        "Pin should be at least 6 characters",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-
-                } else value = true
+            )
+                toast.fillInputs(applicationContext)
+            else {
+                if (pin.text.length < 6) toast.pinCharacters(applicationContext)
+                else value = true
             }
-        } else {
-            Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT)
-                .show()
-        }
+        } else toast.checkInternet(applicationContext)
         return value
     }
 }
