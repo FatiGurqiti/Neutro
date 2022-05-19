@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel.ifHasNotification(notificationsBtn)
         val fragmentAdapter = FragmentAdapter(supportFragmentManager, lifecycle)
         viewPager2.adapter = fragmentAdapter
         viewModel.getDebtOrRecievement("Debts", totalText, debtText)
