@@ -17,11 +17,10 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
 
     override fun getItem(position: Int): Fragment {
 
-        //This makes no sense at all. But it works
         return when (position) {
-            1 -> DebtRequests()
+            1 -> ContactRequests()
             2 -> DebtRequests()
-            else -> ContactRequests()
+            else -> DebtRequests()
         }
     }
 

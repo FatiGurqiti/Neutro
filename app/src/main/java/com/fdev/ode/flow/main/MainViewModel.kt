@@ -2,6 +2,7 @@ package com.fdev.ode.flow.main
 
 import android.content.Context
 import android.content.res.Resources
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -31,18 +32,18 @@ class MainViewModel : ViewModel() {
         MutableLiveData<Boolean>()
     }
 
-    fun ifHasNotification(notificationsBtn: ImageButton) {
-        val docRef = db.collection("ContactRequests").document(user?.email.toString())
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document.data != null) {
+    val username: MutableLiveData<String> by lazy { MutableLiveData<String>() }
 
-                    if ((document.get("mail") as ArrayList<String>).size == 0)
-                        notificationsBtn.setImageResource(R.drawable.bell)
-                    else
-                        notificationsBtn.setImageResource(R.drawable.bell_notification)
-                }
+    fun ifHasNotification(notificationsBtn: ImageButton, collection: String) {
+        val contactDocRef = db.collection(collection).document(user?.email.toString())
+        contactDocRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data == null)
+                    notificationsBtn.setImageResource(R.drawable.bell)
+                else
+                    notificationsBtn.setImageResource(R.drawable.bell_notification)
             }
+
     }
 
     fun loadContacts(
@@ -126,30 +127,10 @@ class MainViewModel : ViewModel() {
             }
     }
 
-    fun getContactUserName(
-        generatedID: String,
-        contactMailTxt: String,
-        label: String,
-        amount: String
-    ) {
-        db.collection("Users").document(user?.email.toString()).get()
-            .addOnSuccessListener { document ->
-                if (document.data != null) {
-                    addDebtOrReceivement(
-                        generatedID,
-                        contactMailTxt,
-                        document?.getString("username").toString(),
-                        label,
-                        amount.toDouble(),
-                        "Debts"
-                    )
-                }
-            }
-    }
-
     fun getDebtOrRecievement(type: String, totalText: TextView?, totalAmount: TextView?) {
+
         if (type == "Debts") totalText?.text = "Total Debt"
-        else totalText?.setText("Total Receivement")
+        else totalText?.text = "Total Receivement"
 
         val user = Firebase.auth.currentUser
         val docRef = db.collection(type).document(user!!.email.toString())
@@ -168,104 +149,69 @@ class MainViewModel : ViewModel() {
             }
     }
 
-    fun addDebtOrReceivement(
-        id: String,
-        to: String,
-        name: String,
-        label: String,
-        amount: Double,
-        type: String
-    ) {
-        var idArray = ArrayList<String?>()
-        var toArray = ArrayList<String?>()
-        var nameArray = ArrayList<String?>()
-        var labelArray = ArrayList<String?>()
-        var timeArray = ArrayList<String?>()
-        var amountArray = ArrayList<Double?>()
+    fun sendDebtRequest(id: String, mail: String, name: String,senderName:String, label: String, amount: Double) {
+
+        val idArray = ArrayList<String?>()
+        val receiverMailArray = ArrayList<String?>()
+        val receiverNameArray = ArrayList<String?>()
+        val senderMailArray = ArrayList<String?>()
+        val senderNameArray = ArrayList<String?>()
+        val labelArray = ArrayList<String?>()
+        val timeArray = ArrayList<String?>()
+        val amountArray = ArrayList<Double?>()
 
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-        val formatted = current.format(formatter)
 
-        //here
+        idArray.add(id)
+        receiverMailArray.add(mail)
+        receiverNameArray.add(name)
+        senderMailArray.add(user?.email.toString())
+        senderNameArray.add(senderName)
+        labelArray.add(label)
+        timeArray.add(current.format(formatter).toString())
+        amountArray.add(amount)
 
-        val toWhom: String
-        val user: String
-        val time = formatted.toString()
-
-        if (type == "Recivements") {
-            user = Firebase.auth.currentUser?.email.toString()
-            toWhom = to
-        } else {
-            toWhom = Firebase.auth.currentUser?.email.toString()
-            user = to
-        }
-
-        val docRef = db.collection(type).document(user)
+        val docRef = db.collection("DebtRequests").document(mail)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    //get Old data
-                    idArray = document?.get("id") as ArrayList<String?>
-                    toArray = document?.get("to") as ArrayList<String?>
-                    nameArray = document?.get("name") as ArrayList<String?>
-                    labelArray = document?.get("label") as ArrayList<String?>
-                    timeArray = document?.get("time") as ArrayList<String?>
-                    amountArray = document?.get("amount") as ArrayList<Double?>
+                    idArray.plusAssign(document?.get("id") as ArrayList<String?>)
+                    receiverMailArray.plusAssign(document.get("receiverMail") as ArrayList<String?>)
+                    receiverNameArray.plusAssign(document.get("receiverName") as ArrayList<String?>)
+                    senderMailArray.plusAssign(document.get("senderMail") as ArrayList<String?>)
+                    senderNameArray.plusAssign(document.get("senderName") as ArrayList<String?>)
+                    labelArray.plusAssign(document.get("label") as ArrayList<String?>)
+                    timeArray.plusAssign(document.get("time") as ArrayList<String?>)
+                    amountArray.plusAssign(document.get("amount") as ArrayList<Double?>)
 
-                    //add data to it
-                    idArray.add(id)
-                    toArray.add(toWhom)
-                    nameArray.add(name)
-                    labelArray.add(label)
-                    timeArray.add(time)
-                    amountArray.add(amount)
+                    updateDoc(mail, "id", idArray)
+                    updateDoc(mail, "receiverMail", receiverMailArray)
+                    updateDoc(mail, "receiverName", receiverNameArray)
+                    updateDoc(mail, "senderMail", senderMailArray)
+                    updateDoc(mail, "senderName", senderNameArray)
+                    updateDoc(mail, "label", labelArray)
+                    updateDoc(mail, "time", timeArray)
 
-                    //update the data
-                    db.collection(type)
-                        .document(user)
-                        .update("id", idArray)
-
-                    db.collection(type)
-                        .document(user)
-                        .update("to", toArray)
-
-                    db.collection(type)
-                        .document(user)
-                        .update("name", nameArray)
-
-                    db.collection(type)
-                        .document(user)
-                        .update("label", labelArray)
-
-                    db.collection(type)
-                        .document(user)
-                        .update("time", timeArray)
-
-                    db.collection(type)
-                        .document(user)
+                    db.collection("DebtRequests")
+                        .document(mail)
                         .update("amount", amountArray)
 
                 } else {
 
-                    idArray.add(id)
-                    toArray.add(toWhom)
-                    nameArray.add(name)
-                    labelArray.add(label)
-                    timeArray.add(time)
-                    amountArray.add(amount)
-
                     val debthash = hashMapOf(
                         "id" to idArray,
-                        "to" to toArray,
-                        "name" to nameArray,
+                        "receiverMail" to receiverMailArray,
+                        "receiverName" to receiverNameArray,
+                        "senderMail" to senderMailArray,
+                        "senderName" to senderNameArray,
                         "amount" to amountArray,
                         "label" to labelArray,
                         "time" to timeArray
                     )
 
-                    db.collection(type)
-                        .document(user)
+                    db.collection("DebtRequests")
+                        .document(mail)
                         .set(debthash)
                 }
             }
@@ -309,7 +255,6 @@ class MainViewModel : ViewModel() {
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
         val formatted = current.format(formatter).toString()
-
         var mails = ArrayList<String?>()
         var times = ArrayList<String?>()
 
@@ -340,6 +285,23 @@ class MainViewModel : ViewModel() {
                         .set(contactHash)
                 }
             }
+    }
+
+    fun getUsername() {
+        db.collection("Users").document(user?.email.toString()).get()
+            .addOnSuccessListener { document ->
+                if (document.data != null){
+                    Log.d("whatisusername",document?.getString("username").toString())
+                    username.value = document.getString("username")
+
+                }
+            }
+    }
+
+    private fun updateDoc(mail: String, field: String, value: ArrayList<String?>) {
+        db.collection("DebtRequests")
+            .document(mail)
+            .update(field, value)
     }
 
     fun generateId(): String {

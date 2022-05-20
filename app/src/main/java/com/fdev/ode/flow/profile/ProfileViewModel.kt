@@ -110,8 +110,10 @@ class ProfileViewModel : ViewModel() {
                                                             if (myContact[i] in it.get("to") as ArrayList<*>)
                                                                 toast.unfinishedBusiness(context)
                                                             else {
-                                                                blackFilter?.visibility = View.VISIBLE
-                                                                areYouSureCard?.visibility = View.VISIBLE
+                                                                blackFilter?.visibility =
+                                                                    View.VISIBLE
+                                                                areYouSureCard?.visibility =
+                                                                    View.VISIBLE
                                                                 baseClass.disableViews(listOf(logo))
                                                             }
                                                         }

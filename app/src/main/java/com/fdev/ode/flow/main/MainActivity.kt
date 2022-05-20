@@ -4,6 +4,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -21,6 +22,7 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,7 +39,8 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         sharedViewModel = ViewModelProvider(this)[SharedViewModel::class.java]
-        viewModel.ifHasNotification(notificationsBtn)
+        viewModel.ifHasNotification(notificationsBtn,"DebtRequests")
+        viewModel.ifHasNotification(notificationsBtn,"ContactRequests")
         val fragmentAdapter = FragmentAdapter(supportFragmentManager, lifecycle)
         viewPager2.adapter = fragmentAdapter
         viewModel.getDebtOrRecievement("Debts", totalText, debtText)
@@ -75,29 +78,21 @@ class MainActivity : AppCompatActivity() {
                 toast.somethingIsMissing(applicationContext)
             } else {
 
-                toast.debtAdded(applicationContext)
+                toast.debtRequest(applicationContext)
                 mainActivityProgressBar?.visibility = View.VISIBLE
                 blackFilter.visibility = View.INVISIBLE
                 addDebtCard.visibility = View.INVISIBLE
 
                 val generatedID = viewModel.generateId()
+                val contactMail = contactMail?.text.toString()
+                val contactName = contactName?.text.toString()
+                val label = labelText?.text.toString()
+                val amount = amountText?.text.toString().toDouble()
 
-                //Update Debt Table
-                viewModel.addDebtOrReceivement(
-                    generatedID,
-                    contactMail?.text.toString(),
-                    contactName?.text.toString(),
-                    labelText?.text.toString(),
-                    amountText?.text.toString().toDouble(),
-                    "Recivements"
-                )
-
-                viewModel.getContactUserName(
-                    generatedID,
-                    contactMail?.text.toString(),
-                    labelText?.text.toString(),
-                    amountText?.text.toString()
-                )
+                viewModel.getUsername()
+                viewModel.username.observe(this, Observer {
+                    viewModel.sendDebtRequest(generatedID,contactMail,contactName,it, label, amount)
+                })
 
                 emptyInputs()
                 contactBtn.isEnabled = true
@@ -161,15 +156,14 @@ class MainActivity : AppCompatActivity() {
 
         addContactBtn.setOnClickListener()
         {
+            baseClass.enableViews(listOf(profileBtn, addDebtBtn, notificationsBtn))
             val contactMail = addContactMail.text.toString()
             val userMail = user?.email.toString()
 
             if (TextUtils.isEmpty(contactMail)) toast.somethingIsMissing(applicationContext)
             else {
                 mainActivityProgressBar?.visibility = View.VISIBLE
-                //Add this to your Contact
                 if (contactMail != userMail) {
-                    //sharedViewModel.usernameQuerry(contactMai
                     viewModel.ifContactExist(contactMail, applicationContext)
 
                     viewModel.closeContactCard.observe(this, Observer {
@@ -232,6 +226,11 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.ifHasNotification(notificationsBtn,"DebtRequests")
+        viewModel.ifHasNotification(notificationsBtn,"ContactRequests")
+    }
     override fun onBackPressed() {
         //Literally NOTHING!
     }

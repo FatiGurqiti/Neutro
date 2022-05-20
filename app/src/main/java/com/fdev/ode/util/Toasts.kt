@@ -157,4 +157,13 @@ class Toasts {
         toast.show()
     }
 
+    fun debtRequest(context: Context?) {
+        val toast = Toast.makeText(
+            context,
+            "Debt request has sent",
+            Toast.LENGTH_SHORT
+        )
+        toast.show()
+    }
+
 }

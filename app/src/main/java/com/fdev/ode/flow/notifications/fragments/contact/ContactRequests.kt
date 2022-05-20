@@ -76,7 +76,7 @@ class ContactRequests : Fragment() {
                     baseClass.setMargins(
                         cardView,
                         (sizeWidth * .1).toInt(),
-                        ((i * sizeHeight) * 0.16).toInt(),
+                        ((i * sizeHeight) * 0.19).toInt(),
                         (sizeWidth * .1).toInt(),
                         (sizeWidth * .16).toInt(),
                     )
@@ -97,13 +97,12 @@ class ContactRequests : Fragment() {
 
                     nameText.gravity = Gravity.START;
                     nameText.typeface = boldFont
-                    nameText.translationZ = 35F
                     nameText.setTextColor(Color.WHITE)
                     baseClass.setMargins(
                         nameText,
                         (sizeWidth * .07).toInt(),
-                        (sizeHeight * .015).toInt(),
-                        0,
+                        (sizeHeight * .012).toInt(),
+                        (sizeHeight * .15).toInt(),
                         (sizeHeight * .01).toInt()
                     )
                     cardView.addView(nameText)
@@ -124,12 +123,11 @@ class ContactRequests : Fragment() {
 
                     dateText.gravity = Gravity.START;
                     dateText.typeface = font
-                    dateText.translationZ = 12F
                     dateText.setTextColor(Color.WHITE)
                     baseClass.setMargins(
                         dateText,
                         (sizeWidth * .07).toInt(),
-                        (sizeHeight * .08).toInt(),
+                        (sizeHeight * .1).toInt(),
                         0,
                         (sizeHeight * .01).toInt()
                     )
@@ -138,7 +136,6 @@ class ContactRequests : Fragment() {
                     val approve = ImageButton(context)
                     approve.setImageResource(R.drawable.approve);
                     approve.setBackgroundColor(Color.TRANSPARENT)
-                    approve.translationZ = 18F
                     cardView.addView(approve)
                     baseClass.setMargins(
                         approve,
@@ -151,7 +148,6 @@ class ContactRequests : Fragment() {
                     val deny = ImageButton(context)
                     deny.setImageResource(R.drawable.deny);
                     deny.setBackgroundColor(Color.TRANSPARENT)
-                    deny.translationZ = 18F
                     cardView.addView(deny)
                     baseClass.setMargins(
                         deny,
@@ -170,7 +166,6 @@ class ContactRequests : Fragment() {
                     )
                    statusText.gravity = Gravity.END
                    statusText.typeface = boldFont
-                   statusText.translationZ = 35F
                    statusText.setTextColor(Color.WHITE)
                     baseClass.setMargins(
                         statusText,
