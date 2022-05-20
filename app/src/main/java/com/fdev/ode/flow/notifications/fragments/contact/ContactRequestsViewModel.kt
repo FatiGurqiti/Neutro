@@ -69,7 +69,7 @@ class ContactRequestsViewModel : ViewModel() {
 
                     for (i in mailList.indices) {
                         if (mailList[i].equals(email))
-                          index = i
+                            index = i
                     }
 
                     mailList.removeAt(index)
@@ -84,7 +84,7 @@ class ContactRequestsViewModel : ViewModel() {
             }
     }
 
-    private fun addContact(email: String, to: String) {
+    fun approveContact(email: String, to: String) {
         var myContact = ArrayList<String?>() //email address
         val docRef: DocumentReference = db.collection("Contacts").document(to)
         docRef.get()

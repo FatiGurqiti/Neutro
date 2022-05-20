@@ -16,6 +16,8 @@ import androidx.cardview.widget.CardView
 import com.fdev.ode.BaseClass
 import com.fdev.ode.R
 import com.fdev.ode.flow.SharedViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.contact_requests_fragment.*
 
 class ContactRequests : Fragment() {
@@ -27,6 +29,7 @@ class ContactRequests : Fragment() {
     private lateinit var viewModel: ContactRequestsViewModel
     private lateinit var sharedViewModel: SharedViewModel
     private val baseClass = BaseClass()
+    private val user = Firebase.auth.currentUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -182,6 +185,10 @@ class ContactRequests : Fragment() {
 
                     approve.setOnClickListener()
                     {
+                        viewModel.approveContact(request[i],user?.email.toString()) //Add to this users contact list
+                        viewModel.approveContact(user?.email.toString(),request[i]) //Add to other users contact list
+                        viewModel.denyContact(request[i]) //Delete request
+
                         statusText.setTextColor(Color.GREEN)
                         statusText.text = "Approved"
                         statusText.visibility = View.VISIBLE
