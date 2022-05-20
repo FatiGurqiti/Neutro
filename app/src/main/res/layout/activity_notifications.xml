@@ -9,13 +9,15 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.OdeVersion2.AppBarOverlay">
+        android:theme="@style/Theme.OdeVersion2.AppBarOverlay"
+        android:background="@android:color/transparent"
+        >
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#3D00BB"
+            android:background="@drawable/tab_background"
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/white"
             app:tabIndicatorGravity="stretch"
