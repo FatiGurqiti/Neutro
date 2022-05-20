@@ -17,9 +17,6 @@ import com.fdev.ode.BaseClass
 import com.fdev.ode.R
 import com.fdev.ode.flow.SharedViewModel
 import kotlinx.android.synthetic.main.contact_requests_fragment.*
-import kotlinx.android.synthetic.main.debt_requests_fragment.*
-import kotlinx.android.synthetic.main.fragment_recivement_.*
-import java.lang.Exception
 
 class ContactRequests : Fragment() {
 
@@ -43,7 +40,6 @@ class ContactRequests : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
-        // bind()
     }
 
     private fun setupUI() {
@@ -109,41 +105,6 @@ class ContactRequests : Fragment() {
                     )
                     cardView.addView(nameText)
 
-                    val approve = ImageButton(context)
-                    approve.setImageResource(R.drawable.approve);
-                    approve.setBackgroundColor(Color.TRANSPARENT)
-                    approve.translationZ = 18F
-                    cardView.addView(approve)
-                    baseClass.setMargins(
-                        approve,
-                        (sizeWidth * .45).toInt(),
-                        0,
-                        0,
-                        0
-                    )
-
-                    approve.setOnClickListener()
-                    {
-                        Log.d("ButtonClick","$i approve")
-                    }
-                    val deny = ImageButton(context)
-                    deny.setImageResource(R.drawable.deny);
-                    deny.setBackgroundColor(Color.TRANSPARENT)
-                    deny.translationZ = 18F
-                    cardView.addView(deny)
-                    baseClass.setMargins(
-                        deny,
-                        (sizeWidth * .9).toInt(),
-                        0,
-                        0,
-                        0
-                    )
-
-                    deny.setOnClickListener()
-                    {
-                        Log.d("ButtonClick","$i deny")
-                    }
-
                     val dateText = TextView(context)
                     dateText.textSize = 12f
                     viewModel.contactDate.observe(viewLifecycleOwner)
@@ -170,14 +131,77 @@ class ContactRequests : Fragment() {
                         (sizeHeight * .01).toInt()
                     )
                     cardView.addView(dateText)
+
+                    val approve = ImageButton(context)
+                    approve.setImageResource(R.drawable.approve);
+                    approve.setBackgroundColor(Color.TRANSPARENT)
+                    approve.translationZ = 18F
+                    cardView.addView(approve)
+                    baseClass.setMargins(
+                        approve,
+                        (sizeWidth * .45).toInt(),
+                        0,
+                        0,
+                        0
+                    )
+
+                    val deny = ImageButton(context)
+                    deny.setImageResource(R.drawable.deny);
+                    deny.setBackgroundColor(Color.TRANSPARENT)
+                    deny.translationZ = 18F
+                    cardView.addView(deny)
+                    baseClass.setMargins(
+                        deny,
+                        (sizeWidth * .9).toInt(),
+                        0,
+                        0,
+                        0
+                    )
+
+                    val statusText = TextView(context)
+                    statusText.textSize = 22f
+                    statusText.text = "Approved"
+                    statusText.layoutParams = RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    )
+                   statusText.gravity = Gravity.END
+                   statusText.typeface = boldFont
+                   statusText.translationZ = 35F
+                   statusText.setTextColor(Color.WHITE)
+                    baseClass.setMargins(
+                        statusText,
+                        (sizeHeight * .01).toInt(),
+                        (sizeHeight * .04).toInt(),
+                        (sizeHeight * .01).toInt(),
+                        (sizeHeight * .01).toInt()
+                    )
+                    cardView.addView(statusText)
+
+                    statusText.visibility = View.GONE
+
+                    approve.setOnClickListener()
+                    {
+                        statusText.setTextColor(Color.GREEN)
+                        statusText.text = "Approved"
+                        statusText.visibility = View.VISIBLE
+                        approve.visibility = View.GONE
+                        deny.visibility = View.GONE
+                    }
+
+                    deny.setOnClickListener()
+                    {
+                        viewModel.denyContact(request[i])
+                        statusText.setTextColor(Color.RED)
+                        statusText.text = "Denied"
+                        statusText.visibility = View.VISIBLE
+                        approve.visibility = View.GONE
+                        deny.visibility = View.GONE
+                    }
+
                 }
             }
         }
-    }
-
-
-    private fun bind() {
-        TODO("Not yet implemented")
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

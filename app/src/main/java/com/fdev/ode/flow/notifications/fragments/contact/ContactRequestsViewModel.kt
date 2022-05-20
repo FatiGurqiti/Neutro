@@ -17,10 +17,6 @@ class ContactRequestsViewModel : ViewModel() {
     private val db = Firebase.firestore
     private val user = Firebase.auth.currentUser
 
-    val refresh: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
-    }
-
     val contactMail: MutableLiveData<ArrayList<String>> by lazy {
         MutableLiveData<ArrayList<String>>()
     }
@@ -33,8 +29,9 @@ class ContactRequestsViewModel : ViewModel() {
         MutableLiveData<ArrayList<String>>()
     }
 
-    init{
-        val docRef: DocumentReference = db.collection("ContactRequests").document(user?.email.toString())
+    init {
+        val docRef: DocumentReference =
+            db.collection("ContactRequests").document(user?.email.toString())
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
@@ -43,23 +40,49 @@ class ContactRequestsViewModel : ViewModel() {
                 }
             }
 
-        viewModelScope.launch{
-        contactMail.asFlow().collect {
-            for (i in it.indices)
-            {
-                val docRef: DocumentReference = db.collection("Users").document(it[i])
-                docRef.get()
-                    .addOnSuccessListener { document ->
-                        if (document.data != null) {
-                            username.add((document.get("username") as String))
-                            contactUsername.value = username
+        viewModelScope.launch {
+            contactMail.asFlow().collect {
+                for (i in it.indices) {
+                    val docRef: DocumentReference = db.collection("Users").document(it[i])
+                    docRef.get()
+                        .addOnSuccessListener { document ->
+                            if (document.data != null) {
+                                username.add((document.get("username") as String))
+                                contactUsername.value = username
+                            }
                         }
-                    }
+                }
             }
-        }
         }
     }
 
+
+    fun denyContact(email: String) {
+        val docRef: DocumentReference =
+            db.collection("ContactRequests").document(user?.email.toString())
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    var index = 0
+                    val mailList = document?.get("mail") as ArrayList<String?>
+                    val dateList = document.get("date") as ArrayList<String?>
+
+                    for (i in mailList.indices) {
+                        if (mailList[i].equals(email))
+                          index = i
+                    }
+
+                    mailList.removeAt(index)
+                    db.collection("ContactRequests").document(user?.email.toString())
+                        .update("mail", mailList)
+
+                    dateList.removeAt(index)
+                    db.collection("ContactRequests").document(user?.email.toString())
+                        .update("date", dateList)
+
+                }
+            }
+    }
 
     private fun addContact(email: String, to: String) {
         var myContact = ArrayList<String?>() //email address
@@ -117,8 +140,6 @@ class ContactRequestsViewModel : ViewModel() {
 
                                 db.collection("Contacts").document(to)
                                     .update("contactName", contactNames)
-
-                                refresh.value = true
                             }
                         }
                 }
