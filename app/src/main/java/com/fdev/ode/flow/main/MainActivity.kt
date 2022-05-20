@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.fdev.ode.BaseClass
 import com.fdev.ode.R
+import com.fdev.ode.flow.SharedViewModel
 import com.fdev.ode.flow.notifications.Notifications
 import com.fdev.ode.flow.fragments.FragmentAdapter
 import com.fdev.ode.flow.profile.Profile
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private val baseClass = BaseClass()
     private val user = Firebase.auth.currentUser
     lateinit var viewModel: MainViewModel
+    lateinit var sharedViewModel: SharedViewModel
     private val toast = Toasts()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        sharedViewModel = ViewModelProvider(this)[SharedViewModel::class.java]
         viewModel.ifHasNotification(notificationsBtn)
         val fragmentAdapter = FragmentAdapter(supportFragmentManager, lifecycle)
         viewPager2.adapter = fragmentAdapter
@@ -166,6 +169,7 @@ class MainActivity : AppCompatActivity() {
                 mainActivityProgressBar?.visibility = View.VISIBLE
                 //Add this to your Contact
                 if (contactMail != userMail) {
+                    //sharedViewModel.usernameQuerry(contactMai
                     viewModel.ifContactExist(contactMail, applicationContext)
 
                     viewModel.closeContactCard.observe(this, Observer {

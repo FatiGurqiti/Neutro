@@ -55,7 +55,6 @@ class Recivements_Fragment : Fragment() {
                             amount[i] != null &&
                             time[i] != null
                         ) {
-                            var j = i + 1
                             val sizeHeight = baseClass.getScreenHeight(requireActivity())
                             val sizeWidth = baseClass.getScreenWidth(requireActivity()) * 0.7
                             val font = resources.getFont(R.font.plusjakartatextregular)
@@ -94,9 +93,9 @@ class Recivements_Fragment : Fragment() {
                                 )
                             )
 
-                            nameText.setGravity(Gravity.START);
-                            nameText.setTypeface(boldFont)
-                            nameText.setTranslationZ(35F)
+                            nameText.gravity = Gravity.START;
+                            nameText.typeface = boldFont
+                            nameText.translationZ = 35F
                             nameText.setTextColor(Color.WHITE)
                             baseClass.setMargins(
                                 nameText,

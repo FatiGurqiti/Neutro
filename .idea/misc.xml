@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.20925925925925926" />
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.124" />
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/drawable/black_background.xml" value="0.1435" />
         <entry key="..\:/Users/fati-/AndroidStudioProjects/odeVersion2/app/src/main/res/drawable/black_line.xml" value="0.173" />
@@ -30,9 +31,13 @@
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2666213989257813" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21677093505859377" />
-        <entry key="app/src/main/res/layout/activity_notifications.xml" value="0.20185185185185187" />
+        <entry key="app/src/main/res/layout/activity_notifications.xml" value="0.26786346435546876" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.20925553319919518" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/contact_requests_fragment.xml" value="0.14166666666666666" />
+        <entry key="app/src/main/res/layout/debt_requests_fragment.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_contact_requests.xml" value="0.2972222222222222" />
+        <entry key="app/src/main/res/layout/fragment_debt_request.xml" value="0.16203703703703703" />
         <entry key="app/src/main/res/layout/fragment_debts_.xml" value="0.19876454671223956" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.20185185185185187" />
         <entry key="app/src/main/res/layout/fragment_recivement_.xml" value="0.20401458740234377" />

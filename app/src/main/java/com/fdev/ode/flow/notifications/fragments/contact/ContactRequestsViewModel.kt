@@ -1,19 +1,63 @@
-package com.fdev.ode.flow.notifications
+package com.fdev.ode.flow.notifications.fragments.contact
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-class NotificationsViewModel : ViewModel() {
+class ContactRequestsViewModel : ViewModel() {
 
     private val db = Firebase.firestore
     private val user = Firebase.auth.currentUser
 
     val refresh: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
+    }
+
+    val contactMail: MutableLiveData<ArrayList<String>> by lazy {
+        MutableLiveData<ArrayList<String>>()
+    }
+
+    val username = ArrayList<String>()
+    val contactUsername: MutableLiveData<ArrayList<String>> by lazy {
+        MutableLiveData<ArrayList<String>>()
+    }
+    val contactDate: MutableLiveData<ArrayList<String>> by lazy {
+        MutableLiveData<ArrayList<String>>()
+    }
+
+    init{
+        val docRef: DocumentReference = db.collection("ContactRequests").document(user?.email.toString())
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    contactMail.value = document.get("mail") as ArrayList<String>
+                    contactDate.value = document.get("date") as ArrayList<String>
+                }
+            }
+
+        viewModelScope.launch{
+        contactMail.asFlow().collect {
+            for (i in it.indices)
+            {
+                val docRef: DocumentReference = db.collection("Users").document(it[i])
+                docRef.get()
+                    .addOnSuccessListener { document ->
+                        if (document.data != null) {
+                            username.add((document.get("username") as String))
+                            contactUsername.value = username
+                        }
+                    }
+            }
+        }
+        }
     }
 
 

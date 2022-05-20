@@ -101,6 +101,6 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="title_activity_notifications">Notifications</string>
-    <string name="tab_text_1">Debt Requests</string>
-    <string name="tab_text_2">Contact Requests</string>
+    <string name="tab_text_1">Contact Requests</string>
+    <string name="tab_text_2">Debt Requests</string>
 </resources>

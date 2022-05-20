@@ -187,6 +187,8 @@ class MainViewModel : ViewModel() {
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
         val formatted = current.format(formatter)
 
+        //here
+
         val toWhom: String
         val user: String
         val time = formatted.toString()
@@ -289,37 +291,50 @@ class MainViewModel : ViewModel() {
     private fun contactCheck(email: String, context: Context) {
         val userMail = user!!.email.toString()
         val docRef = db.collection("Users").document(email)
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document.data != null) {
-                    sendContactRequest(email, userMail)
-                    toast.contactRequestSent(context)
-                    closeContactCard.value = true
+        docRef.get().addOnSuccessListener { document ->
+            if (document.data != null) {
+                sendContactRequest(email, userMail)
+                toast.contactRequestSent(context)
+                closeContactCard.value = true
 
-                } else {
-                    toast.noSuchUser(context)
-                    closeContactCard.value = false
-                }
+            } else {
+                toast.noSuchUser(context)
+                closeContactCard.value = false
             }
+        }
     }
 
     private fun sendContactRequest(contactMail: String, usersMail: String) {
 
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val formatted = current.format(formatter).toString()
+
         var mails = ArrayList<String?>()
+        var times = ArrayList<String?>()
+
         mails.add(usersMail)
+        times.add(formatted)
+
         val docRef = db.collection("ContactRequests").document(contactMail)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    mails += document.get("mail") as ArrayList<String>
-
+                    mails += document.get("mail") as ArrayList<String?>
                     mails = preventDuplicatedData(mails)
                     db.collection("ContactRequests").document(contactMail)
                         .update("mail", mails)
 
+
+                    times = preventDuplicatedData(times)
+                    times += document.get("date") as ArrayList<String?>
+                    db.collection("ContactRequests").document(contactMail)
+                        .update("date", times)
+
                 } else {
                     val contactHash = hashMapOf(
-                        "mail" to mails
+                        "mail" to mails,
+                        "date" to times
                     )
                     db.collection("ContactRequests").document(contactMail)
                         .set(contactHash)
