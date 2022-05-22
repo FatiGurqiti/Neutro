@@ -1,9 +1,11 @@
 package com.fdev.ode.flow.notifications.fragments.debt
 
+import android.provider.SyncStateContract.Helpers.update
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.lang.Exception
@@ -38,25 +40,48 @@ class DebtRequestsViewModel : ViewModel() {
             }
     }
 
-    fun getContactUserName(
-        generatedID: String,
-        contactMailTxt: String,
-        label: String,
-        amount: String
-    ) {
-        db.collection("Users").document(user?.email.toString()).get()
+    fun denyContact(id: String) {
+        val docRef: DocumentReference =
+            db.collection("DebtRequests").document(user?.email.toString())
+        docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    addDebtOrReceivement(
-                        generatedID,
-                        contactMailTxt,
-                        document?.getString("username").toString(),
-                        label,
-                        amount.toDouble(),
-                        "Debts"
-                    )
+                    var index = 0
+                    val idList = document.get("id") as ArrayList<String>
+
+                    for (i in idList.indices) {
+                        if (idList[i].equals(id))
+                            index = i
+                    }
+
+                    val receiverMailList = document.get("receiverMail") as ArrayList<String>
+                    val receiverNameList = document.get("receiverName") as ArrayList<String>
+                    val senderMailList = document.get("senderMail") as ArrayList<String>
+                    val senderNameList = document.get("senderName") as ArrayList<String>
+                    val labelList = document.get("label") as ArrayList<String>
+                    val timeList = document.get("time") as ArrayList<String>
+
+                    update("id", idList, index)
+                    update("receiverMail", receiverMailList, index)
+                    update("receiverName", receiverNameList, index)
+                    update("senderMail", senderMailList, index)
+                    update("senderName", senderNameList, index)
+                    update("label", labelList, index)
+                    update("time", timeList, index)
+
+                    val amountList = document.get("amount") as ArrayList<String>
+                    amountList.removeAt(index)
+
+                    db.collection("DebtRequests").document(user?.email.toString())
+                        .update("amount", amountList)
                 }
             }
+    }
+
+    private fun update(value: String, list: ArrayList<String>, index: Int) {
+        list.removeAt(index)
+        db.collection("DebtRequests").document(user?.email.toString())
+            .update(value, list)
     }
 
     fun addDebtOrReceivement(
@@ -159,6 +184,7 @@ class DebtRequestsViewModel : ViewModel() {
                 }
             }
     }
+
     private fun toStringArray(doubleList: ArrayList<Double>): ArrayList<String> {
         val stringList = ArrayList<String>()
         for (i in doubleList.indices)

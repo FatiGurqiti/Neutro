@@ -210,6 +210,7 @@ class DebtRequests : Fragment() {
 
                     deny.setOnClickListener()
                     {
+                        viewModel.denyContact(request[1][i])
                         statusText.setTextColor(Color.RED)
                         statusText.text = "Denied"
                         statusText.visibility = View.VISIBLE
