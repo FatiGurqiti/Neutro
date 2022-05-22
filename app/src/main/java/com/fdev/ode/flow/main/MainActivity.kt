@@ -39,8 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         sharedViewModel = ViewModelProvider(this)[SharedViewModel::class.java]
-        viewModel.ifHasNotification(notificationsBtn,"DebtRequests")
-        viewModel.ifHasNotification(notificationsBtn,"ContactRequests")
+        viewModel.ifHasNotification(notificationsBtn)
         val fragmentAdapter = FragmentAdapter(supportFragmentManager, lifecycle)
         viewPager2.adapter = fragmentAdapter
         viewModel.getDebtOrRecievement("Debts", totalText, debtText)
@@ -228,8 +227,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.ifHasNotification(notificationsBtn,"DebtRequests")
-        viewModel.ifHasNotification(notificationsBtn,"ContactRequests")
+        viewModel.ifHasNotification(notificationsBtn)
     }
     override fun onBackPressed() {
         //Literally NOTHING!

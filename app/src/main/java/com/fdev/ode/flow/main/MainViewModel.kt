@@ -31,19 +31,26 @@ class MainViewModel : ViewModel() {
     val closeContactCard: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
-
     val username: MutableLiveData<String> by lazy { MutableLiveData<String>() }
 
-    fun ifHasNotification(notificationsBtn: ImageButton, collection: String) {
-        val contactDocRef = db.collection(collection).document(user?.email.toString())
+    fun ifHasNotification(notificationsBtn: ImageButton) {
+        val contactDocRef = db.collection("DebtRequests").document(user?.email.toString())
         contactDocRef.get()
             .addOnSuccessListener { document ->
-                if (document.data == null)
-                    notificationsBtn.setImageResource(R.drawable.bell)
-                else
+                if (document.data != null)
                     notificationsBtn.setImageResource(R.drawable.bell_notification)
+                else {
+                    val contactDocRef =
+                        db.collection("ContactRequests").document(user?.email.toString())
+                    contactDocRef.get()
+                        .addOnSuccessListener { document ->
+                            if (document.data != null)
+                                notificationsBtn.setImageResource(R.drawable.bell_notification)
+                            else
+                                notificationsBtn.setImageResource(R.drawable.bell)
+                        }
+                }
             }
-
     }
 
     fun loadContacts(
@@ -149,7 +156,14 @@ class MainViewModel : ViewModel() {
             }
     }
 
-    fun sendDebtRequest(id: String, mail: String, name: String,senderName:String, label: String, amount: Double) {
+    fun sendDebtRequest(
+        id: String,
+        mail: String,
+        name: String,
+        senderName: String,
+        label: String,
+        amount: Double
+    ) {
 
         val idArray = ArrayList<String?>()
         val receiverMailArray = ArrayList<String?>()
@@ -290,8 +304,8 @@ class MainViewModel : ViewModel() {
     fun getUsername() {
         db.collection("Users").document(user?.email.toString()).get()
             .addOnSuccessListener { document ->
-                if (document.data != null){
-                    Log.d("whatisusername",document?.getString("username").toString())
+                if (document.data != null) {
+                    Log.d("whatisusername", document?.getString("username").toString())
                     username.value = document.getString("username")
 
                 }

@@ -54,20 +54,13 @@ class DebtRequestsViewModel : ViewModel() {
                             index = i
                     }
 
-                    val receiverMailList = document.get("receiverMail") as ArrayList<String>
-                    val receiverNameList = document.get("receiverName") as ArrayList<String>
-                    val senderMailList = document.get("senderMail") as ArrayList<String>
-                    val senderNameList = document.get("senderName") as ArrayList<String>
-                    val labelList = document.get("label") as ArrayList<String>
-                    val timeList = document.get("time") as ArrayList<String>
-
                     update("id", idList, index)
-                    update("receiverMail", receiverMailList, index)
-                    update("receiverName", receiverNameList, index)
-                    update("senderMail", senderMailList, index)
-                    update("senderName", senderNameList, index)
-                    update("label", labelList, index)
-                    update("time", timeList, index)
+                    update("receiverMail", document.get("receiverMail") as ArrayList<String>, index)
+                    update("receiverName", document.get("receiverName") as ArrayList<String>, index)
+                    update("senderMail", document.get("senderMail") as ArrayList<String>, index)
+                    update("senderName", document.get("senderName") as ArrayList<String>, index)
+                    update("label", document.get("label") as ArrayList<String>, index)
+                    update("time", document.get("time") as ArrayList<String>, index)
 
                     val amountList = document.get("amount") as ArrayList<String>
                     amountList.removeAt(index)
