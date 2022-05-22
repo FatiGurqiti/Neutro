@@ -168,7 +168,7 @@
             android:ems="10"
             android:hint="Amount"
             android:inputType="numberDecimal"
-            android:maxLength="5"
+            android:maxLength="8"
             android:maxLines="1"
             android:paddingLeft="20dp"
             android:textColor="@color/white"

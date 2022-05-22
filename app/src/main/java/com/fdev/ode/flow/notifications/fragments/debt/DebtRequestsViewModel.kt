@@ -30,7 +30,7 @@ class DebtRequestsViewModel : ViewModel() {
                     detailsList.add(document.get("receiverMail") as ArrayList<String>)
                     detailsList.add(document.get("receiverName") as ArrayList<String>)
                     detailsList.add(document.get("senderMail") as ArrayList<String>)
-                    detailsList.add(document.get("receiverName") as ArrayList<String>)
+                    detailsList.add(document.get("senderName") as ArrayList<String>)
                     detailsList.add(document.get("label") as ArrayList<String>)
                     detailsList.add(document.get("time") as ArrayList<String>)
                     debts.value = detailsList

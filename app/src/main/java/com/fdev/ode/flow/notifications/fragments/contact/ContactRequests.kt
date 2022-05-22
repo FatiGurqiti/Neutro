@@ -121,7 +121,7 @@ class ContactRequests : Fragment() {
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                     )
 
-                    dateText.gravity = Gravity.START;
+                    dateText.gravity = Gravity.START
                     dateText.typeface = font
                     dateText.setTextColor(Color.WHITE)
                     baseClass.setMargins(
@@ -134,7 +134,7 @@ class ContactRequests : Fragment() {
                     cardView.addView(dateText)
 
                     val approve = ImageButton(context)
-                    approve.setImageResource(R.drawable.approve);
+                    approve.setImageResource(R.drawable.approve)
                     approve.setBackgroundColor(Color.TRANSPARENT)
                     cardView.addView(approve)
                     baseClass.setMargins(
@@ -146,7 +146,7 @@ class ContactRequests : Fragment() {
                     )
 
                     val deny = ImageButton(context)
-                    deny.setImageResource(R.drawable.deny);
+                    deny.setImageResource(R.drawable.deny)
                     deny.setBackgroundColor(Color.TRANSPARENT)
                     cardView.addView(deny)
                     baseClass.setMargins(
@@ -175,7 +175,6 @@ class ContactRequests : Fragment() {
                         (sizeHeight * .01).toInt()
                     )
                     cardView.addView(statusText)
-
                     statusText.visibility = View.GONE
 
                     approve.setOnClickListener()
