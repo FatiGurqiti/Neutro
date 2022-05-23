@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fcfcfc"
-    tools:context=".flow.fragments.Debts_Fragment">
+    tools:context=".flow.fragments.Debts.Debts_Fragment">
 
     <ScrollView
         android:id="@+id/debtsScrollView"

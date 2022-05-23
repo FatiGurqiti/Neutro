@@ -5,7 +5,7 @@
     android:id="@+id/receivementFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".flow.fragments.Recivements_Fragment">
+    tools:context=".flow.fragments.Receivements.Recivements_Fragment">
 
     <ScrollView
         android:layout_width="match_parent"

@@ -1,41 +1,36 @@
-package com.fdev.ode.flow.fragments
+package com.fdev.ode.flow.fragments.Receivements
 
-import android.app.ActivityOptions
-import android.content.Intent
+import android.app.Activity
 import android.graphics.Color
-import android.os.Bundle
-import android.util.Log
-import android.view.*
+import android.view.View
 import android.widget.*
 import androidx.cardview.widget.CardView
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.fdev.ode.BaseClass
-import com.fdev.ode.flow.main.MainActivity
 import com.fdev.ode.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_recivement_.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class Recivements_Fragment : Fragment() {
+class ReceivementsViewModel : ViewModel() {
 
     private val baseClass = BaseClass()
     private var db = Firebase.firestore
     private var user = Firebase.auth.currentUser
+    val refresh: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_recivement_, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    fun loadReceivements(
+        activity: Activity,
+        receivementsRelativeLayout: RelativeLayout,
+        receivementsBlackFilter: ImageView,
+        receivementsDeleteDebtCard: CardView,
+        receivementsNotDeleteDebtBtn: Button,
+        receivementsDeleteDebtBtn: Button
+    ) {
 
         val docRef = db.collection("Recivements").document(user?.email.toString())
         docRef.get()
@@ -55,12 +50,12 @@ class Recivements_Fragment : Fragment() {
                             amount[i] != null &&
                             time[i] != null
                         ) {
-                            val sizeHeight = baseClass.getScreenHeight(requireActivity())
-                            val sizeWidth = baseClass.getScreenWidth(requireActivity()) * 0.7
-                            val font = resources.getFont(R.font.plusjakartatextregular)
-                            val boldFont = resources.getFont(R.font.plusjakartatexbold)
+                            val sizeHeight = baseClass.getScreenHeight(activity)
+                            val sizeWidth = baseClass.getScreenWidth(activity) * 0.7
+                            val font = activity.resources.getFont(R.font.plusjakartatextregular)
+                            val boldFont = activity.resources.getFont(R.font.plusjakartatexbold)
 
-                            val cardView = context?.let { CardView(it) }
+                            val cardView = activity.baseContext?.let { CardView(it) }
                             cardView!!.layoutParams = RelativeLayout.LayoutParams(
                                 RelativeLayout.LayoutParams.MATCH_PARENT,
                                 RelativeLayout.LayoutParams.WRAP_CONTENT
@@ -80,23 +75,33 @@ class Recivements_Fragment : Fragment() {
                                 0,
                             )
 
-                            val nameText = TextView(context)
-                            baseClass.setNameView(nameText, name[i].toString(),sizeWidth,boldFont)
+                            val nameText = TextView(activity.baseContext)
+                            baseClass.setNameView(nameText, name[i].toString(), sizeWidth, boldFont)
                             cardView.addView(nameText)
 
-                            val timeText = TextView(context)
-                            baseClass.setDateView(timeText,time[i].toString(), font)
+                            val timeText = TextView(activity.baseContext)
+                            baseClass.setDateView(timeText, time[i].toString(), font)
                             cardView.addView(timeText)
 
-                            val labelText = TextView(context)
-                            baseClass.setLabelView(labelText, label[i].toString(), (sizeHeight * .1).toInt(), font)
+                            val labelText = TextView(activity.baseContext)
+                            baseClass.setLabelView(
+                                labelText,
+                                label[i].toString(),
+                                (sizeHeight * .1).toInt(),
+                                font
+                            )
                             cardView.addView(labelText)
 
-                            val amountText = TextView(context)
-                            baseClass.setAmountView(amountText, amount[i].toString(),(sizeHeight * .2).toInt(),boldFont)
+                            val amountText = TextView(activity.baseContext)
+                            baseClass.setAmountView(
+                                amountText,
+                                amount[i].toString(),
+                                (sizeHeight * .2).toInt(),
+                                boldFont
+                            )
                             cardView.addView(amountText)
 
-                            val deleteText = ImageButton(context)
+                            val deleteText = ImageButton(activity.baseContext)
                             deleteText.setImageResource(R.drawable.white_trash);
                             deleteText.setBackgroundColor(Color.TRANSPARENT)
                             deleteText.translationZ = 18F
@@ -129,6 +134,7 @@ class Recivements_Fragment : Fragment() {
             }
     }
 
+
     private fun deleteRecievement(
         amount: ArrayList<Long?>,
         id: ArrayList<String?>,
@@ -138,26 +144,15 @@ class Recivements_Fragment : Fragment() {
         time: ArrayList<String?>,
         i: Int
     ) {
-
         deleteDebt(id, mail, i)
-
-        //delete receivement
         val user = user!!.email.toString()
-
-        amount.removeAt(i)
-        id.removeAt(i)
-        label.removeAt(i)
-        name.removeAt(i)
-        mail.removeAt(i)
-        time.removeAt(i)
-
         //Delete Recievemnets
-        delete("Recivements", user, "amount", amount)
-        delete("Recivements", user, "id", id)
-        delete("Recivements", user, "label", label)
-        delete("Recivements", user, "name", name)
-        delete("Recivements", user, "to", mail)
-        delete("Recivements", user, "time", time)
+        delete("Recivements", user, "amount", amount, i)
+        delete("Recivements", user, "id", id, i)
+        delete("Recivements", user, "label", label, i)
+        delete("Recivements", user, "name", name, i)
+        delete("Recivements", user, "to", mail, i)
+        delete("Recivements", user, "time", time, i)
     }
 
     private fun deleteDebt(
@@ -177,13 +172,8 @@ class Recivements_Fragment : Fragment() {
                     runBlocking {
                         launch {
                             delay(1000)
-                            val intent = Intent(context, MainActivity::class.java)
-                            startActivity(
-                                intent,
-                                ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
-                            )
+                            refresh.value = true
                         }
-
                         val amount = document?.get("amount") as ArrayList<Long?>
                         val id = document.get("id") as ArrayList<String?>
                         val label = document.get("label") as ArrayList<String?>
@@ -192,24 +182,13 @@ class Recivements_Fragment : Fragment() {
                         val time = document.get("time") as ArrayList<String?>
 
                         for (j in id.indices) {
-                            //Locate  the debt
                             if (id[i]!! == idIndex) {
-
-                                amount.removeAt(j)
-                                id.removeAt(j)
-                                label.removeAt(j)
-                                name.removeAt(j)
-                                mail.removeAt(j)
-                                time.removeAt(j)
-
-                                //Delete Debt
-                                delete("Debts", email, "amount", amount)
-                                delete("Debts", email, "id", id)
-                                delete("Debts", email, "label", label)
-                                delete("Debts", email, "name", name)
-                                delete("Debts", email, "to", mail)
-                                delete("Debts", email, "time", time)
-
+                                delete("Debts", email, "amount", amount, j)
+                                delete("Debts", email, "id", id, j)
+                                delete("Debts", email, "label", label, j)
+                                delete("Debts", email, "name", name, j)
+                                delete("Debts", email, "to", mail, j)
+                                delete("Debts", email, "time", time, j)
                             }
                         }
                     }
@@ -218,7 +197,14 @@ class Recivements_Fragment : Fragment() {
             }
     }
 
-    private fun delete(Collection: String, Document: String, Field: String, Array: ArrayList<*>) {
+    private fun delete(
+        Collection: String,
+        Document: String,
+        Field: String,
+        Array: ArrayList<*>,
+        index: Int
+    ) {
+        Array.removeAt(index)
         db.collection(Collection)
             .document(Document)
             .update(Field, Array)

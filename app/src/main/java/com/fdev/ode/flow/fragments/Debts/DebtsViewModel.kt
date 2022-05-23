@@ -1,4 +1,4 @@
-package com.fdev.ode.flow.fragments
+package com.fdev.ode.flow.fragments.Debts
 
 import android.app.Activity
 import android.graphics.Color
@@ -11,7 +11,6 @@ import com.fdev.ode.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_debts_.*
 
 class DebtsViewModel:ViewModel() {
     

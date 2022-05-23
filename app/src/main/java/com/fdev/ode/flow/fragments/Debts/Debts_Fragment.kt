@@ -1,7 +1,6 @@
-package com.fdev.ode.flow.fragments
+package com.fdev.ode.flow.fragments.Debts
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -10,7 +9,7 @@ import kotlinx.android.synthetic.main.fragment_debts_.*
 
 class Debts_Fragment : Fragment() {
 
-    lateinit var viewModel: DebtsViewModel
+    private lateinit var viewModel: DebtsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
