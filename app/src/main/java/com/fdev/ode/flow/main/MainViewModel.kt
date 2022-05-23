@@ -2,6 +2,7 @@ package com.fdev.ode.flow.main
 
 import android.content.Context
 import android.content.res.Resources
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -33,19 +34,25 @@ class MainViewModel : ViewModel() {
     val username: MutableLiveData<String> by lazy { MutableLiveData<String>() }
 
     fun ifHasNotification(notificationsBtn: ImageButton) {
-        val contactDocRef = db.collection("DebtRequests").document(user?.email.toString())
-        contactDocRef.get()
+        val debtDocRef = db.collection("DebtRequests").document(user?.email.toString())
+        debtDocRef.get()
             .addOnSuccessListener { document ->
-                if (document.data != null)
-                    notificationsBtn.setImageResource(R.drawable.bell_notification)
-                else {
+                if (document.data != null) {
+                    if ((document.get("id") as ArrayList<String>).isNotEmpty())
+                        notificationsBtn.setImageResource(R.drawable.bell_notification)
+                    else
+                        notificationsBtn.setImageResource(R.drawable.bell)
+                } else {
                     val contactDocRef =
                         db.collection("ContactRequests").document(user?.email.toString())
                     contactDocRef.get()
-                        .addOnSuccessListener { document ->
-                            if (document.data != null)
-                                notificationsBtn.setImageResource(R.drawable.bell_notification)
-                            else
+                        .addOnSuccessListener {
+                            if (it.data != null) {
+                                if ((it.get("mail") as ArrayList<String>).isNotEmpty())
+                                    notificationsBtn.setImageResource(R.drawable.bell_notification)
+                                else
+                                    notificationsBtn.setImageResource(R.drawable.bell)
+                            } else
                                 notificationsBtn.setImageResource(R.drawable.bell)
                         }
                 }
@@ -145,8 +152,7 @@ class MainViewModel : ViewModel() {
                 if (document.data != null) {
                     val valueArray = document?.get("amount") as ArrayList<Double>
                     totalAmount?.text = valueArray.sum().toString()
-                }
-                else
+                } else
                     totalAmount?.text = "0.0"
             }
     }
