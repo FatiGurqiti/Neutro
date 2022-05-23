@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.fdev.ode.BaseClass
+import com.fdev.ode.util.BaseClass
 import com.fdev.ode.R
 import com.fdev.ode.flow.login.LogIn
 import com.fdev.ode.util.Toasts

@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.fdev.ode.BaseClass
+import com.fdev.ode.util.BaseClass
 import com.fdev.ode.R
 import com.fdev.ode.flow.login.LogIn
 import com.fdev.ode.util.Toasts

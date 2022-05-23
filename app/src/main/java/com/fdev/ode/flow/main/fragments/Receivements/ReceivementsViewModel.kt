@@ -1,4 +1,4 @@
-package com.fdev.ode.flow.fragments.Receivements
+package com.fdev.ode.flow.main.fragments.Receivements
 
 import android.app.Activity
 import android.graphics.Color
@@ -7,8 +7,9 @@ import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.fdev.ode.BaseClass
+import com.fdev.ode.util.BaseClass
 import com.fdev.ode.R
+import com.fdev.ode.util.Views
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -19,6 +20,7 @@ import kotlinx.coroutines.runBlocking
 class ReceivementsViewModel : ViewModel() {
 
     private val baseClass = BaseClass()
+    private val views = Views()
     private var db = Firebase.firestore
     private var user = Firebase.auth.currentUser
     val refresh: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
@@ -76,15 +78,15 @@ class ReceivementsViewModel : ViewModel() {
                             )
 
                             val nameText = TextView(activity.baseContext)
-                            baseClass.setNameView(nameText, name[i].toString(), sizeWidth, boldFont)
+                            views.setNameView(nameText, name[i].toString(), sizeWidth, boldFont)
                             cardView.addView(nameText)
 
                             val timeText = TextView(activity.baseContext)
-                            baseClass.setDateView(timeText, time[i].toString(), font)
+                            views.setDateView(timeText, time[i].toString(), font)
                             cardView.addView(timeText)
 
                             val labelText = TextView(activity.baseContext)
-                            baseClass.setLabelView(
+                            views.setLabelView(
                                 labelText,
                                 label[i].toString(),
                                 (sizeHeight * .1).toInt(),
@@ -93,7 +95,7 @@ class ReceivementsViewModel : ViewModel() {
                             cardView.addView(labelText)
 
                             val amountText = TextView(activity.baseContext)
-                            baseClass.setAmountView(
+                            views.setAmountView(
                                 amountText,
                                 amount[i].toString(),
                                 (sizeHeight * .2).toInt(),

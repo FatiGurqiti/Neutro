@@ -1,4 +1,4 @@
-package com.fdev.ode.flow.fragments.Debts
+package com.fdev.ode.flow.main.fragments.Debts
 
 import android.os.Bundle
 import android.view.*

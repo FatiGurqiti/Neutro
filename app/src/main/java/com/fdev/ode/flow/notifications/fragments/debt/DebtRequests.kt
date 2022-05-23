@@ -12,8 +12,9 @@ import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import com.fdev.ode.BaseClass
+import com.fdev.ode.util.BaseClass
 import com.fdev.ode.R
+import com.fdev.ode.util.Views
 import kotlinx.android.synthetic.main.debt_requests_fragment.*
 
 class DebtRequests : Fragment() {
@@ -23,6 +24,7 @@ class DebtRequests : Fragment() {
     }
 
     private lateinit var viewModel: DebtRequestsViewModel
+    private val views = Views()
     private val baseClass = BaseClass()
 
     override fun onCreateView(
@@ -77,20 +79,20 @@ class DebtRequests : Fragment() {
                     )
 
                     val nameText = TextView(context)
-                    baseClass.setNameView(nameText, request[5][i], sizeWidth, boldFont)
+                    views.setNameView(nameText, request[5][i], sizeWidth, boldFont)
                     cardView.addView(nameText)
 
 
                     val dateText = TextView(context)
-                    baseClass.setDateView(dateText, request[7][i], font)
+                    views.setDateView(dateText, request[7][i], font)
                     cardView.addView(dateText)
 
                     val labelText = TextView(context)
-                    baseClass.setLabelView(labelText, request[6][i],   (sizeHeight * .1).toInt(), font)
+                    views.setLabelView(labelText, request[6][i],   (sizeHeight * .1).toInt(), font)
                     cardView.addView(labelText)
 
                     val amountText = TextView(context)
-                    baseClass.setAmountView(amountText, request[0][i],(sizeHeight * .15).toInt(),boldFont)
+                    views.setAmountView(amountText, request[0][i],(sizeHeight * .15).toInt(),boldFont)
                     cardView.addView(amountText)
 
                     val approve = ImageButton(context)

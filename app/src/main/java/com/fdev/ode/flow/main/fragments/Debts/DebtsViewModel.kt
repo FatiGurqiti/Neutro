@@ -1,4 +1,4 @@
-package com.fdev.ode.flow.fragments.Debts
+package com.fdev.ode.flow.main.fragments.Debts
 
 import android.app.Activity
 import android.graphics.Color
@@ -6,8 +6,9 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModel
-import com.fdev.ode.BaseClass
+import com.fdev.ode.util.BaseClass
 import com.fdev.ode.R
+import com.fdev.ode.util.Views
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -15,6 +16,7 @@ import com.google.firebase.ktx.Firebase
 class DebtsViewModel:ViewModel() {
     
     private val baseClass = BaseClass()
+    private val views = Views()
     var totalDebt: Double = 0.0
     
     fun loadDebts(activity: Activity, debtsContactList: RelativeLayout){
@@ -65,19 +67,19 @@ class DebtsViewModel:ViewModel() {
                             debtsContactList.addView(card)
 
                             val nameView = TextView(activity.baseContext)
-                            baseClass.setNameView(nameView, name[i].toString(),sizeWidth,boldfont)
+                            views.setNameView(nameView, name[i].toString(),sizeWidth,boldfont)
                             card.addView(nameView)
 
                             val timeView = TextView(activity.baseContext)
-                            baseClass.setDateView(timeView, time[i].toString(), font)
+                            views.setDateView(timeView, time[i].toString(), font)
                             card.addView(timeView)
 
                             val labelView = TextView(activity.baseContext)
-                            baseClass.setLabelView(labelView, label[i].toString(), (sizeHeight * .07).toInt(), font)
+                            views.setLabelView(labelView, label[i].toString(), (sizeHeight * .07).toInt(), font)
                             card.addView(labelView)
 
                             val amountView = TextView(activity.baseContext)
-                            baseClass.setAmountView(amountView, amount[i].toString(),(sizeHeight * .15).toInt(),boldfont)
+                            views.setAmountView(amountView, amount[i].toString(),(sizeHeight * .15).toInt(),boldfont)
                             card.addView(amountView)
                         }
                     }

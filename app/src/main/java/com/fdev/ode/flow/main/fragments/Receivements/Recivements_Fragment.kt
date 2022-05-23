@@ -1,18 +1,14 @@
-package com.fdev.ode.flow.fragments.Receivements
+package com.fdev.ode.flow.main.fragments.Receivements
 
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.fdev.ode.flow.main.MainActivity
 import com.fdev.ode.R
 import kotlinx.android.synthetic.main.fragment_recivement_.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class Recivements_Fragment : Fragment() {
 

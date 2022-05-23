@@ -3,7 +3,6 @@ package com.fdev.ode.flow.notifications.fragments.contact
 import android.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,9 +12,8 @@ import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import com.fdev.ode.BaseClass
+import com.fdev.ode.util.BaseClass
 import com.fdev.ode.R
-import com.fdev.ode.flow.SharedViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.contact_requests_fragment.*
@@ -27,7 +25,6 @@ class ContactRequests : Fragment() {
     }
 
     private lateinit var viewModel: ContactRequestsViewModel
-    private lateinit var sharedViewModel: SharedViewModel
     private val baseClass = BaseClass()
     private val user = Firebase.auth.currentUser
 
@@ -36,7 +33,6 @@ class ContactRequests : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this)[ContactRequestsViewModel::class.java]
-        sharedViewModel = ViewModelProvider(this)[SharedViewModel::class.java]
         return inflater.inflate(R.layout.contact_requests_fragment, container, false)
     }
 

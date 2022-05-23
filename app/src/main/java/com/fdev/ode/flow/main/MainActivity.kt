@@ -4,17 +4,15 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.fdev.ode.BaseClass
+import com.fdev.ode.util.BaseClass
 import com.fdev.ode.R
-import com.fdev.ode.flow.SharedViewModel
 import com.fdev.ode.flow.notifications.Notifications
-import com.fdev.ode.flow.fragments.FragmentAdapter
+import com.fdev.ode.flow.main.fragments.FragmentAdapter
 import com.fdev.ode.flow.profile.Profile
 import com.fdev.ode.util.Toasts
 import com.google.android.material.tabs.TabLayout
@@ -22,7 +20,6 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
-import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     private val baseClass = BaseClass()
     private val user = Firebase.auth.currentUser
     lateinit var viewModel: MainViewModel
-    lateinit var sharedViewModel: SharedViewModel
     private val toast = Toasts()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        sharedViewModel = ViewModelProvider(this)[SharedViewModel::class.java]
         viewModel.ifHasNotification(notificationsBtn)
         val fragmentAdapter = FragmentAdapter(supportFragmentManager, lifecycle)
         viewPager2.adapter = fragmentAdapter

@@ -11,6 +11,7 @@ import com.fdev.ode.*
 import com.fdev.ode.flow.forgotPassword.ForgotPassword
 import com.fdev.ode.flow.main.MainActivity
 import com.fdev.ode.flow.signup.SignUp
+import com.fdev.ode.util.BaseClass
 import com.fdev.ode.util.Toasts
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
