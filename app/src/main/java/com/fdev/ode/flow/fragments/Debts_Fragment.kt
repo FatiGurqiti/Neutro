@@ -38,9 +38,9 @@ class Debts_Fragment : Fragment() {
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     val amount = document?.get("amount") as ArrayList<Long?>
-                    val label = document?.get("label") as ArrayList<String?>
-                    val name = document?.get("name") as ArrayList<String?>
-                    val time = document?.get("time") as ArrayList<String?>
+                    val label = document.get("label") as ArrayList<String?>
+                    val name = document.get("name") as ArrayList<String?>
+                    val time = document.get("time") as ArrayList<String?>
 
                     for (i in amount.indices) {
 
@@ -54,96 +54,43 @@ class Debts_Fragment : Fragment() {
                             val sizeHeight = baseClass.getScreenHeight(requireActivity())
                             val sizeWidth = baseClass.getScreenWidth(requireActivity()) * 0.7
                             val font = resources.getFont(R.font.plusjakartatextregular)
-                            val boldface = resources.getFont(R.font.plusjakartatexbold)
+                            val boldfont = resources.getFont(R.font.plusjakartatexbold)
 
-                            val Card = context?.let { CardView(it) }
-                            Card!!.layoutParams = RelativeLayout.LayoutParams(
+                            val card = context?.let { CardView(it) }
+                            card!!.layoutParams = RelativeLayout.LayoutParams(
                                 RelativeLayout.LayoutParams.MATCH_PARENT,
                                 RelativeLayout.LayoutParams.WRAP_CONTENT
                             )
-                            Card.radius = 18F
-                            Card.setContentPadding(25, 25, 25, 25)
-                            Card.setCardBackgroundColor(Color.parseColor("#1dacd6"))
-                            Card.resources.getDrawable(R.drawable.black_background)
-                            Card.cardElevation = 8F
-                            Card.maxCardElevation = 12F
+                           card.radius = 18F
+                           card.setContentPadding(25, 25, 25, 25)
+                           card.setCardBackgroundColor(Color.parseColor("#1dacd6"))
+                           card.resources.getDrawable(R.drawable.black_background)
+                           card.cardElevation = 8F
+                           card.maxCardElevation = 12F
                             baseClass.setMargins(
-                                Card,
+                                card,
                                 (sizeWidth * .1).toInt(),
                                 ((i * sizeHeight) * 0.3).toInt(),
                                 (sizeWidth * .1).toInt(),
-                                (sizeWidth * .1).toInt(),
+                                0,
                             )
-                            debtsContactList.addView(Card)
+                            debtsContactList.addView(card)
 
                             val nameView = TextView(context)
-                            nameView.textSize = 25f
-                            nameView.text = name.get(i).toString()
-                            nameView.layoutParams = RelativeLayout.LayoutParams(
-                                RelativeLayout.LayoutParams.MATCH_PARENT,
-                                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                            )
-
-                            nameView.gravity = Gravity.CENTER;
-                            nameView.typeface = boldface
-                            nameView.translationZ = 20F
-                            nameView.setTextColor(Color.WHITE)
-                            Card.addView(nameView)
-
-                            val amountView = TextView(context)
-                            amountView.text = amount[i].toString()
-                            amountView.textSize = 35f
-                            amountView.setTextColor(Color.WHITE)
-                            amountView.gravity = Gravity.START
-                            Card.addView(amountView)
-                            baseClass.setMargins(
-                                amountView,
-                                0,
-                                (sizeHeight * .07).toInt(),
-                                (sizeWidth * .03).toInt(),
-                                0
-                            )
-
-                            val labelView = TextView(context)
-                            labelView.textSize = 20f
-                            labelView.text = label[i]
-                            labelView.setTextColor(Color.WHITE)
-                            labelView.layoutParams = RelativeLayout.LayoutParams(
-                                RelativeLayout.LayoutParams.MATCH_PARENT,
-                                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                            )
-                            labelView.gravity = Gravity.START;
-                            labelView.typeface = font
-                            labelView.translationZ = 18F
-                            baseClass.setMargins(
-                                labelView,
-                                (sizeWidth * .52).toInt(),
-                                (sizeHeight * .07).toInt(),
-                                1,
-                                1
-                            )
-                            Card.addView(labelView)
+                            baseClass.setNameView(nameView, name[i].toString(),sizeWidth,boldfont)
+                            card.addView(nameView)
 
                             val timeView = TextView(context)
-                            timeView.textSize = 14f
-                            timeView.text = time[i].toString()
-                            timeView.setTextColor(Color.WHITE)
-                            timeView.layoutParams = RelativeLayout.LayoutParams(
-                                RelativeLayout.LayoutParams.MATCH_PARENT,
-                                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                            )
+                            baseClass.setDateView(timeView, time[i].toString(), font)
+                            card.addView(timeView)
 
-                            timeView.gravity = Gravity.CENTER
-                            timeView.typeface = font
-                            timeView.translationZ = 18F
-                            baseClass.setMargins(
-                                timeView,
-                                (sizeWidth * .07).toInt(),
-                                (sizeHeight * .165).toInt(),
-                                0,
-                                0
-                            )
-                            Card.addView(timeView)
+                            val labelView = TextView(context)
+                            baseClass.setLabelView(labelView, label[i].toString(), (sizeHeight * .07).toInt(), font)
+                            card.addView(labelView)
+
+                            val amountView = TextView(context)
+                            baseClass.setAmountView(amountView, amount[i].toString(),(sizeHeight * .15).toInt(),boldfont)
+                            card.addView(amountView)
                         }
                     }
                 }

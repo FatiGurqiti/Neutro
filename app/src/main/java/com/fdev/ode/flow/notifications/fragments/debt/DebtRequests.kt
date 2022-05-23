@@ -71,79 +71,27 @@ class DebtRequests : Fragment() {
                     baseClass.setMargins(
                         cardView,
                         (sizeWidth * .1).toInt(),
-                        ((i * sizeHeight) * .3).toInt(),
+                        ((i * sizeHeight) * .4).toInt(),
                         (sizeWidth * .1).toInt(),
                         0,
                     )
+
                     val nameText = TextView(context)
-                    nameText.textSize = 25f
-                    nameText.text = request[5][i]
-                    nameText.gravity = Gravity.CENTER
-                    nameText.typeface = boldFont
-                    nameText.setTextColor(Color.WHITE)
-                    nameText.layoutParams = RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    )
-                    baseClass.setMargins(
-                        nameText,
-                        0,
-                        (sizeHeight * .03).toInt(),
-                        0,
-                        (sizeHeight * .01).toInt()
-                    )
+                    baseClass.setNameView(nameText, request[5][i], sizeWidth, boldFont)
                     cardView.addView(nameText)
 
+
+                    val dateText = TextView(context)
+                    baseClass.setDateView(dateText, request[7][i], font)
+                    cardView.addView(dateText)
+
                     val labelText = TextView(context)
-                    labelText.textSize = 17f
-                    labelText.text = request[6][i]
-                    labelText.gravity = Gravity.START;
-                    labelText.typeface = font
-                    labelText.setTextColor(Color.WHITE)
-                    labelText.layoutParams = RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    )
-                    baseClass.setMargins(
-                        labelText,
-                        (sizeWidth * .07).toInt(),
-                        (sizeHeight * .1).toInt(),
-                        (sizeWidth * .6).toInt(),
-                        (sizeHeight * .01).toInt()
-                    )
+                    baseClass.setLabelView(labelText, request[6][i],   (sizeHeight * .1).toInt(), font)
                     cardView.addView(labelText)
 
                     val amountText = TextView(context)
-                    amountText.textSize = 30f
-                    amountText.text = request[0][i]
-                    amountText.gravity = Gravity.END
-                    amountText.typeface = font
-                    amountText.setTextColor(Color.WHITE)
-                    amountText.layoutParams = RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    )
-                    baseClass.setMargins(
-                        amountText,
-                        (sizeWidth * .01).toInt(),
-                        (sizeHeight * .1).toInt(),
-                        (sizeWidth * .1).toInt(),
-                        (sizeHeight * .01).toInt()
-                    )
+                    baseClass.setAmountView(amountText, request[0][i],(sizeHeight * .15).toInt(),boldFont)
                     cardView.addView(amountText)
-
-                    val dateText = TextView(context)
-                    dateText.textSize = 12f
-                    dateText.text = request[7][i]
-                    dateText.gravity = Gravity.CENTER
-                    dateText.typeface = font
-                    dateText.setTextColor(Color.WHITE)
-                    dateText.layoutParams = RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    )
-                    cardView.addView(dateText)
-
 
                     val approve = ImageButton(context)
                     approve.setImageResource(R.drawable.approve)
@@ -156,7 +104,7 @@ class DebtRequests : Fragment() {
                     baseClass.setMargins(
                         approve,
                         (sizeWidth * .35).toInt(),
-                        (sizeHeight * .18).toInt(),
+                        (sizeHeight * .28).toInt(),
                         0,
                         0
                     )
@@ -172,7 +120,7 @@ class DebtRequests : Fragment() {
                     baseClass.setMargins(
                         deny,
                         (sizeWidth * .65).toInt(),
-                        (sizeHeight * .185).toInt(),
+                        (sizeHeight * .285).toInt(),
                         0,
                         0
                     )
@@ -192,7 +140,7 @@ class DebtRequests : Fragment() {
                     baseClass.setMargins(
                         statusText,
                         0,
-                        (sizeHeight * .2).toInt(),
+                        (sizeHeight * .3).toInt(),
                         0, 0
                     )
                     cardView.addView(statusText)

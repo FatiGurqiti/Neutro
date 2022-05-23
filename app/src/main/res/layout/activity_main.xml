@@ -376,6 +376,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
             android:fontFamily="@font/plusjakartatextregular"
             android:text="0"
             android:textAlignment="center"

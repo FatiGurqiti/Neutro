@@ -43,11 +43,11 @@ class Recivements_Fragment : Fragment() {
                 if (document.data != null) {
 
                     val amount = document?.get("amount") as ArrayList<Long?>
-                    val id = document?.get("id") as ArrayList<String?>
-                    val label = document?.get("label") as ArrayList<String?>
-                    val name = document?.get("name") as ArrayList<String?>
-                    val mail = document?.get("to") as ArrayList<String?>
-                    val time = document?.get("time") as ArrayList<String?>
+                    val id = document.get("id") as ArrayList<String?>
+                    val label = document.get("label") as ArrayList<String?>
+                    val name = document.get("name") as ArrayList<String?>
+                    val mail = document.get("to") as ArrayList<String?>
+                    val time = document.get("time") as ArrayList<String?>
 
                     for (i in amount.indices) {
                         if (name[i] != null &&
@@ -60,13 +60,10 @@ class Recivements_Fragment : Fragment() {
                             val font = resources.getFont(R.font.plusjakartatextregular)
                             val boldFont = resources.getFont(R.font.plusjakartatexbold)
 
-                            //Create  CardView
                             val cardView = context?.let { CardView(it) }
-                            cardView!!.setLayoutParams(
-                                RelativeLayout.LayoutParams(
-                                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                                    RelativeLayout.LayoutParams.WRAP_CONTENT
-                                )
+                            cardView!!.layoutParams = RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.MATCH_PARENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT
                             )
                             cardView.radius = 18F
                             cardView.setContentPadding(25, 25, 25, 25)
@@ -78,89 +75,26 @@ class Recivements_Fragment : Fragment() {
                             baseClass.setMargins(
                                 cardView,
                                 (sizeWidth * .1).toInt(),
-                                ((i * sizeHeight) * 0.35).toInt(),
+                                ((i * sizeHeight) * 0.4).toInt(),
                                 (sizeWidth * .1).toInt(),
-                                (sizeWidth * .1).toInt(),
+                                0,
                             )
 
                             val nameText = TextView(context)
-                            nameText.textSize = 25f
-                            nameText?.text = name.get(i).toString()
-                            nameText.setLayoutParams(
-                                RelativeLayout.LayoutParams(
-                                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                                )
-                            )
-
-                            nameText.gravity = Gravity.START;
-                            nameText.typeface = boldFont
-                            nameText.translationZ = 35F
-                            nameText.setTextColor(Color.WHITE)
-                            baseClass.setMargins(
-                                nameText,
-                                (sizeWidth * .07).toInt(),
-                                (sizeHeight * .01).toInt(),
-                                0,
-                                0
-                            )
+                            baseClass.setNameView(nameText, name[i].toString(),sizeWidth,boldFont)
                             cardView.addView(nameText)
 
+                            val timeText = TextView(context)
+                            baseClass.setDateView(timeText,time[i].toString(), font)
+                            cardView.addView(timeText)
+
                             val labelText = TextView(context)
-                            labelText.textSize = 16f
-                            labelText?.text = label[i].toString()
-                            labelText.setTextColor(Color.WHITE)
-                            labelText.setLayoutParams(
-                                RelativeLayout.LayoutParams(
-                                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                                )
-                            )
-                            labelText.setGravity(Gravity.START);
-                            labelText.setTypeface(font)
-                            labelText.setTranslationZ(18F)
-                            baseClass.setMargins(
-                                labelText,
-                                (sizeWidth * .07).toInt(),
-                                (sizeHeight * .08).toInt(),
-                                (sizeWidth * .60).toInt(),
-                                10
-                            )
+                            baseClass.setLabelView(labelText, label[i].toString(), (sizeHeight * .1).toInt(), font)
                             cardView.addView(labelText)
 
                             val amountText = TextView(context)
-                            amountText?.text = amount[i].toString()
-                            amountText.textSize = 50f
-                            amountText.setTextColor(Color.WHITE)
-                            amountText.gravity = Gravity.END
+                            baseClass.setAmountView(amountText, amount[i].toString(),(sizeHeight * .2).toInt(),boldFont)
                             cardView.addView(amountText)
-                            baseClass.setMargins(
-                                amountText,
-                                0,
-                                (sizeHeight * .05).toInt(),
-                                (sizeWidth * .03).toInt(),
-                                0
-                            )
-
-                            val timeText = TextView(context)
-                            timeText.textSize = 14f
-                            timeText?.text = time[i].toString()
-                            timeText.setTextColor(Color.WHITE)
-                            timeText.layoutParams = RelativeLayout.LayoutParams(
-                                RelativeLayout.LayoutParams.MATCH_PARENT,
-                                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                            )
-                            timeText.gravity = Gravity.START
-                            timeText.typeface = font
-                            timeText.translationZ = 18F
-                            baseClass.setMargins(
-                                timeText,
-                                (sizeWidth * .07).toInt(),
-                                (sizeHeight * .165).toInt(),
-                                0,
-                                0
-                            )
-                            cardView.addView(timeText)
 
                             val deleteText = ImageButton(context)
                             deleteText.setImageResource(R.drawable.white_trash);
@@ -169,10 +103,9 @@ class Recivements_Fragment : Fragment() {
                             cardView.addView(deleteText)
                             baseClass.setMargins(
                                 deleteText,
-                                (sizeWidth * .01).toInt(),
-                                (sizeHeight * .15).toInt(),
                                 0,
-                                0
+                                (sizeHeight * .28).toInt(),
+                                0, 0
                             )
 
                             deleteText.setOnClickListener()
@@ -252,11 +185,11 @@ class Recivements_Fragment : Fragment() {
                         }
 
                         val amount = document?.get("amount") as ArrayList<Long?>
-                        val id = document?.get("id") as ArrayList<String?>
-                        val label = document?.get("label") as ArrayList<String?>
-                        val name = document?.get("name") as ArrayList<String?>
-                        val mail = document?.get("to") as ArrayList<String?>
-                        val time = document?.get("time") as ArrayList<String?>
+                        val id = document.get("id") as ArrayList<String?>
+                        val label = document.get("label") as ArrayList<String?>
+                        val name = document.get("name") as ArrayList<String?>
+                        val mail = document.get("to") as ArrayList<String?>
+                        val time = document.get("time") as ArrayList<String?>
 
                         for (j in id.indices) {
                             //Locate  the debt
@@ -285,7 +218,7 @@ class Recivements_Fragment : Fragment() {
             }
     }
 
-    fun delete(Collection: String, Document: String, Field: String, Array: ArrayList<*>) {
+    private fun delete(Collection: String, Document: String, Field: String, Array: ArrayList<*>) {
         db.collection(Collection)
             .document(Document)
             .update(Field, Array)
