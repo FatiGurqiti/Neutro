@@ -2,7 +2,6 @@ package com.fdev.ode.flow.main
 
 import android.content.Context
 import android.content.res.Resources
-import android.util.Log
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -144,15 +143,11 @@ class MainViewModel : ViewModel() {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    //Get Old data
-                    val valueArray: ArrayList<Double?> =
-                        document?.get("amount") as ArrayList<Double?>
-                    var value = 0.0
-                    // Add new data on top of old data
-                    for (i in valueArray.indices)
-                        value += valueArray[i]!!.toDouble()
-                    totalAmount?.text = value.toString()
+                    val valueArray = document?.get("amount") as ArrayList<Double>
+                    totalAmount?.text = valueArray.sum().toString()
                 }
+                else
+                    totalAmount?.text = "0.0"
             }
     }
 
@@ -304,11 +299,8 @@ class MainViewModel : ViewModel() {
     fun getUsername() {
         db.collection("Users").document(user?.email.toString()).get()
             .addOnSuccessListener { document ->
-                if (document.data != null) {
-                    Log.d("whatisusername", document?.getString("username").toString())
+                if (document.data != null)
                     username.value = document.getString("username")
-
-                }
             }
     }
 
