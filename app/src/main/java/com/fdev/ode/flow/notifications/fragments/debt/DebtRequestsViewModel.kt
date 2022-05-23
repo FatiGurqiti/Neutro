@@ -1,14 +1,12 @@
 package com.fdev.ode.flow.notifications.fragments.debt
 
-import android.provider.SyncStateContract.Helpers.update
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.lang.Exception
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -54,13 +52,29 @@ class DebtRequestsViewModel : ViewModel() {
                             index = i
                     }
 
-                    update("id", idList, index)
-                    update("receiverMail", document.get("receiverMail") as ArrayList<String>, index)
-                    update("receiverName", document.get("receiverName") as ArrayList<String>, index)
-                    update("senderMail", document.get("senderMail") as ArrayList<String>, index)
-                    update("senderName", document.get("senderName") as ArrayList<String>, index)
-                    update("label", document.get("label") as ArrayList<String>, index)
-                    update("time", document.get("time") as ArrayList<String>, index)
+                    updateRequest("id", idList, index)
+                    updateRequest(
+                        "receiverMail",
+                        document.get("receiverMail") as ArrayList<String>,
+                        index
+                    )
+                    updateRequest(
+                        "receiverName",
+                        document.get("receiverName") as ArrayList<String>,
+                        index
+                    )
+                    updateRequest(
+                        "senderMail",
+                        document.get("senderMail") as ArrayList<String>,
+                        index
+                    )
+                    updateRequest(
+                        "senderName",
+                        document.get("senderName") as ArrayList<String>,
+                        index
+                    )
+                    updateRequest("label", document.get("label") as ArrayList<String>, index)
+                    updateRequest("time", document.get("time") as ArrayList<String>, index)
 
                     val amountList = document.get("amount") as ArrayList<String>
                     amountList.removeAt(index)
@@ -71,111 +85,72 @@ class DebtRequestsViewModel : ViewModel() {
             }
     }
 
-    private fun update(value: String, list: ArrayList<String>, index: Int) {
-        list.removeAt(index)
-        db.collection("DebtRequests").document(user?.email.toString())
-            .update(value, list)
-    }
 
-    fun addDebtOrReceivement(
+    fun approveDebt(
         id: String,
-        to: String,
+        mail: String,
         name: String,
         label: String,
+        time: String,
         amount: Double,
-        type: String
+        collections: String,
+        documentPath: String
     ) {
-        var idArray = ArrayList<String?>()
-        var toArray = ArrayList<String?>()
-        var nameArray = ArrayList<String?>()
-        var labelArray = ArrayList<String?>()
-        var timeArray = ArrayList<String?>()
-        var amountArray = ArrayList<Double?>()
+        val idArray = arrayListOf(id)
+        val mailArray = arrayListOf(mail)
+        val nameArray = arrayListOf(name)
+        val labelArray = arrayListOf(label)
+        val timeArray = arrayListOf(time)
+        val amountArray = arrayListOf(amount)
 
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-        val formatted = current.format(formatter)
-
-        val toWhom: String
-        val user: String
-        val time = formatted.toString()
-
-        if (type == "Recivements") {
-            user = Firebase.auth.currentUser?.email.toString()
-            toWhom = to
-        } else {
-            toWhom = Firebase.auth.currentUser?.email.toString()
-            user = to
-        }
-
-        val docRef = db.collection(type).document(user)
+        val docRef = db.collection(collections).document(documentPath)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    //get Old data
-                    idArray = document?.get("id") as ArrayList<String?>
-                    toArray = document?.get("to") as ArrayList<String?>
-                    nameArray = document?.get("name") as ArrayList<String?>
-                    labelArray = document?.get("label") as ArrayList<String?>
-                    timeArray = document?.get("time") as ArrayList<String?>
-                    amountArray = document?.get("amount") as ArrayList<Double?>
 
-                    //add data to it
-                    idArray.add(id)
-                    toArray.add(toWhom)
-                    nameArray.add(name)
-                    labelArray.add(label)
-                    timeArray.add(time)
-                    amountArray.add(amount)
+                    updateDebt(idArray, "id", document, collections, documentPath)
+                    updateDebt(mailArray, "to", document, collections, documentPath)
+                    updateDebt(nameArray, "name", document, collections, documentPath)
+                    updateDebt(labelArray, "label", document, collections, documentPath)
+                    updateDebt(timeArray, "time", document, collections, documentPath)
 
-                    //update the data
-                    db.collection(type)
-                        .document(user)
-                        .update("id", idArray)
-
-                    db.collection(type)
-                        .document(user)
-                        .update("to", toArray)
-
-                    db.collection(type)
-                        .document(user)
-                        .update("name", nameArray)
-
-                    db.collection(type)
-                        .document(user)
-                        .update("label", labelArray)
-
-                    db.collection(type)
-                        .document(user)
-                        .update("time", timeArray)
-
-                    db.collection(type)
-                        .document(user)
+                    amountArray.plusAssign(document.get("amount") as ArrayList<Double>)
+                    db.collection(collections).document(documentPath)
                         .update("amount", amountArray)
 
                 } else {
-
-                    idArray.add(id)
-                    toArray.add(toWhom)
-                    nameArray.add(name)
-                    labelArray.add(label)
-                    timeArray.add(time)
-                    amountArray.add(amount)
-
-                    val debthash = hashMapOf(
+                    val debtHash = hashMapOf(
                         "id" to idArray,
-                        "to" to toArray,
+                        "to" to mailArray,
                         "name" to nameArray,
                         "amount" to amountArray,
                         "label" to labelArray,
                         "time" to timeArray
                     )
 
-                    db.collection(type)
-                        .document(user)
-                        .set(debthash)
+                    db.collection(collections)
+                        .document(documentPath)
+                        .set(debtHash)
                 }
             }
+    }
+
+    private fun updateRequest(value: String, list: ArrayList<String>, index: Int) {
+        list.removeAt(index)
+        db.collection("DebtRequests").document(user?.email.toString())
+            .update(value, list)
+    }
+
+    private fun updateDebt(
+        list: ArrayList<String>,
+        value: String,
+        document: DocumentSnapshot,
+        collections: String,
+        documentPath: String
+    ) {
+        list.plusAssign(document.get(value) as ArrayList<String>)
+        db.collection(collections).document(documentPath)
+            .update(value, list)
     }
 
     private fun toStringArray(doubleList: ArrayList<Double>): ArrayList<String> {
