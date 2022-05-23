@@ -3,7 +3,6 @@ package com.fdev.ode.flow.notifications.fragments.debt
 import android.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -201,28 +200,7 @@ class DebtRequests : Fragment() {
 
                     approve.setOnClickListener()
                     {
-
-                        Log.d("LetsSee0", request[0][i])  // amount
-                        Log.d("LetsSee1", request[1][i])  // id
-                        Log.d("LetsSee2", request[2][i])  // benim mail
-                        Log.d("LetsSee3", request[3][i])  // benim ad
-                        Log.d("LetsSee4", request[4][i])  // onon mail (yani buna alcak eklenecek)
-                        Log.d("LetsSee5", request[5][i])  // onon ad
-                        Log.d("LetsSee6", request[6][i])  // label
-                        Log.d("LetsSee7", request[7][i])  // date
-
-
-                        //the function is ready just
-
-//                        id: String,
-//                        mail: String,
-//                        name: String,
-//                        label: String,
-//                        time: String,
-//                        amount: Double,
-//                        collections: String,
-//                        documentPath: String
-
+                        // Add debt to this user
                         viewModel.approveDebt(
                             request[1][i],
                             request[4][i],
@@ -233,6 +211,21 @@ class DebtRequests : Fragment() {
                             "Debts",
                             request[2][i]
                         )
+
+                        // Add receivement to user that requests
+                        viewModel.approveDebt(
+                            request[1][i],
+                            request[2][i],
+                            request[3][i],
+                            request[6][i],
+                            request[7][i],
+                            request[0][i].toDouble(),
+                            "Recivements",
+                            request[4][i]
+                        )
+
+                        //Delete request
+                        viewModel.denyContact(request[1][i])
 
                         statusText.setTextColor(Color.GREEN)
                         statusText.text = "Approved"
