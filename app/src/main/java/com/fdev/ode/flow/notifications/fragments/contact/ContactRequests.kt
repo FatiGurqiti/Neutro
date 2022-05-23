@@ -48,8 +48,9 @@ class ContactRequests : Fragment() {
         val font = resources.getFont(R.font.plusjakartatextregular)
         val boldFont = resources.getFont(R.font.plusjakartatexbold)
 
+        contactRequestEmpty.visibility = View.VISIBLE
         viewModel.contactMail.observe(viewLifecycleOwner) { request ->
-            if (request.isNullOrEmpty()) {
+            if (request.isEmpty()) {
                 contactRequestEmpty.visibility = View.VISIBLE
                 contactRequestLayout.visibility = View.INVISIBLE
             } else {
@@ -78,12 +79,13 @@ class ContactRequests : Fragment() {
                     )
 
                     val nameText = TextView(context)
+
                     nameText.textSize = 25f
                     viewModel.contactUsername.observe(viewLifecycleOwner)
                     {
                         for (j in it.indices) {
                             if (j == i)
-                                nameText?.text = it[j]
+                                nameText.text = it[j]
                         }
                     }
                     nameText.layoutParams = RelativeLayout.LayoutParams(
@@ -91,7 +93,7 @@ class ContactRequests : Fragment() {
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                     )
 
-                    nameText.gravity = Gravity.START;
+                    nameText.gravity = Gravity.START
                     nameText.typeface = boldFont
                     nameText.setTextColor(Color.WHITE)
                     baseClass.setMargins(
@@ -204,7 +206,6 @@ class ContactRequests : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this)[ContactRequestsViewModel::class.java]
-        // TODO: Use the ViewModel
     }
 
 }

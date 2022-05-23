@@ -3,6 +3,7 @@ package com.fdev.ode.flow.notifications.fragments.debt
 import android.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -48,8 +49,10 @@ class DebtRequests : Fragment() {
         val font = resources.getFont(R.font.plusjakartatextregular)
         val boldFont = resources.getFont(R.font.plusjakartatexbold)
 
+        debtRequestEmpty.visibility = View.VISIBLE
         viewModel.debts.observe(viewLifecycleOwner) { request ->
-            if (request.isNullOrEmpty()) {
+            Log.d("komple",request.toString())
+            if (request[0].isNullOrEmpty()) {
                 debtRequestEmpty.visibility = View.VISIBLE
                 debtRequestLayout.visibility = View.INVISIBLE
             } else {

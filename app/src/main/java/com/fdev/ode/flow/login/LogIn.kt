@@ -27,8 +27,6 @@ class LogIn : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         val viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
-
-
         val user = Firebase.auth.currentUser
 
         if (user != null)

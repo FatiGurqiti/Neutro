@@ -223,6 +223,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.ifHasNotification(notificationsBtn)
+        viewModel.loadContacts(debtsContactList, this, resources)
     }
     override fun onBackPressed() {
         //Literally NOTHING!

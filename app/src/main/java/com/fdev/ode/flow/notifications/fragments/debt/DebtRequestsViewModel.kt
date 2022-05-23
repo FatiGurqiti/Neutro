@@ -107,17 +107,14 @@ class DebtRequestsViewModel : ViewModel() {
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-
                     updateDebt(idArray, "id", document, collections, documentPath)
                     updateDebt(mailArray, "to", document, collections, documentPath)
                     updateDebt(nameArray, "name", document, collections, documentPath)
                     updateDebt(labelArray, "label", document, collections, documentPath)
                     updateDebt(timeArray, "time", document, collections, documentPath)
-
                     amountArray.plusAssign(document.get("amount") as ArrayList<Double>)
                     db.collection(collections).document(documentPath)
                         .update("amount", amountArray)
-
                 } else {
                     val debtHash = hashMapOf(
                         "id" to idArray,
@@ -127,7 +124,6 @@ class DebtRequestsViewModel : ViewModel() {
                         "label" to labelArray,
                         "time" to timeArray
                     )
-
                     db.collection(collections)
                         .document(documentPath)
                         .set(debtHash)

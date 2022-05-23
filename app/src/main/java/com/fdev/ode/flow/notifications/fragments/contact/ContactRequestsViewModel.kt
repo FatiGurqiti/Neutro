@@ -16,11 +16,10 @@ class ContactRequestsViewModel : ViewModel() {
     private val db = Firebase.firestore
     private val user = Firebase.auth.currentUser
 
+    val username = ArrayList<String>()
     val contactMail: MutableLiveData<ArrayList<String>> by lazy {
         MutableLiveData<ArrayList<String>>()
     }
-
-    val username = ArrayList<String>()
     val contactUsername: MutableLiveData<ArrayList<String>> by lazy {
         MutableLiveData<ArrayList<String>>()
     }
