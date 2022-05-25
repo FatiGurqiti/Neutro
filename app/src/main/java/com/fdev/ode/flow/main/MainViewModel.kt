@@ -2,7 +2,6 @@ package com.fdev.ode.flow.main
 
 import android.content.Context
 import android.content.res.Resources
-import android.util.Log
 import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -32,6 +31,7 @@ class MainViewModel : ViewModel() {
         MutableLiveData<Boolean>()
     }
     val username: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val recipientToken: MutableLiveData<String> by lazy { MutableLiveData<String>() }
 
     fun ifHasNotification(notificationsBtn: ImageButton) {
         val debtDocRef = db.collection("DebtRequests").document(user?.email.toString())
@@ -70,7 +70,7 @@ class MainViewModel : ViewModel() {
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     val myContact = document?.get("contact") as ArrayList<String?>
-                    val contactNames = document?.get("contactName") as ArrayList<String?>
+                    val contactNames = document.get("contactName") as ArrayList<String?>
 
                     if (myContact.size != 0) { //User has contacts
 
@@ -234,7 +234,6 @@ class MainViewModel : ViewModel() {
 
 
     fun ifContactExist(email: String, context: Context) {
-
         val userMail = user!!.email.toString()
         val docRef = db.collection("Contacts").document(userMail)
         docRef.get()
@@ -245,6 +244,11 @@ class MainViewModel : ViewModel() {
                         closeContactCard.value = false
                     } else
                         contactCheck(email, context)
+                }
+                else{
+                    sendContactRequest(email, userMail)
+                    toast.contactRequestSent(context)
+                    closeContactCard.value = true
                 }
             }
     }
@@ -303,10 +307,20 @@ class MainViewModel : ViewModel() {
     }
 
     fun getUsername() {
-        db.collection("Users").document(user?.email.toString()).get()
+        db.collection("Users").document(user?.email.toString())
+            .get()
             .addOnSuccessListener { document ->
                 if (document.data != null)
                     username.value = document.getString("username")
+            }
+    }
+
+    fun getRecipientToken(mail: String) {
+        db.collection("Users").document(mail)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.data != null)
+                    recipientToken.value = document.getString("token")
             }
     }
 

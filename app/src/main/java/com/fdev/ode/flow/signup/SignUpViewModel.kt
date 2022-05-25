@@ -1,7 +1,6 @@
 package com.fdev.ode.flow.signup
 
 import android.app.Activity
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fdev.ode.util.Toasts

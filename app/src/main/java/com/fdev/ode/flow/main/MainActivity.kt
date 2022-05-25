@@ -31,7 +31,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-const val TOPIC = "/topics/myTopic"
 
 class MainActivity : AppCompatActivity() {
 
@@ -97,10 +96,28 @@ class MainActivity : AppCompatActivity() {
                 val amount = amountText?.text.toString().toDouble()
 
                 viewModel.getUsername()
+                viewModel.getRecipientToken(contactMail)
+
                 viewModel.username.observe(this, Observer {
-                    viewModel.sendDebtRequest(generatedID,contactMail,contactName,it, label, amount)
+                    viewModel.sendDebtRequest(
+                        generatedID,
+                        contactMail,
+                        contactName,
+                        it,
+                        label,
+                        amount
+                    )
                 })
-                prepareNotification("Debt Request","You have a new debt request from me")
+
+                viewModel.recipientToken.observe(this) {
+                    viewModel.username.observe(this) { username ->
+                        prepareNotification(
+                            "Debt Request",
+                            "You have a new debt request from $username",
+                            it
+                        )
+                    }
+                }
 
                 emptyInputs()
                 contactBtn.isEnabled = true
@@ -164,6 +181,8 @@ class MainActivity : AppCompatActivity() {
 
         addContactBtn.setOnClickListener()
         {
+
+
             baseClass.enableViews(listOf(profileBtn, addDebtBtn, notificationsBtn))
             val contactMail = addContactMail.text.toString()
             val userMail = user?.email.toString()
@@ -173,9 +192,19 @@ class MainActivity : AppCompatActivity() {
                 mainActivityProgressBar?.visibility = View.VISIBLE
                 if (contactMail != userMail) {
                     viewModel.ifContactExist(contactMail, applicationContext)
-
                     viewModel.closeContactCard.observe(this, Observer {
                         if (it) {
+                            viewModel.getUsername()
+                            viewModel.getRecipientToken(contactMail)
+                            viewModel.recipientToken.observe(this) { token ->
+                                viewModel.username.observe(this) { username ->
+                                    prepareNotification(
+                                        "Contact Request",
+                                        "$username has request to add you to their contacts",
+                                        token
+                                    )
+                                }
+                            }
                             blackFilter.visibility = View.INVISIBLE
                             addContactCard.visibility = View.INVISIBLE
                             addContactMail.setText("")
@@ -183,7 +212,6 @@ class MainActivity : AppCompatActivity() {
                             mainActivityProgressBar?.visibility = View.INVISIBLE
                         }
                     })
-                    prepareNotification("Contact Request","You have a new contact request from me")
                     viewModel.refresh.observe(this, Observer {
                         if (it) refresh()
                     })
@@ -236,18 +264,15 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun prepareNotification(title: String, message: String) {
-
+    private fun prepareNotification(title: String, message: String, token: String) {
         FirebaseService.sharedPref = getSharedPreferences("sharedPref", MODE_PRIVATE)
         FirebaseMessaging.getInstance().token.addOnSuccessListener {
             FirebaseService.token = it.toString()
-            Log.d("MoytokenMain",it.toString())
         }
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
-        val recipientToken = FirebaseService.token.toString()
         PushNotificationData(
             NotificationData(title, message),
-            recipientToken
+            token
         ).also {
             sendNotification(it)
         }
@@ -270,8 +295,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.ifHasNotification(notificationsBtn)
         viewModel.loadContacts(debtsContactList, this, resources)
     }
+
     override fun onBackPressed() {
         //Literally NOTHING!
     }
 }
-
