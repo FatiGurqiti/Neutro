@@ -11,7 +11,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.core.app.NotificationCompat
 import com.fdev.ode.R
-import com.fdev.ode.StartActivity
+import com.fdev.ode.flow.SplashScreen
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlin.random.Random
@@ -40,7 +40,7 @@ class FirebaseService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        val intent = Intent(this, StartActivity::class.java)
+        val intent = Intent(this, SplashScreen::class.java)
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notificationID = Random.nextInt()

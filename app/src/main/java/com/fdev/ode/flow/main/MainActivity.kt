@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.fdev.ode.util.BaseClass
 import com.fdev.ode.R
-import com.fdev.ode.TOPIC
 import com.fdev.ode.flow.notifications.Notifications
 import com.fdev.ode.flow.main.fragments.FragmentAdapter
 import com.fdev.ode.flow.profile.Profile
@@ -31,6 +30,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+const val TOPIC = "/topics/myTopic"
 
 class MainActivity : AppCompatActivity() {
 
