@@ -241,6 +241,7 @@ class MainActivity : AppCompatActivity() {
         FirebaseService.sharedPref = getSharedPreferences("sharedPref", MODE_PRIVATE)
         FirebaseMessaging.getInstance().token.addOnSuccessListener {
             FirebaseService.token = it.toString()
+            Log.d("MoytokenMain",it.toString())
         }
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
         val recipientToken = FirebaseService.token.toString()

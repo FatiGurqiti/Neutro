@@ -1,6 +1,7 @@
 package com.fdev.ode.flow.signup
 
 import android.app.Activity
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fdev.ode.util.Toasts
@@ -8,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 
 
 class SignUpViewModel : ViewModel() {
@@ -38,11 +40,15 @@ class SignUpViewModel : ViewModel() {
     }
 
     private fun userData(userName: String, email: String, pin: String) {
-        val user = hashMapOf(
-            "username" to userName,
-            "email" to email,
-            "pin" to pin
-        )
-        db.collection("Users").document(email).set(user)
+
+        FirebaseMessaging.getInstance().token.addOnSuccessListener {
+            val user = hashMapOf(
+                "username" to userName,
+                "email" to email,
+                "pin" to pin,
+                "token" to it.toString()
+            )
+            db.collection("Users").document(email).set(user)
+        }
     }
 }

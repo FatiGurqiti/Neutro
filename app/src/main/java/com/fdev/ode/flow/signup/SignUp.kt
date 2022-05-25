@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.Observer
@@ -12,7 +13,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.fdev.ode.util.BaseClass
 import com.fdev.ode.R
 import com.fdev.ode.flow.login.LogIn
+import com.fdev.ode.services.FirebaseService
 import com.fdev.ode.util.Toasts
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUp : AppCompatActivity() {
@@ -27,6 +30,7 @@ class SignUp : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
 
         signupBtn.setOnClickListener {
+
             signUpProgressBar.visibility = View.VISIBLE
             if (canClick(signUpUsernameEditText, signUpEmailEditText, signUpPinEditText)) {
                 viewModel.signup(
