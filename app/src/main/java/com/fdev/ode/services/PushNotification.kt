@@ -3,7 +3,6 @@ package com.fdev.ode.services
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import androidx.core.app.NotificationBuilderWithBuilderAccessor
 import androidx.core.app.NotificationManagerCompat
 import com.fdev.ode.R
 import com.google.firebase.messaging.FirebaseMessagingService

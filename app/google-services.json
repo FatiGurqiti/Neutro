@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "406635685033",
+    "project_id": "odeversion2",
+    "storage_bucket": "odeversion2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406635685033:android:6132b766a49f5a956d75b8",
+        "android_client_info": {
+          "package_name": "com.fdev.ode"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406635685033-bipi3lujg4b8o051lel96cc9sdfa1ujh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fdev.ode",
+            "certificate_hash": "0a1e8754b288632bfd9d56e8cf10e5a6ad743d93"
+          }
+        },
+        {
+          "client_id": "406635685033-1o1vsj4cp0lr562lqf03asqjgqoo1cjk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVzSBSWRdpQMlvIlWrBx_lRLnWdZWg5a8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "406635685033-1o1vsj4cp0lr562lqf03asqjgqoo1cjk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
