@@ -4,6 +4,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -11,16 +12,26 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.fdev.ode.util.BaseClass
 import com.fdev.ode.R
+import com.fdev.ode.TOPIC
 import com.fdev.ode.flow.notifications.Notifications
 import com.fdev.ode.flow.main.fragments.FragmentAdapter
 import com.fdev.ode.flow.profile.Profile
+import com.fdev.ode.services.FirebaseService
+import com.fdev.ode.services.NotificationData
+import com.fdev.ode.services.PushNotificationData
+import com.fdev.ode.services.RetrofitInstance
 import com.fdev.ode.util.Toasts
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+const val TOPIC = "/topics/myTopic"
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +39,8 @@ class MainActivity : AppCompatActivity() {
     private val user = Firebase.auth.currentUser
     lateinit var viewModel: MainViewModel
     private val toast = Toasts()
+
+    val TAG = "PushNotification"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +100,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.username.observe(this, Observer {
                     viewModel.sendDebtRequest(generatedID,contactMail,contactName,it, label, amount)
                 })
+                prepareNotification("Debt Request","You have a new debt request from me")
 
                 emptyInputs()
                 contactBtn.isEnabled = true
@@ -169,6 +183,7 @@ class MainActivity : AppCompatActivity() {
                             mainActivityProgressBar?.visibility = View.INVISIBLE
                         }
                     })
+                    prepareNotification("Contact Request","You have a new contact request from me")
                     viewModel.refresh.observe(this, Observer {
                         if (it) refresh()
                     })
@@ -219,6 +234,35 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, cls)
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
+
+
+    private fun prepareNotification(title: String, message: String) {
+
+        FirebaseService.sharedPref = getSharedPreferences("sharedPref", MODE_PRIVATE)
+        FirebaseMessaging.getInstance().token.addOnSuccessListener {
+            FirebaseService.token = it.toString()
+        }
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
+        val recipientToken = FirebaseService.token.toString()
+        PushNotificationData(
+            NotificationData(title, message),
+            recipientToken
+        ).also {
+            sendNotification(it)
+        }
+    }
+
+    private fun sendNotification(notification: PushNotificationData) =
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitInstance.api.postNotification(notification)
+                if (!response.isSuccessful)
+                    Log.e(TAG, response.errorBody().toString())
+
+            } catch (e: Exception) {
+                Log.e(TAG, e.toString())
+            }
+        }
 
     override fun onResume() {
         super.onResume()
